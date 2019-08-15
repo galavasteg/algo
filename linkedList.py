@@ -60,7 +60,11 @@ class LinkedList:
     def delete(self, val, all=False):
         # TODO 1.1.: удалить только первый нашедшийся узел
         # TODO 1.2.: удалить все узлы по конкретному значению
-        pass  # здесь будет ваш код
+        nodes = self.find_all(val) if all else [self.find(val)]
+        for n in nodes:
+            next_node = n.next
+            n.value = next_node.value
+            n.next = next_node.next
 
     def clean(self):
         # TODO 1.3.: очистить все содержимое
