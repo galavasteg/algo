@@ -72,7 +72,7 @@ class LinkedList:
         self.__init__()
 
     def len(self) -> int:
-        # TODO 1.5.: текущая длина списка
+        # + TODO 1.5.: текущая длина списка
         _len = 0
         node = self.head
         while node:
@@ -80,10 +80,20 @@ class LinkedList:
             _len += 1
         return _len
 
-    def insert(self, afterNode, newNode):
+    def insert(self, afterNode, newNode: Node):
         # TODO 1.6.: Добавьте в класс LinkedList метод
         #  вставки узла newNode после заданного узла
         #  afterNode (из списка). Если afterNode = None
         #  и список пустой, добавьте новый элемент
         #  первым в списке.
-        pass  # здесь будет ваш код
+        pass  # здесь будет ваш код        after_node = afterNode or self.head
+        if afterNode is self.tail or afterNode is None and self.head is None:
+            self.add_in_tail(newNode)
+        else:
+            # TODO: afterNode is always Node???
+            #  what if self is not empty and afterNode is None??
+            next_node = afterNode.next
+            newNode.next = next_node
+            after_node.next = newNode
+
+
