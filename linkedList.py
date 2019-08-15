@@ -73,7 +73,12 @@ class LinkedList:
 
     def len(self) -> int:
         # TODO 1.5.: текущая длина списка
-        return 0  # здесь будет ваш код
+        _len = 0
+        node = self.head
+        while node:
+            node = node.next
+            _len += 1
+        return _len
 
     def insert(self, afterNode, newNode):
         # TODO 1.6.: Добавьте в класс LinkedList метод
