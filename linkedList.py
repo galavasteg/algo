@@ -31,7 +31,7 @@ class LinkedList:
         self.head = None
         self.tail = None
 
-    def add_in_tail(self, item):
+    def add_in_tail(self, item: Node):
         if self.head is None:
             self.head = item
         else:
@@ -52,7 +52,7 @@ class LinkedList:
             node = node.next
         return None
 
-    def find_all(self, val):
+    def find_all(self, val) -> list:
         # TODO 1.4.: найти узлы по конкретному значению
         #  На выход - список найденных узлов
         return []  # здесь будет ваш код
@@ -67,7 +67,7 @@ class LinkedList:
         #  (создание пустого LinkedList)
         pass  # здесь будет ваш код
 
-    def len(self):
+    def len(self) -> int:
         # TODO 1.5.: текущая длина списка
         return 0  # здесь будет ваш код
 
