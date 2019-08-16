@@ -18,6 +18,10 @@ DELETE_PARAMS = dict(
     argnames='initVals, delVal, delAll',
     argvalues=list(product(initVals, valsArgs, delAllArgs)))
 
+FIND_ALL_PARAMS = dict(
+    argnames='initVals, val',
+    argvalues=list(product(initVals, valsArgs)))
+
 
 def create_list(vals: list) -> LinkedList:
     list_ = LinkedList()
@@ -34,6 +38,18 @@ def get_list_vals(list_: LinkedList) -> list:
     return values
 
 
+def get_nodes_vals(nodes: list) -> list:
+    nodes_vals = []
+    for n in nodes:
+        n_vals = []
+        node_ = n
+        while node_ is not None:
+            n_vals.append(node_.value)
+            node_ = node_.next
+        nodes_vals.append(n_vals)
+    return nodes_vals
+
+
 def get_correct_delete_vals(init_vals: list, del_val, del_all: bool):
     correct_vals = list(init_vals)  # copy list
     if del_all:
@@ -44,6 +60,9 @@ def get_correct_delete_vals(init_vals: list, del_val, del_all: bool):
         except ValueError:
             pass
     return correct_vals
+
+def get_correct_findall_nodes(init_vals: list, val) -> list:
+    return [init_vals[i:] for i, v in enumerate(list(init_vals)) if v == val]
 
 
 # --------------------------- pytest settings -----------------------
@@ -82,6 +101,22 @@ def test_clean(vals):
     result = get_list_vals(LList)
     print('result:', result)
     assert result == []
+
+
+# --------------------------- FIND ALL ------------------------------
+
+class TestFindAll(BaseTest):
+    @pytest.mark.parametrize(**FIND_ALL_PARAMS)
+    def test_find_all(self, initVals, val):
+        expected = get_correct_findall_nodes(initVals, val)
+        LList = create_list(initVals)
+        print('init state:', get_list_vals(LList))
+        print('to find:', val)
+        print('expected:', expected)
+        nodes = LList.find_all(val)
+        result = get_nodes_vals(nodes)
+        print('result:', result)
+        assert result == expected
 
 
 # --------------------------- DELETE --------------------------------
