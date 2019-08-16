@@ -16,8 +16,34 @@ def get_list_vals(list_: LinkedList) -> list:
         node = node.next
     return values
 
-def get_ends(list_: LinkedList) -> tuple:
-    return (list_.head, list_.tail)
+def get_correct_delete_vals(init_vals: list, del_val, del_all: bool):
+    correct_vals = list(init_vals)
+    if del_all:
+        correct_vals = list(filter(lambda x: x != del_val, correct_vals))
+    else:
+        try:
+            correct_vals.remove(del_val)
+        except ValueError:
+            pass
+    return correct_vals
+
+
+# --------------------------- pytest settings -----------------------
+
+class BaseTest:
+    @classmethod
+    def setup_class(cls):
+        print(f'============= {cls.__name__} STARTED =================')
+
+    @classmethod
+    def teardown_class(cls):
+        print(f'============= {cls.__name__} FINISHED ================')
+
+    def setup_method(self, method):
+        print(method.__name__, 'start')
+
+    def teardown_method(self, method):
+        print(method.__name__, 'finish', '\n')
 
 
 def setup_function(func):
@@ -25,30 +51,6 @@ def setup_function(func):
 
 def teardown_function(func):
     print(f'============= {func.__name__} FINISHED ================')
-
-
-class BaseTest:
-    init_vals = []
-
-    @classmethod
-    def setup_class(cls):
-        print(f'============= {cls.__name__} STARTED =================')
-        print(f'initial state: {get_vals(get_init(cls.init_vals))}')
-        print()
-
-    @classmethod
-    def teardown_class(cls):
-        print(f'============= {cls.__name__} FINISHED ================')
-
-    def setup_method(self, method, *args, **kwargs):
-        self.list = get_init(self.init_vals)
-        print(method.__name__, 'start')
-
-    def teardown_method(self, method):
-        print(method.__name__, 'finish', '\n')
-
-
-# ------------------------------- TESTS -------------------------------------
 
 @pytest.mark.parametrize('vals', ([2, 11, 1], [100], []))
 def test_clean(vals):
