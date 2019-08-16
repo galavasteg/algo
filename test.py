@@ -1,6 +1,24 @@
 import pytest
+from itertools import product
 
 from linkedList import Node, LinkedList
+
+
+initVals = ([], [2], [1, 2, 2, 3, 2, 5],
+            [None, None, None], [2, 2, 2, 2],
+            [0, 0, 0], [None, 1, 4, 1, 1],
+            [2, 1, 3, 2, 2], [2, 1, 2, 3, 2],
+            [0, 1, 4, 3, 2], [2, 2, 0, 3, 2])
+
+delValsArgs = (None, 0, 'not listed', 2)
+delAllArgs = (False, True)
+DELETE_PARAMS = dict(
+    argnames='initVals, delVal, delAll',
+    argvalues=[
+        # TESTS: empty LL or one node in LL
+        *list(product(initVals, delValsArgs, delAllArgs))
+        # TESTS: many Nodes in the LL
+    ])
 
 
 def create_list(vals: list) -> LinkedList:
@@ -66,4 +84,18 @@ def test_clean(vals):
     assert result == []
 
 
+# --------------------------- DELETE --------------------------------
+
+class TestDelete(BaseTest):
+    @pytest.mark.parametrize(**DELETE_PARAMS)
+    def test_delete(self, initVals, delVal, delAll):
+        expected = get_correct_delete_vals(initVals, delVal, delAll)
+        LList = create_list(initVals)
+        print(f'init state:', get_list_vals(LList))
+        print(f'to del{" ALL" if delAll else ""}:', delVal)
+        print(f'expected:', expected)
+        LList.delete(delVal, all=delAll)
+        result = get_list_vals(LList)
+        print(f'result:', result)
+        assert result == expected
 
