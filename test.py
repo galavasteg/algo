@@ -52,12 +52,18 @@ def setup_function(func):
 def teardown_function(func):
     print(f'============= {func.__name__} FINISHED ================')
 
-@pytest.mark.parametrize('vals', ([2, 11, 1], [100], []))
+
+# --------------------------- CLEAN ---------------------------------
+
+@pytest.mark.parametrize('vals', ([2, 11, 1], [100], [0], []))
 def test_clean(vals):
-    LIST = get_init(vals)
-    print(f'init state: {get_vals(LIST)}')
-    LIST.clean()
-    print(f'output: {get_vals(LIST)}')
-    assert get_ends(LIST) == (None, None)
+    LList = create_list(vals)
+    print(f'init state:', get_list_vals(LList))
+    LList.clean()
+    result = get_list_vals(LList)
+    print(f'expected:', [])
+    print(f'result:', result)
+    assert result == []
+
 
 
