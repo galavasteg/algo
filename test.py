@@ -1,3 +1,5 @@
+import pytest
+
 from linkedList import Node, LinkedList
 
 
@@ -44,5 +46,16 @@ class BaseTest:
 
     def teardown_method(self, method):
         print(method.__name__, 'finish', '\n')
+
+
+# ------------------------------- TESTS -------------------------------------
+
+@pytest.mark.parametrize('vals', ([2, 11, 1], [100], []))
+def test_clean(vals):
+    LIST = get_init(vals)
+    print(f'init state: {get_vals(LIST)}')
+    LIST.clean()
+    print(f'output: {get_vals(LIST)}')
+    assert get_ends(LIST) == (None, None)
 
 
