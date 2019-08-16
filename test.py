@@ -3,18 +3,18 @@ import pytest
 from linkedList import Node, LinkedList
 
 
-def get_init(init_vals: list) -> LinkedList:
+def create_list(vals: list) -> LinkedList:
     list_ = LinkedList()
-    [list_.add_in_tail(Node(x)) for x in init_vals]
+    [list_.add_in_tail(Node(x)) for x in vals]
     return list_
 
-def get_vals(list_: LinkedList) -> list:
-    vs = []
+def get_list_vals(list_: LinkedList) -> list:
+    values = []
     node = list_.head
     while node is not None:
-        vs.append(node.value)
+        values.append(node.value)
         node = node.next
-    return vs
+    return values
 
 def get_ends(list_: LinkedList) -> tuple:
     return (list_.head, list_.tail)
