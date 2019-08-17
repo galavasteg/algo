@@ -2,7 +2,7 @@ import pytest
 from itertools import product
 
 from linkedList import Node, LinkedList
-from main import create_list, get_list_vals, get_nodes_vals
+from main import create_list, get_list_vals, get_nodes_vals, merge_lists
 
 
 # linked objects, can be used to tests
@@ -159,6 +159,41 @@ class TestInsert(BaseTest):
         afterNode = LList.find(after_val)
         LList.insert(afterNode, Node(val))
         result = get_list_vals(LList)
+        print('result:', result)
+        assert result == expected
+
+
+# --------------------------- MERGE ---------------------------------
+
+MERGE_PARAMS = dict(
+    argnames='init_vals1, init_vals2',
+    argvalues=[
+        ([2, 1, 3, 2, 2], [2, 1, 3, 2, 2]),
+        ([2, 1, 3, 2, 2], [8, 9, 7, 8, 8]),
+        ([-7, 5, 0, 1, -5], [-9, 9, 2, 4, 6]),
+        ([], []), ([0], [0]), ([0, 0, 0, 0], [0, 0, 0, 0]),
+        ([0, 0, 0, 0], [7, 0, -1, -12]),
+    ])
+
+
+class TestMerge(BaseTest):
+    @staticmethod
+    def get_correct_merge_vals(init_vals1: list, init_vals2: list):
+        if len(init_vals1) != len(init_vals2):
+            raise AttributeError('Lengths of lists are not equal')
+        if not all([isinstance(v, int) for v in init_vals1] +
+                   [isinstance(v, int) for v in init_vals2]):
+            raise AttributeError('Some values are not integer')
+        return [v1 + v2 for v1, v2 in zip(init_vals1, init_vals2)]
+
+    @pytest.mark.parametrize(**MERGE_PARAMS)
+    def test_merge(self, init_vals1: list, init_vals2: list):
+        expected = self.get_correct_merge_vals(init_vals1, init_vals2)
+        LList1, LList2 = create_list(init_vals1), create_list(init_vals2)
+        print('init state:', get_list_vals(LList1), get_list_vals(LList2))
+        print('expected (sum vals):', expected)
+        newLList = merge_lists(LList1, LList2)
+        result = get_list_vals(newLList)
         print('result:', result)
         assert result == expected
 
