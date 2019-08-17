@@ -1,4 +1,4 @@
-from linkedList import Node, LinkedList
+from task1.linkedList import Node, LinkedList
 
 
 def create_list(vals: list) -> LinkedList:
