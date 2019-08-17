@@ -44,24 +44,18 @@ class BaseTest:
         print(method.__name__, 'finish', '\n')
 
 
-def setup_function(func):
-    print(f'============= {func.__name__} STARTED =================')
-
-def teardown_function(func):
-    print(f'============= {func.__name__} FINISHED ================')
-
-
 # --------------------------- CLEAN ---------------------------------
 
-@pytest.mark.parametrize('vals', ([2, 11, 1], [100], [0], []))
-def test_clean(vals):
-    LList = create_list(vals)
-    print('init state:', get_list_vals(LList))
-    print('expected:', [])
-    LList.clean()
-    result = get_list_vals(LList)
-    print('result:', result)
-    assert result == []
+class TestClean(BaseTest):
+    @pytest.mark.parametrize('initVals', ([2, 11, 1], [100], [0], []))
+    def test_clean(self, initVals: list):
+        LList = create_list(initVals)
+        print('init state:', get_list_vals(LList))
+        print('expected:', [])
+        LList.clean()
+        result = get_list_vals(LList)
+        print('result:', result)
+        assert result == []
 
 
 # --------------------------- FIND ALL ------------------------------
