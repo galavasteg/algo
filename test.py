@@ -25,6 +25,23 @@ FIND_ALL_PARAMS = dict(
     argnames='initVals, val',
     argvalues=list(product(INIT_VALS, VALS_ARGS)))
 
+INSERT_PARAMS = dict(
+    argnames='init_vals, after_val, val',
+    argvalues=[
+        ([2, 1, 3, 2, 2], 3, 2), ([2, 1, 3, 2, 2], 3, 4),
+        ([2, 1, 3, 2, 2], 2, 4), ([2, 1, 3, 2, 2], 2, 2),
+        ([4, 1, 3, 1, 2], 2, 2), ([4, 1, 3, 1, 2], 4, 6),
+        ([2], 2, 0), ([2], 2, 2), ([2], 2, None), ([None, None, None], None, 6),
+        ([4, 1, l_list, 1, 2], l_list, 8), ([4, 1, l_list, 1, 2], l_list, 0),
+        ([d, 5], d, None), ([None, 5], None, d), ([2, l_list], l_list, None),
+        ([d, 5], d, {'opa': l_list}), ([5, None], None, d),
+        ([d, 5], d, 0), ([2, l_list], l_list, 0), ([2, l_list], l_list, d),
+        ([], None, 0), ([], None, None), ([], None, 7),
+        # ([4, 1, 3, 1, 2], None, 6),
+        # ([2], None, 0), ([2], None, None), ([2], None, 7),
+        # ([d], None, l_list), ([2], None, 7), ([list], None, 0),
+    ])
+
 
 # --------------------------- pytest settings -----------------------
 
@@ -117,6 +134,30 @@ class TestDelete(BaseTest):
         print(f'to del{" ALL" if delAll else ""}:', delVal)
         print('expected:', expected)
         LList.delete(delVal, all=delAll)
+        result = get_list_vals(LList)
+        print('result:', result)
+        assert result == expected
+
+
+# --------------------------- INSERT --------------------------------
+
+class TestInsert(BaseTest):
+    @staticmethod
+    def get_correct_insert_vals(init_vals: list, after_val, val):
+        correct_vals = list(init_vals)  # copy list
+        ins_ind = 0 if not correct_vals else correct_vals.index(after_val) + 1
+        correct_vals.insert(ins_ind, val)
+        return correct_vals
+
+    @pytest.mark.parametrize(**INSERT_PARAMS)
+    def test_insert(self, init_vals: list, after_val, val):
+        expected = self.get_correct_insert_vals(init_vals, after_val, val)
+        LList = create_list(init_vals)
+        print('init state:', get_list_vals(LList))
+        print(f'after "{after_val}" ins "{val}"')
+        print('expected:', expected)
+        afterNode = LList.find(after_val)
+        LList.insert(afterNode, Node(val))
         result = get_list_vals(LList)
         print('result:', result)
         assert result == expected
