@@ -54,11 +54,8 @@ class BaseTest:
     def teardown_class(cls):
         print(f'============= {cls.__name__} FINISHED ================')
 
-    def setup_method(self, method):
-        print(method.__name__, 'start')
-
     def teardown_method(self, method):
-        print(method.__name__, 'finish', '\n')
+        print()
 
 
 # --------------------------- CLEAN ---------------------------------
@@ -68,7 +65,7 @@ class TestClean(BaseTest):
     def test_clean(self, initVals: list):
         LList = create_list(initVals)
         print('init state:', get_list_vals(LList))
-        print('expected:', [])
+        print('expected (clean):', [])
         LList.clean()
         result = get_list_vals(LList)
         print('result:', result)
@@ -83,7 +80,7 @@ class TestLen(BaseTest):
         expected = len(initVals)
         LList = create_list(initVals)
         print('init state:', get_list_vals(LList))
-        print('expected:', expected)
+        print('expected (len):', expected)
         result = LList.len()
         print('result:', result)
         assert result == expected
@@ -103,7 +100,7 @@ class TestFindAll(BaseTest):
         expected = self.get_correct_findall_nodes(init_vals, val)
         LList = create_list(init_vals)
         print('init state:', get_list_vals(LList))
-        print('to find:', val)
+        print(f'find all nodes with "{val}"')
         print('expected:', expected)
         nodes = LList.find_all(val)
         result = get_nodes_vals(nodes)
@@ -131,7 +128,7 @@ class TestDelete(BaseTest):
         expected = self.get_correct_delete_vals(init_vals, del_val, del_all)
         LList = create_list(init_vals)
         print('init state:', get_list_vals(LList))
-        print(f'to del{" ALL" if delAll else ""}:', delVal)
+        print(f'del {"ALL nodes" if del_all else "1st node"} with "{del_val}"')
         print('expected:', expected)
         LList.delete(del_val, all=del_all)
         result = get_list_vals(LList)
@@ -154,7 +151,7 @@ class TestInsert(BaseTest):
         expected = self.get_correct_insert_vals(init_vals, after_val, val)
         LList = create_list(init_vals)
         print('init state:', get_list_vals(LList))
-        print(f'after "{after_val}" ins "{val}"')
+        print(f'after node with "{after_val}" ins node with"{val}"')
         print('expected:', expected)
         afterNode = LList.find(after_val)
         LList.insert(afterNode, Node(val))
