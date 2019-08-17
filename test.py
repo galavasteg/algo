@@ -58,6 +58,20 @@ class TestClean(BaseTest):
         assert result == []
 
 
+# --------------------------- LEN -----------------------------------
+
+class TestLen(BaseTest):
+    @pytest.mark.parametrize('initVals', INIT_VALS)
+    def test_len(self, initVals: list):
+        expected = len(initVals)
+        LList = create_list(initVals)
+        print('init state:', get_list_vals(LList))
+        print('expected:', expected)
+        result = LList.len()
+        print('result:', result)
+        assert result == expected
+
+
 # --------------------------- FIND ALL ------------------------------
 
 class TestFindAll(BaseTest):
