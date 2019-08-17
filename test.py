@@ -25,19 +25,6 @@ FIND_ALL_PARAMS = dict(
 
 
 
-def get_correct_delete_vals(init_vals: list, del_val, del_all: bool):
-    correct_vals = list(init_vals)  # copy list
-    if del_all:
-        correct_vals = list(filter(lambda x: x != del_val, correct_vals))
-    else:
-        try:
-            correct_vals.remove(del_val)
-        except ValueError:
-            pass
-    return correct_vals
-
-def get_correct_findall_nodes(init_vals: list, val) -> list:
-    return [init_vals[i:] for i, v in enumerate(list(init_vals)) if v == val]
 
 
 # --------------------------- pytest settings -----------------------
@@ -81,9 +68,15 @@ def test_clean(vals):
 # --------------------------- FIND ALL ------------------------------
 
 class TestFindAll(BaseTest):
+    @staticmethod
+    def get_correct_findall_nodes(init_vals: list, val) -> list:
+        return [init_vals[i:]
+                for i, v in enumerate(list(init_vals))
+                if v == val]
+
     @pytest.mark.parametrize(**FIND_ALL_PARAMS)
-    def test_find_all(self, initVals, val):
-        expected = get_correct_findall_nodes(initVals, val)
+    def test_find_all(self, initVals: list, val):
+        expected = self.get_correct_findall_nodes(initVals, val)
         LList = create_list(initVals)
         print('init state:', get_list_vals(LList))
         print('to find:', val)
@@ -97,9 +90,21 @@ class TestFindAll(BaseTest):
 # --------------------------- DELETE --------------------------------
 
 class TestDelete(BaseTest):
+    @staticmethod
+    def get_correct_delete_vals(init_vals: list, del_val, del_all: bool):
+        correct_vals = list(init_vals)  # copy list
+        if del_all:
+            correct_vals = list(filter(lambda x: x != del_val, correct_vals))
+        else:
+            try:
+                correct_vals.remove(del_val)
+            except ValueError:
+                pass
+        return correct_vals
+
     @pytest.mark.parametrize(**DELETE_PARAMS)
-    def test_delete(self, initVals, delVal, delAll):
-        expected = get_correct_delete_vals(initVals, delVal, delAll)
+    def test_delete(self, initVals: list, delVal, delAll: bool):
+        expected = self.get_correct_delete_vals(initVals, delVal, delAll)
         LList = create_list(initVals)
         print('init state:', get_list_vals(LList))
         print(f'to del{" ALL" if delAll else ""}:', delVal)
