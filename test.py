@@ -5,7 +5,7 @@ from linkedList import Node, LinkedList
 from main import create_list, get_list_vals, get_nodes_vals, merge_lists
 
 
-# linked objects, can be used to tests
+# linked objects, can be used in tests' params
 d = dict((i, v)for i, v in enumerate([1, None, [], 'test']))
 l_list = LinkedList()
 [l_list.add_in_tail(Node(v)) for v in [0, None, d, 2]]
@@ -115,7 +115,7 @@ class TestDelete(BaseTest):
         expected = self.get_correct_delete_vals(init_vals, del_val, del_all)
         LList = create_list(init_vals)
         print('init state:', get_list_vals(LList))
-        print(f'del {"ALL nodes" if del_all else "1st node"} with "{del_val}"')
+        print(f'del {"ALL nodes" if del_all else "1-st node"} with "{del_val}"')
         print('expected:', expected)
         LList.delete(del_val, all=del_all)
         result = get_list_vals(LList)

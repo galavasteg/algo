@@ -69,18 +69,16 @@ class LinkedList:
         # + TODO 1.2.: удалить все узлы по конкретному значению
         nodes = self.find_all(val)
         for del_n in (nodes[::-1] if all else nodes[:1]):
-            next_node = del_n.next
-            if next_node is not None:
-                del_n.value = next_node.value
-                del_n.next = next_node.next
+            if del_n is self.head and del_n.next is None:
+                self.clean()
+            elif del_n is self.head:
+                self.head = del_n.next
             else:
-                if del_n is self.head:
-                    self.clean()
-                elif del_n is self.tail:
-                    prev_node = self.head
-                    while prev_node.next is not del_n:
-                        prev_node = prev_node.next
-                    prev_node.next = None
+                prev_node = self.head
+                while prev_node.next is not del_n:
+                    prev_node = prev_node.next
+                prev_node.next = del_n.next
+                if prev_node.next is None:
                     self.tail = prev_node
 
     def clean(self):
