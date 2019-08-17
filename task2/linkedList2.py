@@ -1,3 +1,8 @@
+# TODO 2.9.: Напишите проверочные тесты для каждого из
+#  предыдущих заданий. Особое внимание уделите корректности полей
+#  head, prev, next и tail после ВСЕХ операций.
+
+
 class Node:
     def __init__(self, v):
         self.value = v
@@ -21,22 +26,36 @@ class LinkedList2:
         self.tail = item
 
     def find(self, val):
-        return None # здесь будет ваш код
+        # TODO 2.1.: поиск первого узла по его значению.
+        return None  # здесь будет ваш код
 
-    def find_all(self, val):
-        return [] # здесь будет ваш код
+    def find_all(self, val) -> list:
+        # TODO 2.2.: поиск всех узлов по конкретному значению
+        #  (вернуть список найденных узлов).
+        return []  # здесь будет ваш код
 
     def delete(self, val, all=False):
-        pass # здесь будет ваш код
+        # TODO 2.3.: удалить только первый нашедшийся узел.
+        # TODO 2.4.: удалить все узлы по конкретному значению
+        pass  # здесь будет ваш код
 
     def clean(self):
-        pass # здесь будет ваш код
+        # TODO 2.7.: очистить все содержимое
+        #  (создание пустого списка)
+        pass  # здесь будет ваш код
 
-    def len(self):
-        return 0 # здесь будет ваш код
+    def len(self) -> int:
+        # TODO 2.8.: вычислить текущую длину списка
+        return 0  # здесь будет ваш код
 
-    def insert(self, afterNode, newNode):
-        pass # здесь будет ваш код
+    def insert(self, afterNode, newNode: Node):
+        # TODO 2.5.: вставить узел newNode после заданного узла
+        #  afterNode. Если afterNode = None и список пустой,
+        #  добавить newNode первым в списке.
+        #  Если afterNode = None и список непустой, добавить
+        #  newNode последним в списке.
+        pass  # здесь будет ваш код
 
-    def add_in_head(self, newNode):
-        pass # здесь будет ваш код 
+    def add_in_head(self, newNode: Node):
+        # TODO 2.6.: вставить узел первым элементом.
+        pass  # здесь будет ваш код
