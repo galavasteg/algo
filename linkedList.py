@@ -98,19 +98,14 @@ class LinkedList:
         return _len
 
     def insert(self, afterNode, newNode: Node):
-        # TODO 1.6.: Добавьте в класс LinkedList метод
-        #  вставки узла newNode после заданного узла
-        #  afterNode (из списка). Если afterNode = None
-        #  и список пустой, добавьте новый элемент
-        #  первым в списке.
-        pass  # здесь будет ваш код        after_node = afterNode or self.head
-        if afterNode is self.tail or afterNode is None and self.head is None:
+        # + TODO 1.6.: Добавьте в класс LinkedList метод
+        #    вставки узла newNode после заданного узла
+        #    afterNode (из списка). Если afterNode = None
+        #    и список пустой, добавьте новый элемент
+        #    первым в списке.
+        if afterNode is self.tail:
             self.add_in_tail(newNode)
         else:
-            # TODO: afterNode is always Node???
-            #  what if self is not empty and afterNode is None??
-            next_node = afterNode.next
-            newNode.next = next_node
-            after_node.next = newNode
-
+            newNode.next = afterNode.next
+            afterNode.next = newNode
 
