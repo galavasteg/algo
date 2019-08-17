@@ -61,6 +61,7 @@ class LinkedList:
             nodes.append(node)
             temp_list = LinkedList()
             temp_list.add_in_tail(node.next)
+            temp_list.tail = self.tail
             node = temp_list.find(val)
         return nodes
 
