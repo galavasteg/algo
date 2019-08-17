@@ -5,26 +5,25 @@ from linkedList import Node, LinkedList
 from main import create_list, get_list_vals, get_nodes_vals
 
 
-initVals = ([], [2], [1, 2, 2, 3, 2, 5],
-            [None, None, None], [2, 2, 2, 2],
-            [0, 0, 0], [None, 1, 4, 1, 1],
-            [2, 1, 3, 2, 2], [2, 1, 2, 3, 2],
-            [0, 1, 4, 3, 2], [2, 2, 0, 3, 2],
-            #TODO: add linked vals
-            )
-valsArgs = (None, 0, 'not listed', 2)
+d = dict((i, v)for i, v in enumerate([2, 1, 3, 2, 2]))
+l_list = LinkedList()
+[l_list.add_in_tail(Node(v)) for v in [0, 1, 4, 3, 2]]
+INIT_VALS = ([], [2], [1, 2, 2, 3, 2, 5],
+             [None, None, None], [2, 2, 2, 2],
+             [0, 0, 0], [None, 1, 4, 1, 1],
+             [2, 1, 3, 2, 2], [2, 1, 2, 3, 2],
+             [0, 1, 4, 3, 2], [2, 2, 0, 3, 2],
+             [0, d, l_list, 3, 2], [d, 2, 0, 3, 2],
+             [l_list, 0, 0], [None, 1, 4, d, l_list],)
+VALS_ARGS = (None, 0, l_list, 'not listed', 2)
 
-delAllArgs = (False, True)
 DELETE_PARAMS = dict(
     argnames='initVals, delVal, delAll',
-    argvalues=list(product(initVals, valsArgs, delAllArgs)))
+    argvalues=list(product(INIT_VALS, VALS_ARGS, (False, True))))
 
 FIND_ALL_PARAMS = dict(
     argnames='initVals, val',
-    argvalues=list(product(initVals, valsArgs)))
-
-
-
+    argvalues=list(product(INIT_VALS, VALS_ARGS)))
 
 
 # --------------------------- pytest settings -----------------------
