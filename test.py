@@ -18,11 +18,11 @@ INIT_VALS = ([], [2], [1, 2, 2, 3, 2, 5],
 VALS_ARGS = (None, 0, l_list, 'not listed', 2)
 
 DELETE_PARAMS = dict(
-    argnames='initVals, delVal, delAll',
+    argnames='init_vals, del_val, del_all',
     argvalues=list(product(INIT_VALS, VALS_ARGS, (False, True))))
 
 FIND_ALL_PARAMS = dict(
-    argnames='initVals, val',
+    argnames='init_vals, val',
     argvalues=list(product(INIT_VALS, VALS_ARGS)))
 
 INSERT_PARAMS = dict(
@@ -99,9 +99,9 @@ class TestFindAll(BaseTest):
                 if v == val]
 
     @pytest.mark.parametrize(**FIND_ALL_PARAMS)
-    def test_find_all(self, initVals: list, val):
-        expected = self.get_correct_findall_nodes(initVals, val)
-        LList = create_list(initVals)
+    def test_find_all(self, init_vals: list, val):
+        expected = self.get_correct_findall_nodes(init_vals, val)
+        LList = create_list(init_vals)
         print('init state:', get_list_vals(LList))
         print('to find:', val)
         print('expected:', expected)
@@ -127,13 +127,13 @@ class TestDelete(BaseTest):
         return correct_vals
 
     @pytest.mark.parametrize(**DELETE_PARAMS)
-    def test_delete(self, initVals: list, delVal, delAll: bool):
-        expected = self.get_correct_delete_vals(initVals, delVal, delAll)
-        LList = create_list(initVals)
+    def test_delete(self, init_vals: list, del_val, del_all: bool):
+        expected = self.get_correct_delete_vals(init_vals, del_val, del_all)
+        LList = create_list(init_vals)
         print('init state:', get_list_vals(LList))
         print(f'to del{" ALL" if delAll else ""}:', delVal)
         print('expected:', expected)
-        LList.delete(delVal, all=delAll)
+        LList.delete(del_val, all=del_all)
         result = get_list_vals(LList)
         print('result:', result)
         assert result == expected
