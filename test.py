@@ -5,9 +5,11 @@ from linkedList import Node, LinkedList
 from main import create_list, get_list_vals, get_nodes_vals
 
 
-d = dict((i, v)for i, v in enumerate([2, 1, 3, 2, 2]))
+# linked objects, can be used to tests
+d = dict((i, v)for i, v in enumerate([1, None, [], 'test']))
 l_list = LinkedList()
-[l_list.add_in_tail(Node(v)) for v in [0, 1, 4, 3, 2]]
+[l_list.add_in_tail(Node(v)) for v in [0, None, d, 2]]
+
 INIT_VALS = ([], [2], [1, 2, 2, 3, 2, 5],
              [None, None, None], [2, 2, 2, 2],
              [0, 0, 0], [None, 1, 4, 1, 1],
@@ -16,31 +18,6 @@ INIT_VALS = ([], [2], [1, 2, 2, 3, 2, 5],
              [0, d, l_list, 3, 2], [d, 2, 0, 3, 2],
              [l_list, 0, 0], [None, 1, 4, d, l_list],)
 VALS_ARGS = (None, 0, l_list, 'not listed', 2)
-
-DELETE_PARAMS = dict(
-    argnames='init_vals, del_val, del_all',
-    argvalues=list(product(INIT_VALS, VALS_ARGS, (False, True))))
-
-FIND_ALL_PARAMS = dict(
-    argnames='init_vals, val',
-    argvalues=list(product(INIT_VALS, VALS_ARGS)))
-
-INSERT_PARAMS = dict(
-    argnames='init_vals, after_val, val',
-    argvalues=[
-        ([2, 1, 3, 2, 2], 3, 2), ([2, 1, 3, 2, 2], 3, 4),
-        ([2, 1, 3, 2, 2], 2, 4), ([2, 1, 3, 2, 2], 2, 2),
-        ([4, 1, 3, 1, 2], 2, 2), ([4, 1, 3, 1, 2], 4, 6),
-        ([2], 2, 0), ([2], 2, 2), ([2], 2, None), ([None, None, None], None, 6),
-        ([4, 1, l_list, 1, 2], l_list, 8), ([4, 1, l_list, 1, 2], l_list, 0),
-        ([d, 5], d, None), ([None, 5], None, d), ([2, l_list], l_list, None),
-        ([d, 5], d, {'opa': l_list}), ([5, None], None, d),
-        ([d, 5], d, 0), ([2, l_list], l_list, 0), ([2, l_list], l_list, d),
-        ([], None, 0), ([], None, None), ([], None, 7),
-        # ([4, 1, 3, 1, 2], None, 6),
-        # ([2], None, 0), ([2], None, None), ([2], None, 7),
-        # ([d], None, l_list), ([2], None, 7), ([list], None, 0),
-    ])
 
 
 # --------------------------- pytest settings -----------------------
@@ -88,6 +65,11 @@ class TestLen(BaseTest):
 
 # --------------------------- FIND ALL ------------------------------
 
+FIND_ALL_PARAMS = dict(
+    argnames='init_vals, val',
+    argvalues=list(product(INIT_VALS, VALS_ARGS)))
+
+
 class TestFindAll(BaseTest):
     @staticmethod
     def get_correct_findall_nodes(init_vals: list, val) -> list:
@@ -110,18 +92,23 @@ class TestFindAll(BaseTest):
 
 # --------------------------- DELETE --------------------------------
 
+DELETE_PARAMS = dict(
+    argnames='init_vals, del_val, del_all',
+    argvalues=list(product(INIT_VALS, VALS_ARGS, (False, True))))
+
+
 class TestDelete(BaseTest):
     @staticmethod
     def get_correct_delete_vals(init_vals: list, del_val, del_all: bool):
-        correct_vals = list(init_vals)  # copy list
+        corr_vals = list(init_vals)  # copy list
         if del_all:
-            correct_vals = list(filter(lambda x: x != del_val, correct_vals))
+            corr_vals = list(filter(lambda x: x != del_val, corr_vals))
         else:
             try:
-                correct_vals.remove(del_val)
+                corr_vals.remove(del_val)
             except ValueError:
                 pass
-        return correct_vals
+        return corr_vals
 
     @pytest.mark.parametrize(**DELETE_PARAMS)
     def test_delete(self, init_vals: list, del_val, del_all: bool):
@@ -138,13 +125,29 @@ class TestDelete(BaseTest):
 
 # --------------------------- INSERT --------------------------------
 
+INSERT_PARAMS = dict(
+    argnames='init_vals, after_val, val',
+    argvalues=[
+        ([2, 1, 3, 2, 2], 3, 2), ([2, 1, 3, 2, 2], 3, 4),
+        ([2, 1, 3, 2, 2], 2, 4), ([2, 1, 3, 2, 2], 2, 2),
+        ([4, 1, 3, 1, 2], 2, 2), ([4, 1, 3, 1, 2], 4, 6),
+        ([2], 2, 0), ([2], 2, 2), ([2], 2, None), ([None, None, None], None, 6),
+        ([4, 1, l_list, 1, 2], l_list, 8), ([4, 1, l_list, 1, 2], l_list, 0),
+        ([d, 5], d, None), ([None, 5], None, d), ([2, l_list], l_list, None),
+        ([d, 5], d, {'opa': l_list}), ([5, None], None, d),
+        ([d, 5], d, 0), ([2, l_list], l_list, 0), ([2, l_list], l_list, d),
+        ([], None, 0), ([], None, None), ([], None, 7),
+    ])
+
+
 class TestInsert(BaseTest):
     @staticmethod
     def get_correct_insert_vals(init_vals: list, after_val, val):
-        correct_vals = list(init_vals)  # copy list
-        ins_ind = 0 if not correct_vals else correct_vals.index(after_val) + 1
-        correct_vals.insert(ins_ind, val)
-        return correct_vals
+        corr_vals = list(init_vals)  # copy list
+        print(corr_vals is not [], corr_vals is [], bool(corr_vals))
+        ins_ind = (corr_vals.index(after_val) + 1) if corr_vals else 0
+        corr_vals.insert(ins_ind, val)
+        return corr_vals
 
     @pytest.mark.parametrize(**INSERT_PARAMS)
     def test_insert(self, init_vals: list, after_val, val):
