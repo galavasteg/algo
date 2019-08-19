@@ -38,9 +38,9 @@ class BaseTest:
 # --------------------------- CLEAN ---------------------------------
 
 class TestClean(BaseTest):
-    @pytest.mark.parametrize('initVals', ([2, 11, 1], [100], [0], []))
-    def test_clean(self, initVals: list):
-        LList = create_list(initVals)
+    @pytest.mark.parametrize('init_vals', ([2, 11, 1], [100], [0], []))
+    def test_clean(self, init_vals: list):
+        LList = create_list(init_vals)
         print('init state:', get_list_vals(LList))
         print('expected (clean):', [])
         LList.clean()
@@ -52,10 +52,10 @@ class TestClean(BaseTest):
 # --------------------------- LEN -----------------------------------
 
 class TestLen(BaseTest):
-    @pytest.mark.parametrize('initVals', INIT_VALS)
-    def test_len(self, initVals: list):
-        expected = len(initVals)
-        LList = create_list(initVals)
+    @pytest.mark.parametrize('init_vals', INIT_VALS)
+    def test_len(self, init_vals: list):
+        expected = len(init_vals)
+        LList = create_list(init_vals)
         print('init state:', get_list_vals(LList))
         print('expected (len):', expected)
         result = LList.len()
