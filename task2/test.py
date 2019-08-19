@@ -62,6 +62,27 @@ class TestLen(BaseTest):
         assert result == expected
 
 
+# --------------------------- ADD INN HEAD -------------------------
+
+ADD_IN_HEAD_PARAMS = dict(
+    argnames='init_vals, val',
+    argvalues=list(product(INIT_VALS, VALS_ARGS)))
+
+class TestAddInHead(BaseTest):
+    @pytest.mark.parametrize(**ADD_IN_HEAD_PARAMS)
+    def test_len(self, init_vals: list, val):
+        expected = list(init_vals)
+        expected.insert(0, val)
+        LList = LinkedList2.create(init_vals)
+        print('init state:', LList.vals)
+        print(f'insert "{val}" at the beginning')
+        print('expected:', expected)
+        LList.add_in_head(Node(val))
+        result = LList.vals
+        print('result:', result)
+        assert result == expected
+
+
 # --------------------------- FIND - FIND ALL -----------------------
 
 FIND_PARAMS = dict(

@@ -106,4 +106,9 @@ class LinkedList2:
 
     def add_in_head(self, newNode: Node):
         # TODO 2.6.: вставить узел первым элементом.
-        pass  # здесь будет ваш код
+        if self.head is None:
+            self.add_in_tail(newNode)
+        else:
+            newNode.next = self.head
+            self.head.prev = newNode
+        self.head = newNode
