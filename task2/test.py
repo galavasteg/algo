@@ -62,7 +62,7 @@ class TestLen(BaseTest):
         assert result == expected
 
 
-# --------------------------- FIND ALL ------------------------------
+# --------------------------- FIND - FIND ALL -----------------------
 
 FIND_PARAMS = dict(
     argnames='init_vals, val',
@@ -70,6 +70,22 @@ FIND_PARAMS = dict(
 
 
 class TestFind(BaseTest):
+    @staticmethod
+    def get_correct_find_node_vals(init_vals: list, val) -> list:
+        return init_vals[init_vals.index(val):] if val in init_vals else None
+
+    @pytest.mark.parametrize(**FIND_PARAMS)
+    def test_find(self, init_vals: list, val):
+        expected = self.get_correct_find_node_vals(init_vals, val)
+        LList = LinkedList2.create(init_vals)
+        print('init state:', LList.vals)
+        print(f'find 1-st node with "{val}"')
+        print('expected:', expected)
+        node = LList.find(val)
+        result = list(node.iter_node_vals()) if node else None
+        print('result:', result)
+        assert result == expected
+
     @staticmethod
     def get_correct_findall_nodes_vals(init_vals: list, val) -> list:
         return [init_vals[i:]
