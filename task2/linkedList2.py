@@ -86,12 +86,9 @@ class LinkedList2:
 
     def len(self) -> int:
         # TODO 2.8.: вычислить текущую длину списка
-        _len = 0
-        node = self.head
-        while node:
-            _len += 1
-            node = node.next
-        return _len
+        values = (list(self.head.iter_node_vals())
+                  if self.head is not None else [])
+        return len(values)
 
     def insert(self, afterNode, newNode: Node):
         # TODO 2.5.: вставить узел newNode после заданного узла
