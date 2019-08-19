@@ -2,7 +2,6 @@ import pytest
 from itertools import product
 
 from task2.linkedList2 import Node, LinkedList2
-from task2.main import create_list, get_list_vals, get_nodes_vals
 
 
 # linked objects, can be used in tests' params
@@ -40,11 +39,11 @@ class BaseTest:
 class TestClean(BaseTest):
     @pytest.mark.parametrize('init_vals', ([2, 1], [0], [None], []))
     def test_clean(self, init_vals: list):
-        LList = create_list(init_vals)
-        print('init state:', get_list_vals(LList))
+        LList = LinkedList2.create(init_vals)
+        print('init state:', LList.vals)
         print('expected (clean):', [])
         LList.clean()
-        result = get_list_vals(LList)
+        result = LList.vals
         print('result:', result)
         assert result == []
 
@@ -55,8 +54,8 @@ class TestLen(BaseTest):
     @pytest.mark.parametrize('init_vals', INIT_VALS)
     def test_len(self, init_vals: list):
         expected = len(init_vals)
-        LList = create_list(init_vals)
-        print('init state:', get_list_vals(LList))
+        LList = LinkedList2.create(init_vals)
+        print('init state:', LList.vals)
         print('expected (len):', expected)
         result = LList.len()
         print('result:', result)
@@ -80,12 +79,12 @@ class TestFindAll(BaseTest):
     @pytest.mark.parametrize(**FIND_ALL_PARAMS)
     def test_find_all(self, init_vals: list, val):
         expected = self.get_correct_findall_nodes(init_vals, val)
-        LList = create_list(init_vals)
-        print('init state:', get_list_vals(LList))
+        LList = LinkedList2.create(init_vals)
+        print('init state:', LList.vals)
         print(f'find all nodes with "{val}"')
         print('expected:', expected)
         nodes = LList.find_all(val)
-        result = get_nodes_vals(nodes)
+        result = [list(n.iter_node_vals()) if n else [] for n in nodes]
         print('result:', result)
         assert result == expected
 
@@ -113,12 +112,12 @@ class TestDelete(BaseTest):
     @pytest.mark.parametrize(**DELETE_PARAMS)
     def test_delete(self, init_vals: list, del_val, del_all: bool):
         expected = self.get_correct_delete_vals(init_vals, del_val, del_all)
-        LList = create_list(init_vals)
-        print('init state:', get_list_vals(LList))
+        LList = LinkedList2.create(init_vals)
+        print('init state:', LList.vals)
         print(f'del {"ALL nodes" if del_all else "1-st node"} with "{del_val}"')
         print('expected:', expected)
         LList.delete(del_val, all=del_all)
-        result = get_list_vals(LList)
+        result = LList.vals
         print('result:', result)
         assert result == expected
 
@@ -156,14 +155,14 @@ class TestInsert(BaseTest):
 
     @pytest.mark.parametrize(**INSERT_PARAMS)
     def test_insert(self, init_vals: list, after_val, val):
-        LList = create_list(init_vals)
-        print('init state:', get_list_vals(LList))
+        LList = LinkedList2.create(init_vals)
+        print('init state:', LList.vals)
         print(f'after node with "{after_val}" ins node with"{val}"')
         afterNode = LList.find(after_val)
         expected = self.get_correct_insert_vals(init_vals, afterNode, val)
         print('expected:', expected)
         LList.insert(afterNode, Node(val))
-        result = get_list_vals(LList)
+        result = LList.vals
         print('result:', result)
         assert result == expected
 
