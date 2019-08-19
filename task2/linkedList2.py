@@ -37,7 +37,16 @@ class LinkedList2:
     def find_all(self, val) -> list:
         # TODO 2.2.: поиск всех узлов по конкретному значению
         #  (вернуть список найденных узлов).
-        return []  # здесь будет ваш код
+        nodes = []
+        node = self.find(val)
+        while node is not None:
+            nodes.append(node)
+            temp_list = LinkedList2()
+            if node.next is not None:
+                temp_list.head = node.next
+                temp_list.tail = self.tail
+            node = temp_list.find(val)
+        return nodes
 
     def delete(self, val, all=False):
         # TODO 2.3.: удалить только первый нашедшийся узел.

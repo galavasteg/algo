@@ -17,6 +17,9 @@ INIT_VALS = ([], [2], [1, 2, 2, 3, 2, 5],
              [0, 1, 4, 3, 2], [2, 2, 0, 3, 2],
              [0, d, l_list, 3, 2], [d, 2, 0, 3, 2],
              [l_list, 0, 0], [None, 1, 4, d, l_list],)
+VALS_ARGS = (None, 0, l_list, 'not listed', 2)
+
+
 # --------------------------- pytest settings -----------------------
 
 class BaseTest:
@@ -56,6 +59,33 @@ class TestLen(BaseTest):
         print('init state:', get_list_vals(LList))
         print('expected (len):', expected)
         result = LList.len()
+        print('result:', result)
+        assert result == expected
+
+
+# --------------------------- FIND ALL ------------------------------
+
+FIND_ALL_PARAMS = dict(
+    argnames='init_vals, val',
+    argvalues=list(product(INIT_VALS, VALS_ARGS)))
+
+
+class TestFindAll(BaseTest):
+    @staticmethod
+    def get_correct_findall_nodes(init_vals: list, val) -> list:
+        return [init_vals[i:]
+                for i, v in enumerate(list(init_vals))
+                if v == val]
+
+    @pytest.mark.parametrize(**FIND_ALL_PARAMS)
+    def test_find_all(self, init_vals: list, val):
+        expected = self.get_correct_findall_nodes(init_vals, val)
+        LList = create_list(init_vals)
+        print('init state:', get_list_vals(LList))
+        print(f'find all nodes with "{val}"')
+        print('expected:', expected)
+        nodes = LList.find_all(val)
+        result = get_nodes_vals(nodes)
         print('result:', result)
         assert result == expected
 
