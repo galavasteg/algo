@@ -64,21 +64,21 @@ class TestLen(BaseTest):
 
 # --------------------------- FIND ALL ------------------------------
 
-FIND_ALL_PARAMS = dict(
+FIND_PARAMS = dict(
     argnames='init_vals, val',
     argvalues=list(product(INIT_VALS, VALS_ARGS)))
 
 
-class TestFindAll(BaseTest):
+class TestFind(BaseTest):
     @staticmethod
-    def get_correct_findall_nodes(init_vals: list, val) -> list:
+    def get_correct_findall_nodes_vals(init_vals: list, val) -> list:
         return [init_vals[i:]
                 for i, v in enumerate(list(init_vals))
                 if v == val]
 
-    @pytest.mark.parametrize(**FIND_ALL_PARAMS)
+    @pytest.mark.parametrize(**FIND_PARAMS)
     def test_find_all(self, init_vals: list, val):
-        expected = self.get_correct_findall_nodes(init_vals, val)
+        expected = self.get_correct_findall_nodes_vals(init_vals, val)
         LList = LinkedList2.create(init_vals)
         print('init state:', LList.vals)
         print(f'find all nodes with "{val}"')
