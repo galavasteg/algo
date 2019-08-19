@@ -27,7 +27,12 @@ class LinkedList2:
 
     def find(self, val):
         # TODO 2.1.: поиск первого узла по его значению.
-        return None  # здесь будет ваш код
+        node = self.head
+        while node is not None:
+            if node.value == val:
+                break
+            node = node.next
+        return node
 
     def find_all(self, val) -> list:
         # TODO 2.2.: поиск всех узлов по конкретному значению
