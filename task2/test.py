@@ -123,3 +123,48 @@ class TestDelete(BaseTest):
         assert result == expected
 
 
+# --------------------------- INSERT --------------------------------
+
+INSERT_PARAMS = dict(
+    argnames='init_vals, after_val, val',
+    argvalues=[
+        ([2, 1, 3, 2, 2], 3, 2), ([2, 1, 3, 2, 2], 3, 4),
+        ([2, 1, 3, 2, 2], 2, 4), ([2, 1, 3, 2, 2], 2, 2),
+        ([4, 1, 3, 1, 2], 2, 2), ([4, 1, 3, 1, 2], 4, 6),
+        ([2], 2, 0), ([2], 2, 2), ([2], 2, None), ([None, None, None], None, 6),
+        ([4, 1, l_list, 1, 2], l_list, 8), ([4, 1, l_list, 1, 2], l_list, 0),
+        ([d, 5], d, None), ([None, 5], None, d), ([2, l_list], l_list, None),
+        ([d, 5], d, {'opa': l_list}), ([5, None], None, d),
+        ([d, 5], d, 0), ([2, l_list], l_list, 0), ([2, l_list], l_list, d),
+        ([], None, 0), ([], None, None), ([], None, 7),
+        ([4, 1, 3, 1, 2], None, 6),
+        ([2], None, 0), ([2], None, None), ([2], None, 7),
+        ([d], None, l_list), ([2], None, 7), ([list], None, 0),
+    ])
+
+
+class TestInsert(BaseTest):
+    @staticmethod
+    def get_correct_insert_vals(init_vals: list, afterNode: Node, val):
+        corr_vals = list(init_vals)  # copy list
+        print(corr_vals is not [], corr_vals is [], bool(corr_vals))
+        ins_ind = (corr_vals.index(afterNode.value if afterNode else
+                                   corr_vals[-1])
+                   + 1 if corr_vals else 0)
+        corr_vals.insert(ins_ind, val)
+        return corr_vals
+
+    @pytest.mark.parametrize(**INSERT_PARAMS)
+    def test_insert(self, init_vals: list, after_val, val):
+        LList = create_list(init_vals)
+        print('init state:', get_list_vals(LList))
+        print(f'after node with "{after_val}" ins node with"{val}"')
+        afterNode = LList.find(after_val)
+        expected = self.get_correct_insert_vals(init_vals, afterNode, val)
+        print('expected:', expected)
+        LList.insert(afterNode, Node(val))
+        result = get_list_vals(LList)
+        print('result:', result)
+        assert result == expected
+
+

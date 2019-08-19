@@ -82,7 +82,13 @@ class LinkedList2:
         #  добавить newNode первым в списке.
         #  Если afterNode = None и список непустой, добавить
         #  newNode последним в списке.
-        pass  # здесь будет ваш код
+        if afterNode is self.tail or afterNode is None:
+            self.add_in_tail(newNode)
+        else:
+            newNode.prev = afterNode
+            afterNode.next.prev = newNode
+            newNode.next = afterNode.next
+            afterNode.next = newNode
 
     def add_in_head(self, newNode: Node):
         # TODO 2.6.: вставить узел первым элементом.
