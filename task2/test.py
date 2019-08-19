@@ -117,8 +117,8 @@ class TestFind(BaseTest):
 
     @staticmethod
     def get_correct_findall_nodes_vals(init_vals: list, val) -> list:
-        return [init_vals[i:]
-                for i, v in enumerate(list(init_vals))
+        return [get_node_vals_view(init_vals, i)
+                for i, v in enumerate(init_vals)
                 if v == val]
 
     @pytest.mark.parametrize(**FIND_PARAMS)
@@ -129,7 +129,8 @@ class TestFind(BaseTest):
         print(f'find all nodes with "{val}"')
         print('expected:', expected)
         nodes = LList.find_all(val)
-        result = [list(n.iter_next_vals()) if n else [] for n in nodes]
+        result = [(n.prev_vals(), n.value, n.next_vals())
+                  for n in nodes]
         print('result:', result)
         assert result == expected
 

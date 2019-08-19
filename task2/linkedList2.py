@@ -63,17 +63,14 @@ class LinkedList2:
         return node
 
     def find_all(self, val) -> list:
-        # + TODO 2.2.: поиск всех узлов по конкретному значению
+        # + TODO 2.2.: найти узлы по конкретному значению
         #    (вернуть список найденных узлов).
         nodes = []
-        node = self.find(val)
+        node = self.head
         while node is not None:
-            nodes.append(node)
-            temp_list = LinkedList2()
-            if node.next is not None:
-                temp_list.head = node.next
-                temp_list.tail = self.tail
-            node = temp_list.find(val)
+            if node.value == val:
+                nodes.append(node)
+            node = node.next
         return nodes
 
     def delete(self, val, all=False):
