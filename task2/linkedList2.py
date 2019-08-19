@@ -15,7 +15,13 @@ class LinkedList2:
         self.head = None
         self.tail = None
 
-    def add_in_tail(self, item):
+    @classmethod
+    def create(cls, values):
+        list_ = cls()
+        [list_.add_in_tail(Node(v)) for v in values]
+        return list_
+
+    def add_in_tail(self, item: Node):
         if self.head is None:
             self.head = item
             item.prev = None

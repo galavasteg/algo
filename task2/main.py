@@ -1,12 +1,6 @@
 from task2.linkedList2 import Node, LinkedList2
 
 
-def create_list(vals: list) -> LinkedList2:
-    list_ = LinkedList2()
-    [list_.add_in_tail(Node(x)) for x in vals]
-    return list_
-
-
 def get_list_vals(list_: LinkedList2) -> list:
     values = []
     node = list_.head
