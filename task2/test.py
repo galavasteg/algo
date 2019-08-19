@@ -93,7 +93,8 @@ FIND_PARAMS = dict(
 class TestFind(BaseTest):
     @staticmethod
     def get_correct_find_node_vals(init_vals: list, val) -> list:
-        return init_vals[init_vals.index(val):] if val in init_vals else None
+        return (init_vals[init_vals.index(val):]
+                if val in init_vals else None)
 
     @pytest.mark.parametrize(**FIND_PARAMS)
     def test_find(self, init_vals: list, val):

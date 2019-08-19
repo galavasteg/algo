@@ -1,6 +1,6 @@
-# TODO 2.9.: Напишите проверочные тесты для каждого из
-#  предыдущих заданий. Особое внимание уделите корректности полей
-#  head, prev, next и tail после ВСЕХ операций.
+# + TODO 2.9.: Напишите проверочные тесты для каждого из
+#    предыдущих заданий. Особое внимание уделите корректности полей
+#    head, prev, next и tail после ВСЕХ операций.
 
 
 class Node:
@@ -43,7 +43,7 @@ class LinkedList2:
         self.tail = item
 
     def find(self, val):
-        # TODO 2.1.: поиск первого узла по его значению.
+        # + TODO 2.1.: поиск первого узла по его значению.
         node = self.head
         while node is not None:
             if node.value == val:
@@ -52,8 +52,8 @@ class LinkedList2:
         return node
 
     def find_all(self, val) -> list:
-        # TODO 2.2.: поиск всех узлов по конкретному значению
-        #  (вернуть список найденных узлов).
+        # + TODO 2.2.: поиск всех узлов по конкретному значению
+        #    (вернуть список найденных узлов).
         nodes = []
         node = self.find(val)
         while node is not None:
@@ -66,8 +66,8 @@ class LinkedList2:
         return nodes
 
     def delete(self, val, all=False):
-        # TODO 2.3.: удалить только первый нашедшийся узел.
-        # TODO 2.4.: удалить все узлы по конкретному значению
+        # + TODO 2.3.: удалить только первый нашедшийся узел.
+        # + TODO 2.4.: удалить все узлы по конкретному значению
         nodes = self.find_all(val)
         for del_n in (nodes[::-1] if all else nodes[:1]):
             if del_n is self.head and del_n.next is None:
@@ -80,22 +80,22 @@ class LinkedList2:
                     self.tail = del_n.prev
 
     def clean(self):
-        # TODO 2.7.: очистить все содержимое
-        #  (создание пустого списка)
+        # + TODO 2.7.: очистить все содержимое
+        #    (создание пустого списка)
         self.__init__()
 
     def len(self) -> int:
-        # TODO 2.8.: вычислить текущую длину списка
+        # + TODO 2.8.: вычислить текущую длину списка
         values = (list(self.head.iter_node_vals())
                   if self.head is not None else [])
         return len(values)
 
     def insert(self, afterNode, newNode: Node):
-        # TODO 2.5.: вставить узел newNode после заданного узла
-        #  afterNode. Если afterNode = None и список пустой,
-        #  добавить newNode первым в списке.
-        #  Если afterNode = None и список непустой, добавить
-        #  newNode последним в списке.
+        # + TODO 2.5.: вставить узел newNode после заданного узла
+        #    afterNode. Если afterNode = None и список пустой,
+        #    добавить newNode первым в списке.
+        #    Если afterNode = None и список непустой, добавить
+        #    newNode последним в списке.
         if afterNode is self.tail or afterNode is None:
             self.add_in_tail(newNode)
         else:
@@ -105,7 +105,7 @@ class LinkedList2:
             afterNode.next = newNode
 
     def add_in_head(self, newNode: Node):
-        # TODO 2.6.: вставить узел первым элементом.
+        # + TODO 2.6.: вставить узел первым элементом.
         if self.head is None:
             self.add_in_tail(newNode)
         else:
