@@ -39,9 +39,18 @@ class LinkedList2:
         return list_
 
     @property
-    def vals(self):
+    def vals(self) -> list:
         return ([self.head.value, *self.head.next_vals()]
                 if self.head is not None else [])
+
+    @property
+    def nodes(self) -> list:
+        nodes = []
+        node = self.head
+        while node is not None:
+            nodes.append(node)
+            node = node.next
+        return nodes
 
     def add_in_tail(self, item: Node):
         if self.head is None:
