@@ -9,6 +9,12 @@ class Node:
         self.prev = None
         self.next = None
 
+    def iter_node_vals(self):
+        node = self
+        while node is not None:
+            yield node.value
+            node = node.next
+
 
 class LinkedList2:  
     def __init__(self):
