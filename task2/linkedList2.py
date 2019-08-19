@@ -47,7 +47,7 @@ class LinkedList2:
     def clean(self):
         # TODO 2.7.: очистить все содержимое
         #  (создание пустого списка)
-        pass  # здесь будет ваш код
+        self.__init__()
 
     def len(self) -> int:
         # TODO 2.8.: вычислить текущую длину списка
