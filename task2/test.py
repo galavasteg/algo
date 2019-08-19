@@ -98,8 +98,8 @@ FIND_PARAMS = dict(
 
 class TestFind(BaseTest):
     @staticmethod
-    def get_correct_find_node_vals(init_vals: list, val) -> list:
-        return (init_vals[init_vals.index(val):]
+    def get_correct_find_node_vals(init_vals: list, val) -> tuple:
+        return (get_node_vals_view(init_vals, init_vals.index(val))
                 if val in init_vals else None)
 
     @pytest.mark.parametrize(**FIND_PARAMS)
@@ -110,7 +110,8 @@ class TestFind(BaseTest):
         print(f'find 1-st node with "{val}"')
         print('expected:', expected)
         node = LList.find(val)
-        result = list(node.iter_next_vals()) if node else None
+        result = ((node.prev_vals(), val, node.next_vals())
+                  if node else None)
         print('result:', result)
         assert result == expected
 
