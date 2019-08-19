@@ -27,6 +27,11 @@ class LinkedList2:
         [list_.add_in_tail(Node(v)) for v in values]
         return list_
 
+    @property
+    def vals(self):
+        return (list(self.head.iter_node_vals())
+                if self.head is not None else [])
+
     def add_in_tail(self, item: Node):
         if self.head is None:
             self.head = item

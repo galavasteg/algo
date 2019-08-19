@@ -1,15 +1,6 @@
 from task2.linkedList2 import Node, LinkedList2
 
 
-def get_list_vals(list_: LinkedList2) -> list:
-    values = []
-    node = list_.head
-    while node is not None:
-        values.append(node.value)
-        node = node.next
-    return values
-
-
 def get_nodes_vals(nodes: list) -> list:
     nodes_vals = []
     for n in nodes:
