@@ -9,7 +9,7 @@ class Node:
         self.prev = None
         self.next = None
 
-    def iter_node_vals(self):
+    def iter_next_vals(self):
         node = self
         while node is not None:
             yield node.value
@@ -29,7 +29,7 @@ class LinkedList2:
 
     @property
     def vals(self):
-        return (list(self.head.iter_node_vals())
+        return (list(self.head.iter_next_vals())
                 if self.head is not None else [])
 
     def add_in_tail(self, item: Node):
@@ -86,7 +86,7 @@ class LinkedList2:
 
     def len(self) -> int:
         # + TODO 2.8.: вычислить текущую длину списка
-        values = (list(self.head.iter_node_vals())
+        values = (list(self.head.iter_next_vals())
                   if self.head is not None else [])
         return len(values)
 

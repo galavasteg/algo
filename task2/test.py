@@ -104,7 +104,7 @@ class TestFind(BaseTest):
         print(f'find 1-st node with "{val}"')
         print('expected:', expected)
         node = LList.find(val)
-        result = list(node.iter_node_vals()) if node else None
+        result = list(node.iter_next_vals()) if node else None
         print('result:', result)
         assert result == expected
 
@@ -122,7 +122,7 @@ class TestFind(BaseTest):
         print(f'find all nodes with "{val}"')
         print('expected:', expected)
         nodes = LList.find_all(val)
-        result = [list(n.iter_node_vals()) if n else [] for n in nodes]
+        result = [list(n.iter_next_vals()) if n else [] for n in nodes]
         print('result:', result)
         assert result == expected
 
