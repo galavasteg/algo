@@ -153,7 +153,8 @@ class TestDelete(BaseTest):
                 corr_vals.remove(del_val)
             except ValueError:
                 pass
-        return corr_vals
+        return [get_node_vals_view(corr_vals, i)
+                for i, v in enumerate(corr_vals)]
 
     @pytest.mark.parametrize(**DELETE_PARAMS)
     def test_delete(self, init_vals: list, del_val, del_all: bool):
@@ -163,7 +164,8 @@ class TestDelete(BaseTest):
         print(f'del {"ALL nodes" if del_all else "1-st node"} with "{del_val}"')
         print('expected:', expected)
         LList.delete(del_val, all=del_all)
-        result = LList.vals
+        result = [(n.prev_vals(), n.value, n.next_vals())
+                  for n in LList.nodes]
         print('result:', result)
         assert result == expected
 

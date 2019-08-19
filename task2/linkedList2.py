@@ -89,12 +89,17 @@ class LinkedList2:
         for del_n in (nodes[::-1] if all else nodes[:1]):
             if del_n is self.head and del_n.next is None:
                 self.clean()
+            elif del_n is self.tail:
+                self.tail = del_n.prev
+                del_n.prev.next = None
             elif del_n is self.head:
                 self.head = del_n.next
+                del_n.next.prev = None
             else:
                 del_n.prev.next = del_n.next
-                if del_n.prev.next is None:
-                    self.tail = del_n.prev
+                del_n.next.prev = del_n.prev
+            del_n.prev = None
+            del_n.next = None
 
     def clean(self):
         # + TODO 2.7.: очистить все содержимое
