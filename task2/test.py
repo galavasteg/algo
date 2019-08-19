@@ -90,3 +90,36 @@ class TestFindAll(BaseTest):
         assert result == expected
 
 
+# --------------------------- DELETE --------------------------------
+
+DELETE_PARAMS = dict(
+    argnames='init_vals, del_val, del_all',
+    argvalues=list(product(INIT_VALS, VALS_ARGS, (False, True))))
+
+
+class TestDelete(BaseTest):
+    @staticmethod
+    def get_correct_delete_vals(init_vals: list, del_val, del_all: bool):
+        corr_vals = list(init_vals)  # copy list
+        if del_all:
+            corr_vals = list(filter(lambda x: x != del_val, corr_vals))
+        else:
+            try:
+                corr_vals.remove(del_val)
+            except ValueError:
+                pass
+        return corr_vals
+
+    @pytest.mark.parametrize(**DELETE_PARAMS)
+    def test_delete(self, init_vals: list, del_val, del_all: bool):
+        expected = self.get_correct_delete_vals(init_vals, del_val, del_all)
+        LList = create_list(init_vals)
+        print('init state:', get_list_vals(LList))
+        print(f'del {"ALL nodes" if del_all else "1-st node"} with "{del_val}"')
+        print('expected:', expected)
+        LList.delete(del_val, all=del_all)
+        result = get_list_vals(LList)
+        print('result:', result)
+        assert result == expected
+
+
