@@ -19,6 +19,12 @@ INIT_VALS = ([], [2], [1, 2, 2, 3, 2, 5],
 VALS_ARGS = (None, 0, l_list, 'not listed', 2)
 
 
+def get_node_vals_view(l_vals: list, ind: int):
+    prev_vals = l_vals[:ind]
+    next_vals = l_vals[ind+1:]
+    return prev_vals, l_vals[ind], next_vals
+
+
 # --------------------------- pytest settings -----------------------
 
 class BaseTest:
