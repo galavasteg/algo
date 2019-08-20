@@ -19,6 +19,8 @@
 #  Особое внимание уделите корректности полей
 #  head и tail после ВСЕХ этих операций.
 
+# TODO: translate doc in EN
+
 
 class Node:
     def __init__(self, v):
@@ -56,13 +58,11 @@ class LinkedList:
         # + TODO 1.4.: найти узлы по конкретному значению
         #    На выход - список найденных узлов
         nodes = []
-        node = self.find(val)
-        while node:
-            nodes.append(node)
-            temp_list = LinkedList()
-            temp_list.add_in_tail(node.next)
-            temp_list.tail = self.tail
-            node = temp_list.find(val)
+        node = self.head
+        while node is not None:
+            if node.value == val:
+                nodes.append(node)
+            node = node.next
         return nodes
 
     def delete(self, val, all=False):
@@ -81,6 +81,8 @@ class LinkedList:
                 prev_node.next = del_n.next
                 if prev_node.next is None:
                     self.tail = prev_node
+            # TODO: delete link or not delete?
+            # del_n.next = None
 
     def clean(self):
         # + TODO 1.3.: очистить все содержимое
