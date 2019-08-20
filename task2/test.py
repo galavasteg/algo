@@ -30,11 +30,11 @@ def get_node_vals_view(l_vals: list, ind: int):
 class BaseTest:
     @classmethod
     def setup_class(cls):
-        print(f'============= {cls.__name__} STARTED =================')
+        print('============= {} STARTED ================='.format(cls.__name__))
 
     @classmethod
     def teardown_class(cls):
-        print(f'============= {cls.__name__} FINISHED ================')
+        print('============= {} FINISHED ================'.format(cls.__name__))
 
     def teardown_method(self, method):
         print()
