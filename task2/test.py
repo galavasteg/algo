@@ -222,4 +222,3 @@ class TestInsert(BaseTest):
         print('result:', result)
         assert result == expected
 
-
