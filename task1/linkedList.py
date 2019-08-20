@@ -58,13 +58,11 @@ class LinkedList:
         # + TODO 1.4.: найти узлы по конкретному значению
         #    На выход - список найденных узлов
         nodes = []
-        node = self.find(val)
-        while node:
-            nodes.append(node)
-            temp_list = LinkedList()
-            temp_list.add_in_tail(node.next)
-            temp_list.tail = self.tail
-            node = temp_list.find(val)
+        node = self.head
+        while node is not None:
+            if node.value == val:
+                nodes.append(node)
+            node = node.next
         return nodes
 
     def delete(self, val, all=False):
