@@ -81,7 +81,7 @@ class TestAddInHead(BaseTest):
         expected.insert(0, val)
         LList = LinkedList2.create(init_vals)
         print('init state:', LList.vals)
-        print(f'insert "{val}" at the beginning')
+        print('insert "{val}" at the beginning'.format(val=val))
         print('expected:', expected)
         LList.add_in_head(Node(val))
         result = LList.vals
@@ -107,7 +107,7 @@ class TestFind(BaseTest):
         expected = self.get_correct_find_node_vals(init_vals, val)
         LList = LinkedList2.create(init_vals)
         print('init state:', LList.vals)
-        print(f'find 1-st node with "{val}"')
+        print('find 1-st node with "{val}"'.format(val=val))
         print('expected:', expected)
         node = LList.find(val)
         result = ((node.prev_vals(), val, node.next_vals())
@@ -126,7 +126,7 @@ class TestFind(BaseTest):
         expected = self.get_correct_findall_nodes_vals(init_vals, val)
         LList = LinkedList2.create(init_vals)
         print('init state:', LList.vals)
-        print(f'find all nodes with "{val}"')
+        print('find all nodes with "{val}"'.format(val=val))
         print('expected:', expected)
         nodes = LList.find_all(val)
         result = [(n.prev_vals(), n.value, n.next_vals())
@@ -161,7 +161,8 @@ class TestDelete(BaseTest):
         expected = self.get_correct_delete_vals(init_vals, del_val, del_all)
         LList = LinkedList2.create(init_vals)
         print('init state:', LList.vals)
-        print(f'del {"ALL nodes" if del_all else "1-st node"} with "{del_val}"')
+        print('del {all_} with "{del_val}"'.format(del_val=del_val,
+                all_="ALL nodes" if del_all else "1-st node"))
         print('expected:', expected)
         LList.delete(del_val, all=del_all)
         result = [(n.prev_vals(), n.value, n.next_vals())
@@ -205,7 +206,8 @@ class TestInsert(BaseTest):
     def test_insert(self, init_vals: list, after_val, val):
         LList = LinkedList2.create(init_vals)
         print('init state:', LList.vals)
-        print(f'after node with "{after_val}" ins node with"{val}"')
+        print('after node with "{after_val}" ins node with "{val}"'.format(
+                after_val=after_val, val=val))
         afterNode = LList.find(after_val)
         expected = self.get_correct_insert_vals(init_vals, afterNode, val)
         print('expected:', expected)
