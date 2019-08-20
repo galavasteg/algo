@@ -1,4 +1,6 @@
-from task1.linkedList import Node, LinkedList
+from unidirectional_list_1.linkedList import Node, LinkedList
+
+# TODO: to class methods
 
 
 def create_list(vals: list) -> LinkedList:

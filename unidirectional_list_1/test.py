@@ -1,8 +1,8 @@
 import pytest
 from itertools import product
 
-from task1.linkedList import Node, LinkedList
-from task1.main import create_list, get_list_vals, get_nodes_vals, merge_lists
+from unidirectional_list_1.linkedList import Node, LinkedList
+from unidirectional_list_1.main import create_list, get_list_vals, get_nodes_vals, merge_lists
 
 
 # linked objects, can be used in tests' params
