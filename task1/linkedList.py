@@ -19,6 +19,8 @@
 #  Особое внимание уделите корректности полей
 #  head и tail после ВСЕХ этих операций.
 
+# TODO: translate doc in EN
+
 
 class Node:
     def __init__(self, v):
@@ -81,6 +83,8 @@ class LinkedList:
                 prev_node.next = del_n.next
                 if prev_node.next is None:
                     self.tail = prev_node
+            # TODO: delete link or not delete?
+            # del_n.next = None
 
     def clean(self):
         # + TODO 1.3.: очистить все содержимое
