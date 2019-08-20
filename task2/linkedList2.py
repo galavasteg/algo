@@ -42,8 +42,11 @@ class LinkedList2:
 
     @property
     def vals(self) -> list:
-        return ([self.head.value, *self.head.next_vals()]
-                if self.head is not None else [])
+        values = []
+        if self.head is not None:
+            values = [self.head.value]
+            [values.append(v) for v in self.head.next_vals()]
+        return values
 
     @property
     def nodes(self) -> list:
@@ -109,9 +112,7 @@ class LinkedList2:
 
     def len(self) -> int:
         """2.8.: Compute list length"""
-        values = ([self.head.value, *self.head.next_vals()]
-                  if self.head is not None else [])
-        return len(values)
+        return len(self.vals)
 
     def insert(self, afterNode, newNode: Node):
         """2.5.: Insert **newNode** after **afterNode**.\n
