@@ -76,15 +76,18 @@ ADD_IN_HEAD_PARAMS = dict(
 
 class TestAddInHead(BaseTest):
     @pytest.mark.parametrize(**ADD_IN_HEAD_PARAMS)
-    def test_len(self, init_vals: list, val):
+    def test_add_in_head(self, init_vals: list, val):
         expected = list(init_vals)
         expected.insert(0, val)
+        expected = [get_node_vals_view(expected, i)
+                    for i, v in enumerate(expected)]
         LList = LinkedList2.create(init_vals)
         print('init state:', LList.vals)
         print('insert "{val}" at the beginning'.format(val=val))
         print('expected:', expected)
         LList.add_in_head(Node(val))
-        result = LList.vals
+        result = [(n.prev_vals(), n.value, n.next_vals())
+                  for n in LList.nodes]
         print('result:', result)
         assert result == expected
 
