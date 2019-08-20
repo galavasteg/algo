@@ -47,6 +47,10 @@ class DynArray:
         [array.append(v) for v in values]
         return array
 
+    @property
+    def fill_percent(self):
+        return self.count/self.capacity * 100
+
     def resize(self, new_capacity):
         new_array = self.make_array(new_capacity)
         for i in range(self.count):
@@ -84,7 +88,6 @@ class DynArray:
          удаления станет строго меньше, чем заданный процент
          заполнения. В тестах используйте этот процент равным 50%.
         """
-        # TODO: % заполнение - свойство
         # TODO: В обоих случаях, если индекс i лежит вне допустимых
         #  границ, генерируйте исключение.
         pass
