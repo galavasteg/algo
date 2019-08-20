@@ -182,7 +182,8 @@ INSERT_PARAMS = dict(
         ([2, 1, 3, 2, 2], 3, 2), ([2, 1, 3, 2, 2], 3, 4),
         ([2, 1, 3, 2, 2], 2, 4), ([2, 1, 3, 2, 2], 2, 2),
         ([4, 1, 3, 1, 2], 2, 2), ([4, 1, 3, 1, 2], 4, 6),
-        ([2], 2, 0), ([2], 2, 2), ([2], 2, None), ([None, None, None], None, 6),
+        ([4, 0, 3, 1, 2], 1, 9), ([2], 2, 0), ([2], 2, 2),
+        ([2], 2, None), ([None, None, None], None, 6),
         ([4, 1, l_list, 1, 2], l_list, 8), ([4, 1, l_list, 1, 2], l_list, 0),
         ([d, 5], d, None), ([None, 5], None, d), ([2, l_list], l_list, None),
         ([d, 5], d, {'opa': l_list}), ([5, None], None, d),
@@ -203,7 +204,8 @@ class TestInsert(BaseTest):
                                    corr_vals[-1])
                    + 1 if corr_vals else 0)
         corr_vals.insert(ins_ind, val)
-        return corr_vals
+        return [get_node_vals_view(corr_vals, i)
+                for i, v in enumerate(corr_vals)]
 
     @pytest.mark.parametrize(**INSERT_PARAMS)
     def test_insert(self, init_vals: list, after_val, val):
@@ -215,7 +217,8 @@ class TestInsert(BaseTest):
         expected = self.get_correct_insert_vals(init_vals, afterNode, val)
         print('expected:', expected)
         LList.insert(afterNode, Node(val))
-        result = LList.vals
+        result = [(n.prev_vals(), n.value, n.next_vals())
+                  for n in LList.nodes]
         print('result:', result)
         assert result == expected
 
