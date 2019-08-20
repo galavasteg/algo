@@ -41,6 +41,12 @@ class DynArray:
             raise IndexError('Index is out of bounds')
         return self.array[i]
 
+    @classmethod
+    def create(cls, values: list):
+        array = cls()
+        [array.append(v) for v in values]
+        return array
+
     def resize(self, new_capacity):
         new_array = self.make_array(new_capacity)
         for i in range(self.count):
