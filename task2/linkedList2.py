@@ -103,8 +103,9 @@ class LinkedList2:
             else:
                 del_n.prev.next = del_n.next
                 del_n.next.prev = del_n.prev
-            del_n.prev = None
-            del_n.next = None
+            # TODO: delete links or not delete?
+            # del_n.prev = None
+            # del_n.next = None
 
     def clean(self):
         """2.7.: delete all nodes in list (init. new list)"""
