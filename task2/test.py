@@ -19,16 +19,22 @@ INIT_VALS = ([], [2], [1, 2, 2, 3, 2, 5],
 VALS_ARGS = (None, 0, l_list, 'not listed', 2)
 
 
+def get_node_vals_view(l_vals: list, ind: int):
+    prev_vals = l_vals[:ind]
+    next_vals = l_vals[ind+1:]
+    return prev_vals, l_vals[ind], next_vals
+
+
 # --------------------------- pytest settings -----------------------
 
 class BaseTest:
     @classmethod
     def setup_class(cls):
-        print(f'============= {cls.__name__} STARTED =================')
+        print('============= {} STARTED ================='.format(cls.__name__))
 
     @classmethod
     def teardown_class(cls):
-        print(f'============= {cls.__name__} FINISHED ================')
+        print('============= {} FINISHED ================'.format(cls.__name__))
 
     def teardown_method(self, method):
         print()
@@ -70,15 +76,18 @@ ADD_IN_HEAD_PARAMS = dict(
 
 class TestAddInHead(BaseTest):
     @pytest.mark.parametrize(**ADD_IN_HEAD_PARAMS)
-    def test_len(self, init_vals: list, val):
+    def test_add_in_head(self, init_vals: list, val):
         expected = list(init_vals)
         expected.insert(0, val)
+        expected = [get_node_vals_view(expected, i)
+                    for i, v in enumerate(expected)]
         LList = LinkedList2.create(init_vals)
         print('init state:', LList.vals)
-        print(f'insert "{val}" at the beginning')
+        print('insert "{val}" at the beginning'.format(val=val))
         print('expected:', expected)
         LList.add_in_head(Node(val))
-        result = LList.vals
+        result = [(n.prev_vals(), n.value, n.next_vals())
+                  for n in LList.nodes]
         print('result:', result)
         assert result == expected
 
@@ -92,25 +101,27 @@ FIND_PARAMS = dict(
 
 class TestFind(BaseTest):
     @staticmethod
-    def get_correct_find_node_vals(init_vals: list, val) -> list:
-        return init_vals[init_vals.index(val):] if val in init_vals else None
+    def get_correct_find_node_vals(init_vals: list, val) -> tuple:
+        return (get_node_vals_view(init_vals, init_vals.index(val))
+                if val in init_vals else None)
 
     @pytest.mark.parametrize(**FIND_PARAMS)
     def test_find(self, init_vals: list, val):
         expected = self.get_correct_find_node_vals(init_vals, val)
         LList = LinkedList2.create(init_vals)
         print('init state:', LList.vals)
-        print(f'find 1-st node with "{val}"')
+        print('find 1-st node with "{val}"'.format(val=val))
         print('expected:', expected)
         node = LList.find(val)
-        result = list(node.iter_node_vals()) if node else None
+        result = ((node.prev_vals(), val, node.next_vals())
+                  if node else None)
         print('result:', result)
         assert result == expected
 
     @staticmethod
     def get_correct_findall_nodes_vals(init_vals: list, val) -> list:
-        return [init_vals[i:]
-                for i, v in enumerate(list(init_vals))
+        return [get_node_vals_view(init_vals, i)
+                for i, v in enumerate(init_vals)
                 if v == val]
 
     @pytest.mark.parametrize(**FIND_PARAMS)
@@ -118,10 +129,11 @@ class TestFind(BaseTest):
         expected = self.get_correct_findall_nodes_vals(init_vals, val)
         LList = LinkedList2.create(init_vals)
         print('init state:', LList.vals)
-        print(f'find all nodes with "{val}"')
+        print('find all nodes with "{val}"'.format(val=val))
         print('expected:', expected)
         nodes = LList.find_all(val)
-        result = [list(n.iter_node_vals()) if n else [] for n in nodes]
+        result = [(n.prev_vals(), n.value, n.next_vals())
+                  for n in nodes]
         print('result:', result)
         assert result == expected
 
@@ -144,17 +156,20 @@ class TestDelete(BaseTest):
                 corr_vals.remove(del_val)
             except ValueError:
                 pass
-        return corr_vals
+        return [get_node_vals_view(corr_vals, i)
+                for i, v in enumerate(corr_vals)]
 
     @pytest.mark.parametrize(**DELETE_PARAMS)
     def test_delete(self, init_vals: list, del_val, del_all: bool):
         expected = self.get_correct_delete_vals(init_vals, del_val, del_all)
         LList = LinkedList2.create(init_vals)
         print('init state:', LList.vals)
-        print(f'del {"ALL nodes" if del_all else "1-st node"} with "{del_val}"')
+        print('del {all_} with "{del_val}"'.format(del_val=del_val,
+                all_="ALL nodes" if del_all else "1-st node"))
         print('expected:', expected)
         LList.delete(del_val, all=del_all)
-        result = LList.vals
+        result = [(n.prev_vals(), n.value, n.next_vals())
+                  for n in LList.nodes]
         print('result:', result)
         assert result == expected
 
@@ -167,7 +182,8 @@ INSERT_PARAMS = dict(
         ([2, 1, 3, 2, 2], 3, 2), ([2, 1, 3, 2, 2], 3, 4),
         ([2, 1, 3, 2, 2], 2, 4), ([2, 1, 3, 2, 2], 2, 2),
         ([4, 1, 3, 1, 2], 2, 2), ([4, 1, 3, 1, 2], 4, 6),
-        ([2], 2, 0), ([2], 2, 2), ([2], 2, None), ([None, None, None], None, 6),
+        ([4, 0, 3, 1, 2], 1, 9), ([2], 2, 0), ([2], 2, 2),
+        ([2], 2, None), ([None, None, None], None, 6),
         ([4, 1, l_list, 1, 2], l_list, 8), ([4, 1, l_list, 1, 2], l_list, 0),
         ([d, 5], d, None), ([None, 5], None, d), ([2, l_list], l_list, None),
         ([d, 5], d, {'opa': l_list}), ([5, None], None, d),
@@ -188,19 +204,21 @@ class TestInsert(BaseTest):
                                    corr_vals[-1])
                    + 1 if corr_vals else 0)
         corr_vals.insert(ins_ind, val)
-        return corr_vals
+        return [get_node_vals_view(corr_vals, i)
+                for i, v in enumerate(corr_vals)]
 
     @pytest.mark.parametrize(**INSERT_PARAMS)
     def test_insert(self, init_vals: list, after_val, val):
         LList = LinkedList2.create(init_vals)
         print('init state:', LList.vals)
-        print(f'after node with "{after_val}" ins node with"{val}"')
+        print('after node with "{after_val}" ins node with "{val}"'.format(
+                after_val=after_val, val=val))
         afterNode = LList.find(after_val)
         expected = self.get_correct_insert_vals(init_vals, afterNode, val)
         print('expected:', expected)
         LList.insert(afterNode, Node(val))
-        result = LList.vals
+        result = [(n.prev_vals(), n.value, n.next_vals())
+                  for n in LList.nodes]
         print('result:', result)
         assert result == expected
-
 
