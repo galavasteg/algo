@@ -1,6 +1,7 @@
+import pytest
 from itertools import product
 
-from task2.linkedList2 import Node, LinkedList2
+from bidirectional_list_2.linkedList2 import Node, LinkedList2
 
 
 # linked objects, can be used in tests' params
@@ -29,13 +30,11 @@ def get_node_vals_view(l_vals: list, ind: int):
 class BaseTest:
     @classmethod
     def setup_class(cls):
-        pass
-        # print(f'============= {cls.__name__} STARTED =================')
+        print('============= {} STARTED ================='.format(cls.__name__))
 
     @classmethod
     def teardown_class(cls):
-        pass
-        # print(f'============= {cls.__name__} FINISHED ================')
+        print('============= {} FINISHED ================'.format(cls.__name__))
 
     def teardown_method(self, method):
         print()
@@ -44,6 +43,7 @@ class BaseTest:
 # --------------------------- CLEAN ---------------------------------
 
 class TestClean(BaseTest):
+    @pytest.mark.parametrize('init_vals', ([2, 1], [0], [None], []))
     def test_clean(self, init_vals: list):
         LList = LinkedList2.create(init_vals)
         print('init state:', LList.vals)
@@ -57,6 +57,7 @@ class TestClean(BaseTest):
 # --------------------------- LEN -----------------------------------
 
 class TestLen(BaseTest):
+    @pytest.mark.parametrize('init_vals', INIT_VALS)
     def test_len(self, init_vals: list):
         expected = len(init_vals)
         LList = LinkedList2.create(init_vals)
@@ -74,15 +75,19 @@ ADD_IN_HEAD_PARAMS = dict(
     argvalues=list(product(INIT_VALS, VALS_ARGS)))
 
 class TestAddInHead(BaseTest):
+    @pytest.mark.parametrize(**ADD_IN_HEAD_PARAMS)
     def test_add_in_head(self, init_vals: list, val):
         expected = list(init_vals)
         expected.insert(0, val)
+        expected = [get_node_vals_view(expected, i)
+                    for i, v in enumerate(expected)]
         LList = LinkedList2.create(init_vals)
         print('init state:', LList.vals)
         print('insert "{val}" at the beginning'.format(val=val))
         print('expected:', expected)
         LList.add_in_head(Node(val))
-        result = LList.vals
+        result = [(n.prev_vals(), n.value, n.next_vals())
+                  for n in LList.nodes]
         print('result:', result)
         assert result == expected
 
@@ -100,6 +105,7 @@ class TestFind(BaseTest):
         return (get_node_vals_view(init_vals, init_vals.index(val))
                 if val in init_vals else None)
 
+    @pytest.mark.parametrize(**FIND_PARAMS)
     def test_find(self, init_vals: list, val):
         expected = self.get_correct_find_node_vals(init_vals, val)
         LList = LinkedList2.create(init_vals)
@@ -118,6 +124,7 @@ class TestFind(BaseTest):
                 for i, v in enumerate(init_vals)
                 if v == val]
 
+    @pytest.mark.parametrize(**FIND_PARAMS)
     def test_find_all(self, init_vals: list, val):
         expected = self.get_correct_findall_nodes_vals(init_vals, val)
         LList = LinkedList2.create(init_vals)
@@ -152,6 +159,7 @@ class TestDelete(BaseTest):
         return [get_node_vals_view(corr_vals, i)
                 for i, v in enumerate(corr_vals)]
 
+    @pytest.mark.parametrize(**DELETE_PARAMS)
     def test_delete(self, init_vals: list, del_val, del_all: bool):
         expected = self.get_correct_delete_vals(init_vals, del_val, del_all)
         LList = LinkedList2.create(init_vals)
@@ -199,6 +207,7 @@ class TestInsert(BaseTest):
         return [get_node_vals_view(corr_vals, i)
                 for i, v in enumerate(corr_vals)]
 
+    @pytest.mark.parametrize(**INSERT_PARAMS)
     def test_insert(self, init_vals: list, after_val, val):
         LList = LinkedList2.create(init_vals)
         print('init state:', LList.vals)
@@ -212,34 +221,4 @@ class TestInsert(BaseTest):
                   for n in LList.nodes]
         print('result:', result)
         assert result == expected
-
-
-# --------------------------- MAIN ----------------------------------
-
-if __name__ == '__main__':
-
-    test = TestClean()
-    for init_vals in ([2, 1], [0], [None], []):
-        test.test_clean(init_vals)
-
-    test = TestLen()
-    for init_vals in INIT_VALS:
-        test.test_len(init_vals)
-
-    test = TestAddInHead()
-    for init_vals, val in product(INIT_VALS, VALS_ARGS):
-        test.test_add_in_head(init_vals, val)
-
-    test = TestFind()
-    for init_vals, val in product(INIT_VALS, VALS_ARGS):
-        test.test_find(init_vals, val)
-        test.test_find_all(init_vals, val)
-
-    test = TestDelete()
-    for init_vals, val, del_all in product(INIT_VALS, VALS_ARGS, (False, True)):
-        test.test_delete(init_vals, val, del_all)
-
-    test = TestInsert()
-    for init_vals, after_val, val in INSERT_PARAMS['argvalues']:
-        test.test_insert(init_vals, after_val, val)
 
