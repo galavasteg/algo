@@ -98,13 +98,15 @@ class DynArray:
         pass
 
     def delete(self, i):
-        """
-        TODO: 3.2. Добавьте метод delete(i), который удаляет объект
-         из i-й позиции, при необходимости сжимая буфер. Сокращение
-         буфера выполняем, когда его заполненность после операции
-         удаления станет строго меньше, чем заданный процент
-         заполнения. В тестах используйте этот процент равным 50%.
-        """
-        # TODO: В обоих случаях, если индекс i лежит вне допустимых
-        #  границ, генерируйте исключение.
-        pass
+        """3.2. Delete object in **i**-th position. Reduce capacity
+        if the array is less than 50% full after deletion."""
+        self[i]  # check IndexError
+        move_back_indices = list(range(i + 1, self.count))
+        for ind in move_back_indices:
+            self.array[ind - 1] = self.array[ind]
+        self.count = self.count - 1
+        capacity = (int(self.capacity / 1.5)
+                    if self.capacity > 16 and self.fill_percent < 50 else
+                    self.capacity)
+        self.resize(capacity if capacity > 16 else 16)
+
