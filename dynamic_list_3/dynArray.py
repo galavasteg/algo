@@ -44,12 +44,29 @@ class DynArray:
     @classmethod
     def create(cls, values: list):
         array = cls()
-        [array.append(v) for v in values]
+        for v in values:
+            array.append(v)
         return array
 
     @property
     def fill_percent(self):
         return self.count/self.capacity * 100
+
+    def to_list(self):
+        array, end = [], False
+        try:
+            for v in self.array:
+                array.append(v)
+        except ValueError:
+            pass
+        except IndexError:
+            pass
+        return array
+
+    @property
+    def meta(self):
+        return (self.to_list(), self.count,
+                self.capacity, self.fill_percent)
 
     def resize(self, new_capacity):
         new_array = self.make_array(new_capacity)
