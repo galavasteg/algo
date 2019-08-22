@@ -97,3 +97,27 @@ class TestDelete(BaseTest):
         assert result == expected
 
 
+# --------------------------- INSERT --------------------------------
+
+INSERT_PARAMS = dict(
+    argnames='init_vals, ins_indices, ins_vals',
+    argvalues=[
+        ([], [0], [d]), ([], [0], [0]), ([], [0], [None]),
+        ([2], [1], [0]), ([2], [0, 2], [d, 0]),
+        (list(range(1, 16)), [0, 16], [0, 16]),
+        (list(range(10)), [10, 11], [None, 0]),
+        (list(range(15)), [5] * 5, ['!'] * 5),
+        (list(range(16)), list(range(16, 50)), [None] * 34),
+        (list(range(64)), list(range(64, 0, -1)), ['W'] * 64),
+        (list(range(100)), list(range(100, 150)), [1] * 50),
+    ])
+INSERT_NEGATIVE_PARAMS = dict(
+    argnames='init_vals, ins_indices, ins_vals',
+    argvalues=[
+        ([], [1], [15]), ([], [-1], [4]), ([], [1], [None]),
+        ([], [-1], ['']), ([2], [-2], [None]), ([d], [15], [d]),
+        (list(range(1, 16)), [0, 17], [0, 16]),
+        (list(range(60)), [55] * 5 + [67], [None] * 5 + [70]),
+    ])
+
+
