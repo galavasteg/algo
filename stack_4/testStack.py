@@ -1,6 +1,6 @@
 import pytest
 
-from stack_4.Stack import Stack
+from stack_4.stack import Stack
 
 
 d = dict((i, v)for i, v in enumerate([1, None, [], 'test']))
