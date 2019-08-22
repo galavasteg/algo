@@ -121,3 +121,51 @@ INSERT_NEGATIVE_PARAMS = dict(
     ])
 
 
+class TestInsert(BaseTest):
+    @staticmethod
+    def get_correct_insert_res(da: DynArray, ins_indices: list,
+                               ins_vals: list):
+        array, count, capacity, fill_percent = da.meta
+        for ins_ind, ins_val in zip(ins_indices, ins_vals):
+            ind = ins_ind if ins_ind >= 0 else count + - ins_ind
+            if count >= ind:
+                array.insert(ind, ins_val)
+            count = len(array)
+            if count > capacity:
+                capacity = 2 * capacity
+            fill_percent = count / capacity * 100
+        return array, count, capacity, fill_percent
+
+    @pytest.mark.parametrize(**INSERT_NEGATIVE_PARAMS)
+    def test_insert_negative(self, init_vals: list, ins_indices: list,
+                             ins_vals: list):
+        da = DynArray.create(init_vals)
+        expected = self.get_correct_insert_res(da, ins_indices, ins_vals)
+        print('init state:', da.meta)
+        print('insert', ins_vals, 'in indices', ins_indices)
+        print('expected: IndexError("Index is out of bounds"),', expected)
+        with pytest.raises(
+                IndexError, match='Index is out of bounds') as excinfo:
+            for ins_ind, ins_val in zip(ins_indices, ins_vals):
+                da.insert(ins_ind, ins_val)
+        e_type, e_val = ((excinfo.typename, str(excinfo.value))
+                         if excinfo else ('', ''))
+        print('result: {et}("{ev}"),'.format(et=e_type, ev=e_val), da.meta)
+        assert (e_type == 'IndexError' and
+                e_val == 'Index is out of bounds' and
+                da.meta == expected)
+
+    @pytest.mark.parametrize(**INSERT_PARAMS)
+    def test_insert(self, init_vals: list, ins_indices: list,
+                    ins_vals: list):
+        da = DynArray.create(init_vals)
+        expected = self.get_correct_insert_res(da, ins_indices, ins_vals)
+        print('init state:', da.meta)
+        print('insert', ins_vals, 'in indices', ins_indices)
+        print('expected:', expected)
+        for ins_ind, ins_val in zip(ins_indices, ins_vals):
+            da.insert(ins_ind, ins_val)
+        result = da.meta
+        print('result:', result)
+        assert result == expected
+
