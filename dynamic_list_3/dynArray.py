@@ -1,5 +1,5 @@
 """
-4.4. Write tests for tasks 3.1.-3.2.:
+3.4. Write tests for tasks 3.1.-3.2.:
  1) insert:
     - after insertion the capacity is not exceeded;
     - after insertion the capacity is overfill (check if the
@@ -72,6 +72,7 @@ class DynArray:
         self.array[self.count] = itm
         self.count += 1
 
+    # 3.3. insert: O(n), n - the number of elements in the array
     def insert(self, i, itm):
         """3.1. Insert **itm** into **i**-th position. It shifts
         forward all subsequent objects. Double capacity if it is
@@ -92,6 +93,7 @@ class DynArray:
             self.count = self.count + 1
             self.array[i] = itm
 
+    # 3.3. delete: O(n), n - the number of elements in the array
     def delete(self, i):
         """3.2. Delete object in **i**-th position. Reduce capacity
         if the array is less than 50% full after deletion. The logic
