@@ -1,24 +1,15 @@
 """
-TODO: 4.4. Напишите тесты, проверяющие работу методов
- insert() и delete():
- -- вставка элемента, когда в итоге размер буфера не превышен
-    (проверьте также размер буфера);
- -- вставка элемента, когда в результате превышен размер буфера
-    (проверьте также корректное изменение размера буфера);
- -- попытка вставки элемента в недопустимую позицию;
- -- удаление элемента, когда в результате размер буфера остаётся
-    прежним (проверьте также размер буфера);
- -- удаление элемента, когда в результате понижается размер буфера
-    (проверьте также корректное изменение размера буфера);
- -- попытка удаления элемента в недопустимой позиции.
-
-TODO: В тестах используется схема, когда
- 1) увеличение буфера происходит в два раза,
- 2) а уменьшение в полтора раза (текущее
-    значение размера буфера делится на 1.5, и результат приводится
-    к целому типу, никаких округлений!).
- При этом сохраняем минимальную ёмкость 16 элементов.
- Придерживайтесь этой схемы в своём коде для успешного тестирования.
+3.4. Write tests for tasks 3.1.-3.2.:
+ 1) insert:
+    - after insertion the capacity is not exceeded;
+    - after insertion the capacity is overfill (check if the
+      capacity changes correctly);
+    - insertion into invalid index;
+ 2) delete:
+    - after deletion the capacity has not changed;
+    - after deletion the capacity is reduced (check if the
+      capacity changes correctly);
+    - deletion from invalid index;
 """
 
 import ctypes
@@ -41,6 +32,33 @@ class DynArray:
             raise IndexError('Index is out of bounds')
         return self.array[i]
 
+    @classmethod
+    def create(cls, values: list):
+        array = cls()
+        for v in values:
+            array.append(v)
+        return array
+
+    @property
+    def fill_percent(self):
+        return self.count/self.capacity * 100
+
+    def to_list(self):
+        array, end = [], False
+        try:
+            for v in self.array:
+                array.append(v)
+        except ValueError:
+            pass
+        except IndexError:
+            pass
+        return array
+
+    @property
+    def meta(self):
+        return (self.to_list(), self.count,
+                self.capacity, self.fill_percent)
+
     def resize(self, new_capacity):
         new_array = self.make_array(new_capacity)
         for i in range(self.count):
@@ -54,31 +72,41 @@ class DynArray:
         self.array[self.count] = itm
         self.count += 1
 
+    # 3.3. insert: O(n), n - the number of elements in the array
     def insert(self, i, itm):
+        """3.1. Insert **itm** into **i**-th position. It shifts
+        forward all subsequent objects. Double capacity if it is
+        full before insertion. If **i** is equal to count then
+        insert **itm** in tail. Check if **i** is in the valid
+        range of values.
         """
-        TODO: 3.1. Добавьте метод insert(i, itm), который вставляет
-         в i-ю позицию объект itm, сдвигая вперёд все последующие
-         элементы. Учтите, что новая длина массива может превысить
-         размер буфера. Увеличение буфера выполняем, когда он весь
-         полностью заполнен, и выполняется попытка добавления.
-        """
-        # TODO: Если индекс i лежит вне допустимых
-        #  границ, генерируйте исключение.
-        # TODO: Кроме:
-        #  параметр i может принимать значение, равное длине
-        #  рабочего массива count, в таком случае добавление
-        #  происходит в его хвост.
-        pass
+        if self.count == i:
+            self.append(itm)
+        else:
+            self[i]  # check IndexError
+            count = self.count + 1
+            if count > self.capacity:
+                self.resize(2 * self.capacity)
+            move_forward_indices = list(range(i, self.count))
+            for ind in move_forward_indices[::-1]:
+                self.array[ind + 1] = self.array[ind]
+            self.count = self.count + 1
+            self.array[i] = itm
 
+    # 3.3. delete: O(n), n - the number of elements in the array
     def delete(self, i):
-        """
-        TODO: 3.2. Добавьте метод delete(i), который удаляет объект
-         из i-й позиции, при необходимости сжимая буфер. Сокращение
-         буфера выполняем, когда его заполненность после операции
-         удаления станет строго меньше, чем заданный процент
-         заполнения. В тестах используйте этот процент равным 50%.
-        """
-        # TODO: % заполнение - свойство
-        # TODO: В обоих случаях, если индекс i лежит вне допустимых
-        #  границ, генерируйте исключение.
-        pass
+        """3.2. Delete object in **i**-th position. Reduce capacity
+        if the array is less than 50% full after deletion. The logic
+        of power reduction is as follows: the result of dividing the
+        current power by 1.5 is converted to int (without rounding)
+        NOTE: minimum capacity is 16"""
+        self[i]  # check IndexError
+        move_back_indices = list(range(i + 1, self.count))
+        for ind in move_back_indices:
+            self.array[ind - 1] = self.array[ind]
+        self.count = self.count - 1
+        capacity = (int(self.capacity / 1.5)
+                    if self.capacity > 16 and self.fill_percent < 50 else
+                    self.capacity)
+        self.resize(capacity if capacity > 16 else 16)
+
