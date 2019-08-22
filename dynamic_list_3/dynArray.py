@@ -92,7 +92,18 @@ class DynArray:
         #  параметр i может принимать значение, равное длине
         #  рабочего массива count, в таком случае добавление
         #  происходит в его хвост.
-        pass
+        if self.count == i:
+            self.append(itm)
+        else:
+            self[i]  # check IndexError
+            count = self.count + 1
+            if count > self.capacity:
+                self.resize(2 * self.capacity)
+            move_forward_indices = list(range(i, self.count))
+            for ind in move_forward_indices[::-1]:
+                self.array[ind + 1] = self.array[ind]
+            self.count = self.count + 1
+            self.array[i] = itm
 
     def delete(self, i):
         """3.2. Delete object in **i**-th position. Reduce capacity
