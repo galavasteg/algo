@@ -1,7 +1,5 @@
-from math import ceil
-from itertools import product
-
 import pytest
+
 
 from dynamic_list_3.dynArray import DynArray
 
@@ -49,13 +47,14 @@ DELETE_NEGATIVE_PARAMS = dict(
         (list(range(32)), list(range(17))),
     ])
 
+
 class TestDelete(BaseTest):
     @staticmethod
     def get_correct_delete_res(da: DynArray, del_indices: list):
         array, count, capacity, fill_percent = da.meta
         for del_ind in del_indices:
             try:
-                ind = del_ind if del_ind >= 0 else count - del_ind
+                ind = del_ind if del_ind >= 0 else count + - del_ind
                 array.pop(ind)
             except IndexError:
                 break
@@ -71,7 +70,7 @@ class TestDelete(BaseTest):
         da = DynArray.create(init_vals)
         expected = self.get_correct_delete_res(da, del_indices)
         print('init state:', da.meta)
-        print('del items in indices:', del_indices)
+        print('delete items in indices:', del_indices)
         print('expected: IndexError("Index is out of bounds"),', expected)
         with pytest.raises(
                 IndexError, match='Index is out of bounds') as excinfo:
@@ -89,7 +88,7 @@ class TestDelete(BaseTest):
         da = DynArray.create(init_vals)
         expected = self.get_correct_delete_res(da, del_indices)
         print('init state:', da.meta)
-        print('del items in indices:', del_indices)
+        print('delete items in indices', del_indices)
         print('expected:', expected)
         for del_ind in del_indices:
             da.delete(del_ind)

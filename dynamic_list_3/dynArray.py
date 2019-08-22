@@ -14,9 +14,6 @@ TODO: 4.4. Напишите тесты, проверяющие работу ме
 
 TODO: В тестах используется схема, когда
  1) увеличение буфера происходит в два раза,
- 2) а уменьшение в полтора раза (текущее
-    значение размера буфера делится на 1.5, и результат приводится
-    к целому типу, никаких округлений!).
  При этом сохраняем минимальную ёмкость 16 элементов.
  Придерживайтесь этой схемы в своём коде для успешного тестирования.
 """
@@ -99,7 +96,9 @@ class DynArray:
 
     def delete(self, i):
         """3.2. Delete object in **i**-th position. Reduce capacity
-        if the array is less than 50% full after deletion."""
+        if the array is less than 50% full after deletion. The logic
+        of power reduction is as follows: the result of dividing the
+        current power by 1.5 is converted to int (without rounding)"""
         self[i]  # check IndexError
         move_back_indices = list(range(i + 1, self.count))
         for ind in move_back_indices:
