@@ -1,21 +1,15 @@
 """
-TODO: 4.4. Напишите тесты, проверяющие работу методов
- insert() и delete():
- -- вставка элемента, когда в итоге размер буфера не превышен
-    (проверьте также размер буфера);
- -- вставка элемента, когда в результате превышен размер буфера
-    (проверьте также корректное изменение размера буфера);
- -- попытка вставки элемента в недопустимую позицию;
- -- удаление элемента, когда в результате размер буфера остаётся
-    прежним (проверьте также размер буфера);
- -- удаление элемента, когда в результате понижается размер буфера
-    (проверьте также корректное изменение размера буфера);
- -- попытка удаления элемента в недопустимой позиции.
-
-TODO: В тестах используется схема, когда
- 1) увеличение буфера происходит в два раза,
- При этом сохраняем минимальную ёмкость 16 элементов.
- Придерживайтесь этой схемы в своём коде для успешного тестирования.
+4.4. Write tests for tasks 3.1.-3.2.:
+ 1) insert:
+    - after insertion the capacity is not exceeded;
+    - after insertion the capacity is overfill (check if the
+      capacity changes correctly);
+    - insertion into invalid index;
+ 2) delete:
+    - after deletion the capacity has not changed;
+    - after deletion the capacity is reduced (check if the
+      capacity changes correctly);
+    - deletion from invalid index;
 """
 
 import ctypes
@@ -79,19 +73,12 @@ class DynArray:
         self.count += 1
 
     def insert(self, i, itm):
+        """3.1. Insert **itm** into **i**-th position. It shifts
+        forward all subsequent objects. Double capacity if it is
+        full before insertion. If **i** is equal to count then
+        insert **itm** in tail. Check if **i** is in the valid
+        range of values.
         """
-        TODO: 3.1. Добавьте метод insert(i, itm), который вставляет
-         в i-ю позицию объект itm, сдвигая вперёд все последующие
-         элементы. Учтите, что новая длина массива может превысить
-         размер буфера. Увеличение буфера выполняем, когда он весь
-         полностью заполнен, и выполняется попытка добавления.
-        """
-        # TODO: Если индекс i лежит вне допустимых
-        #  границ, генерируйте исключение.
-        # TODO: Кроме:
-        #  параметр i может принимать значение, равное длине
-        #  рабочего массива count, в таком случае добавление
-        #  происходит в его хвост.
         if self.count == i:
             self.append(itm)
         else:
@@ -109,7 +96,8 @@ class DynArray:
         """3.2. Delete object in **i**-th position. Reduce capacity
         if the array is less than 50% full after deletion. The logic
         of power reduction is as follows: the result of dividing the
-        current power by 1.5 is converted to int (without rounding)"""
+        current power by 1.5 is converted to int (without rounding)
+        NOTE: minimum capacity is 16"""
         self[i]  # check IndexError
         move_back_indices = list(range(i + 1, self.count))
         for ind in move_back_indices:
