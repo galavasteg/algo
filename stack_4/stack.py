@@ -56,6 +56,7 @@ class Stack:
     def size(self):
         return len(self.stack)
 
+    # 4.4. O(n)
     def pop(self):
         if self.stack:
             # 4.2.
@@ -63,6 +64,7 @@ class Stack:
             # # 4.1. O(1)
             # return self.stack.pop(-1)
 
+    # 4.4. O(n)
     def push(self, value):
         # 4.2.
         self.stack.insert(0, value)
