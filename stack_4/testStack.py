@@ -42,3 +42,16 @@ def test_push():
         assert stack.to_list() == res
 
 
+# --------------------------- PEEK ----------------------------------
+
+def test_peek():
+    for vals, (cor_res, corr_p) in zip(
+            ([1, 2, 3, 4], [], [0], [None, 0, 17]),
+            (([1, 2, 3, 4], 4), ([], None), ([0], 0),
+             ([None, 0, 17], 17))):
+        stack = Stack.create(vals)
+        p = stack.peek()
+        print(vals, 'peek:', cor_res, corr_p)
+        assert stack.to_list() == cor_res and p == corr_p
+
+

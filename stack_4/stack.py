@@ -67,8 +67,11 @@ class Stack:
         # self.stack.insert(self.size(), value)
 
     def peek(self):
-        # ваш код
-        return None  # если стек пустой
+        if self.stack:
+            # 4.2.
+            return self.stack[0]
+            # # 4.1.
+            # return self.stack[-1]
 
     def to_list(self):
         # 4.2.
