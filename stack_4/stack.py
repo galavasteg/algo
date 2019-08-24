@@ -1,19 +1,19 @@
 """
-TODO: 4.1. Подберите подходящую динамическую структуру данных
- для хранения стека. Реализуйте методы
- size(), pop(), push() и peek().
- Добавьте тесты для каждого из этих четырёх методов.
- Оцените меру сложности для операций pop и push.
+4.1. Find the appropriate dynamic data structure for
+ storing the stack. Realize methods size(), pop(), push()
+ and peek(). Write tests for all of them. Rate the
+ complexity of pop() and push() methods.
 
-TODO: 4.2. Переделайте реализацию стека так, чтобы она работала
- не с хвостом списка как с верхушкой стека, а с его головой.
+4.2. Rebuild the stack implementation so that the top
+ of the stack is the head and not the tail of the list.
 
-TODO: 4.3. Не запуская программу, скажите, как отработает такой цикл?
-while stack.size() > 0:
-    print(stack.pop())
-    print(stack.pop())
+4.3. Without starting the program, answer, how will this
+code work?
+            # while stack.size() > 0:
+            #     print(stack.pop())
+            #     print(stack.pop())
 
-TODO: 4.4. Оцените меру сложности для операций pop и push.
+4.4. Rate the complexity of pop() and push() methods.
 
 TODO: 4.5. Напишите функцию, которая получает на вход строку,
  состоящую из открывающих и закрывающих скобок (например, "(()((())()))"
