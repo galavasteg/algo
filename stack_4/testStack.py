@@ -68,3 +68,17 @@ def test_pop():
         assert stack.to_list() == cor_res and p == popped
 
 
+# --------------------------- BALANCE -------------------------------
+
+def test_balance():
+    for string, res in zip(
+            ('(()()(()', '(()((())()))', '())(', '))((', '((())',
+             '(hjy()(()', '(()(pdd()))', '(a)(', '))f(d)((', '(()t',
+             ')))'),
+            (False, True, False, False, False,
+             False, True, False, False, False,
+             False)):
+        print(string, res)
+        assert Stack.is_balanced(string) == res
+
+

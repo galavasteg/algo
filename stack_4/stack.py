@@ -58,4 +58,15 @@ class Stack:
             stack.push(v)
         return stack
 
+    @classmethod
+    def is_balanced(cls, string: str) -> bool:
+        opened_s, bad_close = cls(), 0
+        for ch in string:
+            if ch == '(':
+                opened_s.push(ch)
+            elif ch == ')':
+                if not opened_s.pop():
+                    bad_close = bad_close + 1
+        return not any([opened_s.peek(), bad_close])
+
 
