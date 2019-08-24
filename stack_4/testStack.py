@@ -55,3 +55,16 @@ def test_peek():
         assert stack.to_list() == cor_res and p == corr_p
 
 
+# --------------------------- POP -----------------------------------
+
+def test_pop():
+    for vals, (cor_res, popped) in zip(
+            ([1, 2, 3, 4], [], [0], [None, 0, 17]),
+            (([1, 2, 3], 4), ([], None), ([], 0),
+             ([None, 0], 17))):
+        stack = Stack.create(vals)
+        p = stack.pop()
+        print(vals, 'pop:', cor_res, popped)
+        assert stack.to_list() == cor_res and p == popped
+
+

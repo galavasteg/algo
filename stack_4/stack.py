@@ -57,8 +57,11 @@ class Stack:
         return len(self.stack)
 
     def pop(self):
-        # ваш код
-        return None  # если стек пустой
+        if self.stack:
+            # 4.2.
+            return self.stack.pop(0)
+            # # 4.1. O(1)
+            # return self.stack.pop(-1)
 
     def push(self, value):
         # 4.2.
