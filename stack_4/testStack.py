@@ -28,3 +28,17 @@ def test_size():
         assert Stack.create(vals).size() == res
 
 
+# --------------------------- PUSH ----------------------------------
+
+def test_push():
+    for (vals, adds), res in zip(
+            (([1, 2], [3, 4]), ([], []), ([], [0]), ([], [None]),
+             (list(range(5)), list(range(5, 0, -1)))),
+            ([1, 2, 3, 4], [], [0], [None], [0,1,2,3,4,5,4,3,2,1])):
+        stack = Stack.create(vals)
+        for a in adds:
+            stack.push(a)
+        print(vals, '+', adds, res)
+        assert stack.to_list() == res
+
+

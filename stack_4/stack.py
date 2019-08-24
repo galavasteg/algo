@@ -51,7 +51,7 @@ TODO: 4.5. Постфиксная запись выражения -- это за
 
 class Stack:
     def __init__(self):
-        self.stack = []
+        self.stack = []  # 4.1.
 
     def size(self):
         return len(self.stack)
@@ -61,8 +61,10 @@ class Stack:
         return None  # если стек пустой
 
     def push(self, value):
-        # ваш код
-        pass
+        # 4.2.
+        self.stack.insert(0, value)
+        # # 4.1. O(1)
+        # self.stack.insert(self.size(), value)
 
     def peek(self):
         # ваш код
