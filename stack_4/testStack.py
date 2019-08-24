@@ -3,9 +3,6 @@ import pytest
 from stack_4.stack import Stack
 
 
-d = dict((i, v)for i, v in enumerate([1, None, [], 'test']))
-
-
 # --------------------------- pytest settings -----------------------
 
 class BaseTest:
@@ -19,5 +16,15 @@ class BaseTest:
 
     def teardown_method(self, method):
         print()
+
+
+# --------------------------- SIZE ----------------------------------
+
+def test_size():
+    for vals, res in zip(
+            (list('(()()(()'), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], ),
+            (8, 10, )):
+        print(vals, res)
+        assert Stack.create(vals).size() == res
 
 
