@@ -82,3 +82,13 @@ def test_balance():
         assert Stack.is_balanced(string) == res
 
 
+# --------------------------- POSTFIX CALC -------------------------
+
+def test_postfix_calc():
+    for string, res in zip(
+            ('1 2 + 3 * =', '8 2 + 5 * 9 + =', '1 2 + 3 + 4 + =',
+             '1 2 + 5 * 3 * 0 =', '4 1 2 + * ='),
+            (9, 59, 10, 0, 12)):
+        print(string, res)
+        assert Stack.postfix_calc(string) == res
+

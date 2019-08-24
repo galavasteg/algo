@@ -69,4 +69,17 @@ class Stack:
                     bad_close = bad_close + 1
         return not any([opened_s.peek(), bad_close])
 
+    @classmethod
+    def postfix_calc(cls, string: str) -> int:
+        opers_mapping = dict(zip(('+', '*'), ('__add__', '__mul__', )))
+        digits_s = cls()
+        for ch in string.split(' '):
+            if ch.isdigit():
+                digits_s.push(int(ch))
+            elif ch == '=':
+                return digits_s.peek()
+            else:
+                a, b = digits_s.pop(), digits_s.pop()
+                c = a.__getattribute__(opers_mapping[ch])(b)
+                digits_s.push(c)
 
