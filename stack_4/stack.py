@@ -68,3 +68,17 @@ class Stack:
         # ваш код
         return None  # если стек пустой
 
+    def to_list(self):
+        # 4.2.
+        return self.stack[::-1]
+        # # 4.1.
+        # return self.stack
+
+    @classmethod
+    def create(cls, vals: list):
+        stack = cls()
+        for v in vals:
+            stack.push(v)
+        return stack
+
+
