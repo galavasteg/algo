@@ -28,3 +28,13 @@ class Queue:
     def size(self):
         return 0  # размер очереди
 
+    def to_list(self):
+        return self.queue[::-1]
+
+    @classmethod
+    def create(cls, vals: list):
+        new_queue = cls()
+        for v in vals:
+            new_queue.enqueue(v)
+        return new_queue
+
