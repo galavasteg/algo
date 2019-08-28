@@ -94,7 +94,6 @@ def test_postfix_calc():
 # --------------------------- MAIN ----------------------------------
 
 if __name__ == '__main__':
-
     test_size()
     test_push()
     test_peek()
