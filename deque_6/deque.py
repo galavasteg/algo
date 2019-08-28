@@ -2,7 +2,7 @@
 TODO: 7.1. Почему и как будет различаться мера сложности
  для addHead/removeHead и addTail/removeTail?
 
-TODO: 7.2. Напишите функцию, которая с помощью deque проверяет,
+TODO: 6.2. Напишите функцию, которая с помощью deque проверяет,
  является ли некоторая строка палиндромом (читается одинаково
  слева направо и справа налево).
 
@@ -42,4 +42,10 @@ class Deque:
         for v in vals:
             new_queue.addTail(v)
         return new_queue
+
+    @classmethod
+    def is_pali(cls, s: str):
+        d = cls.create(list(s.lower()))
+        return all([d.removeFront() == d.removeTail()
+                    for _ in range(d.size() // 2)])
 
