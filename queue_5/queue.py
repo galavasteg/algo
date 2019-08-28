@@ -8,6 +8,8 @@
 5.3. - 5.4. See in **queue_plus.py**
 """
 
+# TODO: get to know about mistake in task description
+
 
 class Queue:
     def __init__(self):

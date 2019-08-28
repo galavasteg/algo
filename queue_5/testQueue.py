@@ -28,6 +28,7 @@ def test_size():
         for cls in (Queue, StackedQueue):
             print(cls.__name__, vals, res)
             assert cls.create(vals).size() == res
+        print()
 
 
 # --------------------------- ENQUEUE -------------------------------
@@ -43,6 +44,7 @@ def test_enqueue():
                 queue.enqueue(a)
             print(cls.__name__, vals, '+', adds, res)
             assert queue.to_list() == res
+        print()
 
 
 # --------------------------- DEQUEUE -------------------------------
@@ -55,8 +57,9 @@ def test_dequeue():
         for cls in (Queue, StackedQueue):
             queue = cls.create(vals)
             p = queue.dequeue()
-            print(cls.__name__, vals, 'pop:', cor_res, popped)
+            print(cls.__name__, vals, 'dequeue:', cor_res, popped)
             assert queue.to_list() == cor_res and p == popped
+        print()
 
 
 # --------------------------- SHIFT ---------------------------------
