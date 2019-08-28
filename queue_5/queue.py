@@ -16,9 +16,11 @@ class Queue:
     def __init__(self):
         self.queue = []
 
+    # 5.2. O(1)
     def enqueue(self, item):
         self.queue.append(item)
 
+    # 5.2. O(n)
     def dequeue(self):
         if self.queue:
             return self.queue.pop(0)
