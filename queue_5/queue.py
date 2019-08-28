@@ -17,15 +17,14 @@ class Queue:
         self.queue = []
 
     def enqueue(self, item):
-        # вставка в хвост
-        pass
+        self.queue.append(item)
 
     def dequeue(self):
-        # выдача из головы
-        return None  # если очередь пустая
+        if self.queue:
+            return self.queue.pop(0)
 
     def size(self):
-        return 0  # размер очереди
+        return len(self.queue)
 
     def to_list(self):
         return self.queue[::-1]
