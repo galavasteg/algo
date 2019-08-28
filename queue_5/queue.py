@@ -26,7 +26,7 @@ class Queue:
         return len(self.queue)
 
     def to_list(self):
-        return self.queue[::-1]
+        return self.queue
 
     @classmethod
     def create(cls, vals: list):

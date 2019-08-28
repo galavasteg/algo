@@ -34,7 +34,7 @@ def test_enqueue():
     for (vals, adds), res in zip(
             (([1, 2], [3, 4]), ([], []), ([], [0]), ([], [None]),
              (list(range(5)), list(range(5, 0, -1)))),
-            ([4, 3, 2, 1], [], [0], [None], [1,2,3,4,5,4,3,2,1,0])):
+            ([1, 2, 3, 4], [], [0], [None], [0,1,2,3,4,5,4,3,2,1])):
         for cls in (Queue, StackedQueue):
             queue = cls.create(vals)
             for a in adds:
@@ -48,8 +48,8 @@ def test_enqueue():
 def test_dequeue():
     for vals, (cor_res, popped) in zip(
             ([1, 2, 3, 4], [], [0], [None, 0, 17]),
-            (([4, 3, 2], 1), ([], None), ([], 0),
-             ([17, 0], None))):
+            (([2, 3, 4], 1), ([], None), ([], 0),
+             ([0, 17], None))):
         for cls in (Queue, StackedQueue):
             queue = cls.create(vals)
             p = queue.dequeue()

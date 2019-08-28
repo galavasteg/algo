@@ -30,7 +30,7 @@ class StackedQueue:
         return self.inputs.size() + self.outputs.size()
 
     def to_list(self):
-        return self.inputs.to_list()[::-1] + self.outputs.to_list()
+        return self.outputs.to_list()[::-1] + self.inputs.to_list()
 
     @classmethod
     def create(cls, vals: list):
