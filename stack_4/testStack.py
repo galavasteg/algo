@@ -1,5 +1,3 @@
-import pytest
-
 from stack_4.stack import Stack
 
 
@@ -91,4 +89,15 @@ def test_postfix_calc():
             (9, 59, 10, 0, 12)):
         print(string, res)
         assert Stack.postfix_calc(string) == res
+
+
+# --------------------------- MAIN ----------------------------------
+
+if __name__ == '__main__':
+    test_size()
+    test_push()
+    test_peek()
+    test_pop()
+    test_balance()
+    test_postfix_calc()
 
