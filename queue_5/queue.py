@@ -1,14 +1,11 @@
 """
-TODO: 5.1. В классе Queue нам понадобятся три метода:
- size() (количество элементов в очереди), enqueue(item) -
- добавить элемент в хвост очереди, и dequeue(), который
- возвращает элемент из головы очереди, удаляя его.
-TODO: 5.2. Оцените меру сложности для операций enqueue()
- и dequeue().
-TODO: 5.3. Напишите функцию, которая "вращает" очередь по
- кругу на N элементов.
-TODO: 5.4. Попробуйте реализовать очередь с помощью двух
- стеков.
+5.1. Realize three Queue-methods:
+ 1) size() - the number of elements in the queue,
+ 2) enqueue(item) - add **item** to the end of the queue,
+ 3) dequeue() - remove an item from the head of the queue
+     and return this item
+5.2. Rate the complexity of the enqueue() and dequeue() methods.
+5.3. - 5.4. See in **queue_plus.py**
 """
 
 

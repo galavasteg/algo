@@ -1,3 +1,9 @@
+"""
+5.3. Write a function which "rotate" the queue on
+ **N** elements.
+5.4. Try to realize the Queue class using two Stacks.
+"""
+
 from stack_4.stack import Stack
 from queue_5.queue import Queue
 
