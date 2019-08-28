@@ -33,3 +33,13 @@ class Deque:
     def size(self):
         return len(self.deque)
 
+    def to_list(self):
+        return self.deque
+
+    @classmethod
+    def create(cls, vals: list):
+        new_queue = cls()
+        for v in vals:
+            new_queue.addTail(v)
+        return new_queue
+
