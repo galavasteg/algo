@@ -1,5 +1,7 @@
+from itertools import product
+
 from queue_5.queue import Queue
-from queue_5.queue_plus import StackedQueue
+from queue_5.queue_plus import StackedQueue, get_shifted_queue
 
 
 # --------------------------- pytest settings -----------------------
@@ -57,8 +59,31 @@ def test_dequeue():
             assert queue.to_list() == cor_res and p == popped
 
 
+# --------------------------- SHIFT ---------------------------------
+
+def test_shift():
+    for vals, n in product(
+            ([1, 2, 3, 4], [], [0], [None, 0, 17]),
+            (-6, -2, -1, -7, 0, 2, 10)):
+        # TODO: fix n = -7
+        size = len(vals)
+        n_ = (n if abs(n) <= size else
+              0 if size == 0 else abs(n) % size)
+        cor_res = vals[n_:] + vals[:n_]
+        for cls in (Queue, StackedQueue):
+            queue = cls.create(vals)
+            s_queue = get_shifted_queue(queue, n)
+            print(cls.__name__, vals, 'shift:', n, cor_res)
+            assert (s_queue.to_list() == cor_res and
+                    queue.size() == s_queue.size())
+        print()
+
+
+# --------------------------- MAIN ----------------------------------
+
 if __name__ == '__main__':
     test_size()
     test_enqueue()
     test_dequeue()
+    test_shift()
 

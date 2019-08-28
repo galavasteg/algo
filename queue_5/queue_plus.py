@@ -8,8 +8,14 @@ from stack_4.stack import Stack
 from queue_5.queue import Queue
 
 
-def offset_queue(queue: Queue, n: int) -> Queue:
-    return Queue.create(queue.queue[n:] + queue.queue[:n])
+def get_shifted_queue(queue: Queue, n: int) -> Queue:
+    s_queue = Queue.create(queue.to_list())
+    size = s_queue.size()
+    if size > 1:
+        n_ = n if abs(n) <= size else (abs(n) % size)
+        for _ in range(n_ if n_ >= 0 else size + n_):
+            s_queue.enqueue(s_queue.dequeue())
+    return s_queue
 
 
 class StackedQueue:
