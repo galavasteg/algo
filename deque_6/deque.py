@@ -14,26 +14,22 @@ TODO: 7.3. Добавьте для каждого из четырёх вышеу
 
 class Deque:
     def __init__(self):
-        # инициализация внутреннего хранилища
-        pass
+        self.deque = []
 
     def addFront(self, item):
-        # добавление в голову
-        pass
+        self.deque.insert(0, item)
 
     def addTail(self, item):
-        # добавление в хвост
-        pass
+        self.deque.append(item)
 
     def removeFront(self):
-        # удаление из головы
-        return None  # если очередь пуста
+        if self.deque:
+            return self.deque.pop(0)
 
     def removeTail(self):
-        # удаление из хвоста
-        return None  # если очередь пуста
+        if self.deque:
+            return self.deque.pop(-1)
 
     def size(self):
-        return 0  # размер очереди
-
+        return len(self.deque)
 
