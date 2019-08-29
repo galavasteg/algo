@@ -2,7 +2,6 @@ import pytest
 from itertools import product
 
 from unidirectional_list_1.linkedList import Node, LinkedList
-from unidirectional_list_1.main import create_list, get_list_vals, get_nodes_vals, merge_lists
 
 
 # linked objects, can be used in tests' params
@@ -40,11 +39,11 @@ class BaseTest:
 class TestClean(BaseTest):
     @pytest.mark.parametrize('init_vals', ([2, 11, 1], [100], [0], []))
     def test_clean(self, init_vals: list):
-        LList = create_list(init_vals)
-        print('init state:', get_list_vals(LList))
+        LList = LinkedList.create_list(init_vals)
+        print('init state:', LList.to_list())
         print('expected (clean):', [])
         LList.clean()
-        result = get_list_vals(LList)
+        result = LList.to_list()
         print('result:', result)
         assert result == []
 
@@ -55,8 +54,8 @@ class TestLen(BaseTest):
     @pytest.mark.parametrize('init_vals', INIT_VALS)
     def test_len(self, init_vals: list):
         expected = len(init_vals)
-        LList = create_list(init_vals)
-        print('init state:', get_list_vals(LList))
+        LList = LinkedList.create_list(init_vals)
+        print('init state:', LList.to_list())
         print('expected (len):', expected)
         result = LList.len()
         print('result:', result)
@@ -80,12 +79,12 @@ class TestFindAll(BaseTest):
     @pytest.mark.parametrize(**FIND_ALL_PARAMS)
     def test_find_all(self, init_vals: list, val):
         expected = self.get_correct_findall_nodes(init_vals, val)
-        LList = create_list(init_vals)
-        print('init state:', get_list_vals(LList))
+        LList = LinkedList.create_list(init_vals)
+        print('init state:', LList.to_list())
         print(f'find all nodes with "{val}"')
         print('expected:', expected)
         nodes = LList.find_all(val)
-        result = get_nodes_vals(nodes)
+        result = LinkedList.get_nodes_vals(nodes)
         print('result:', result)
         assert result == expected
 
@@ -113,12 +112,12 @@ class TestDelete(BaseTest):
     @pytest.mark.parametrize(**DELETE_PARAMS)
     def test_delete(self, init_vals: list, del_val, del_all: bool):
         expected = self.get_correct_delete_vals(init_vals, del_val, del_all)
-        LList = create_list(init_vals)
-        print('init state:', get_list_vals(LList))
+        LList = LinkedList.create_list(init_vals)
+        print('init state:', LList.to_list())
         print(f'del {"ALL nodes" if del_all else "1-st node"} with "{del_val}"')
         print('expected:', expected)
         LList.delete(del_val, all=del_all)
-        result = get_list_vals(LList)
+        result = LList.to_list()
         print('result:', result)
         assert result == expected
 
@@ -152,13 +151,13 @@ class TestInsert(BaseTest):
     @pytest.mark.parametrize(**INSERT_PARAMS)
     def test_insert(self, init_vals: list, after_val, val):
         expected = self.get_correct_insert_vals(init_vals, after_val, val)
-        LList = create_list(init_vals)
-        print('init state:', get_list_vals(LList))
+        LList = LinkedList.create_list(init_vals)
+        print('init state:', LList.to_list())
         print(f'after node with "{after_val}" ins node with"{val}"')
         print('expected:', expected)
         afterNode = LList.find(after_val)
         LList.insert(afterNode, Node(val))
-        result = get_list_vals(LList)
+        result = LList.to_list()
         print('result:', result)
         assert result == expected
 
@@ -189,11 +188,12 @@ class TestMerge(BaseTest):
     @pytest.mark.parametrize(**MERGE_PARAMS)
     def test_merge(self, init_vals1: list, init_vals2: list):
         expected = self.get_correct_merge_vals(init_vals1, init_vals2)
-        LList1, LList2 = create_list(init_vals1), create_list(init_vals2)
-        print('init state:', get_list_vals(LList1), get_list_vals(LList2))
+        [LList1, LList2] = [LinkedList.create_list(vs)
+                            for vs in (init_vals1, init_vals2)]
+        print('init state:', LList1.to_list(), LList2.to_list())
         print('expected (sum vals):', expected)
-        newLList = merge_lists(LList1, LList2)
-        result = get_list_vals(newLList)
+        newLList = LinkedList.merge_lists(LList1, LList2)
+        result = newLList.to_list()
         print('result:', result)
         assert result == expected
 
