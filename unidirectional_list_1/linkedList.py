@@ -1,25 +1,11 @@
-# + TODO 1.7: Напишите проверочные тесты для каждого из
-#    предыдущих заданий.
-# + TODO 1.8: Напишите функцию, которая получает на вход
-#    два связанных списка, состоящие из целых значений,
-#    и если их длины равны, возвращает список, каждый
-#    элемент которого равен сумме соответствующих элементов
-#    входных списков.
-
-# TODO Рекомендации по тестированию:
-#  Проверяйте случаи, когда
-#  - список пустой,
-#  - содержит много элементов
-#  - содержит один элемент
-#  как в таких ситуациях будет работать
-#  - удаление одного
-#  - нескольких элементов,
-#  - вставка,
-#  - поиск.
-#  Особое внимание уделите корректности полей
-#  head и tail после ВСЕХ этих операций.
-
-# TODO: translate doc in EN
+"""
+1.7: Write tests for all previous tasks 1.1.-1.6.
+ Pay attention to the correct field values:
+ **head, tail** after all operations.
+  - what if list is empty;
+  - what if list has many elements;
+  - what if list has only one element;
+"""
 
 
 class Node:
@@ -55,8 +41,8 @@ class LinkedList:
         return None
 
     def find_all(self, val) -> list:
-        # + TODO 1.4.: найти узлы по конкретному значению
-        #    На выход - список найденных узлов
+        """1.4.: Find all nodes by **val**
+        (return a list of found nodes)."""
         nodes = []
         node = self.head
         while node is not None:
@@ -66,8 +52,8 @@ class LinkedList:
         return nodes
 
     def delete(self, val, all=False):
-        # + TODO 1.1.: удалить только первый нашедшийся узел
-        # + TODO 1.2.: удалить все узлы по конкретному значению
+        """1.1.: Delete only 1-st node with **val**
+        1.2.: Delete **all** nodes with **val**"""
         nodes = self.find_all(val)
         for del_n in (nodes[::-1] if all else nodes[:1]):
             if del_n is self.head and del_n.next is None:
@@ -85,12 +71,11 @@ class LinkedList:
             # del_n.next = None
 
     def clean(self):
-        # + TODO 1.3.: очистить все содержимое
-        #    (создание пустого LinkedList)
+        """1.3.: delete all nodes in list (init. new list)"""
         self.__init__()
 
     def len(self) -> int:
-        # + TODO 1.5.: вычислить текущую длину списка
+        """1.5.: Compute list length"""
         _len = 0
         node = self.head
         while node:
@@ -99,9 +84,9 @@ class LinkedList:
         return _len
 
     def insert(self, afterNode, newNode: Node):
-        # + TODO 1.6.: вставить узел newNode после заданного узла
-        #    afterNode (из списка). Если afterNode = None
-        #    и список пустой, добавить newNode первым в списке.
+        """1.6.: Insert **newNode** after **afterNode**.
+        If **afterNode** is None and list is empty add
+        **newNode** in head."""
         if afterNode is self.tail:
             self.add_in_tail(newNode)
         else:
@@ -137,11 +122,8 @@ class LinkedList:
 
     @classmethod
     def merge_lists(cls, list1, list2):
-        # + TODO 1.8: Напишите функцию, которая получает на вход
-        #    два связанных списка, состоящие из целых значений,
-        #    и если их длины равны, возвращает список, каждый
-        #    элемент которого равен сумме соответствующих элементов
-        #    входных списков.
+        """1.8: return LinkedList of  Sums corresponding
+        elements of two LinkedLists, which consist of integers."""
         if list1.len() == list2.len():
             new_list = cls()
             n1, n2 = list1.head, list2.head
