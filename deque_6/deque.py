@@ -1,14 +1,14 @@
 """
-TODO: 7.1. Почему и как будет различаться мера сложности
- для addHead/removeHead и addTail/removeTail?
-
-TODO: 6.2. Напишите функцию, которая с помощью deque проверяет,
- является ли некоторая строка палиндромом (читается одинаково
- слева направо и справа налево).
-
-TODO: 7.3. Добавьте для каждого из четырёх вышеупомянутых методов
- тесты: проверяйте изменившуюся длину очереди и наличие или
- отстутствие в ней добавляемого/удаляемого элемента.
+6.1. The measure of complexity of the addHead/removeHead and
+ addTail/removeTail methods depends to a large extent on what
+ we choose as list heading and list tail. Rate the complexity
+ of these methods in both options.
+6.2. Write a function that uses deque to determine that
+ the string is a palindrome (a string that reads the same
+ backward as forward).
+6.3. Write tests for addHead/removeHead and addTail/removeTail
+ methods: check the deque size and deque state after
+ adding/removing elements.
 """
 
 
