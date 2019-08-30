@@ -54,6 +54,7 @@ class Deque:
     @classmethod
     def is_pali(cls, s: str):
         d = cls.create(list(s.lower()))
-        return all([d.removeFront() == d.removeTail()
-                    for _ in range(d.size() // 2)])
+        pairs_equality = [d.removeFront() == d.removeTail()
+                          for _ in range(d.size() // 2)]
+        return all(pairs_equality)
 
