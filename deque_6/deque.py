@@ -17,16 +17,24 @@ class Deque:
         self.deque = []
 
     def addFront(self, item):
+        # 6.1. head - [0, ...] - O(n)
+        # head - [..., -1] - O(1)
         self.deque.insert(0, item)
 
     def addTail(self, item):
+        # 6.1. tail - [..., -1] - O(1)
+        # tail - [0, ...] - O(n)
         self.deque.append(item)
 
     def removeFront(self):
+        # 6.1. head - [0, ...] - O(n)
+        # head - [..., -1] - O(1)
         if self.deque:
             return self.deque.pop(0)
 
     def removeTail(self):
+        # 6.1. tail - [..., -1] - O(1)
+        # tail - [0, ...] - O(n)
         if self.deque:
             return self.deque.pop(-1)
 
@@ -46,6 +54,7 @@ class Deque:
     @classmethod
     def is_pali(cls, s: str):
         d = cls.create(list(s.lower()))
-        return all([d.removeFront() == d.removeTail()
-                    for _ in range(d.size() // 2)])
+        pairs_equality = [d.removeFront() == d.removeTail()
+                          for _ in range(d.size() // 2)]
+        return all(pairs_equality)
 
