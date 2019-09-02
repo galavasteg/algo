@@ -1,5 +1,7 @@
 from itertools import product
 
+import pytest
+
 from orederedList_7.orderedList import OrderedList, OrderedStringList
 
 
@@ -36,6 +38,28 @@ class BaseTest:
         print()
 
 
+# --------------------------- ADD -----------------------------------
+
+ADD_PARAMS = dict(
+    argnames='init_vals, asc, val',
+    argvalues=list(product(INIT_VALS, ASC_ARGS, VALS_ARGS)))
+
+
+@pytest.mark.parametrize(**ADD_PARAMS)
+def test_add(init_vals: list, asc: bool, val: int):
+    expected = list(init_vals) + [val]
+    expected = sorted(expected, reverse=not asc)
+    expected = [get_node_vals_view(expected, i)
+                for i, v in enumerate(expected)]
+    OList = OrderedList.create(init_vals, asc)
+    print('\ninit state', asc, ':', OList.vals)
+    print('insert "{val}"'.format(val=val))
+    print('expected:', expected)
+    OList.add(val)
+    result = [(n._prev_vals(), n.value, n._next_vals())
+              for n in OList.get_all()]
+    print('result:', result)
+    assert result == expected
 
 
 # --------------------------- FIND ----------------------------------
