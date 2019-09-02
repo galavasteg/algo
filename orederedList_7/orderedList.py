@@ -55,33 +55,36 @@ class OrderedList:
                 0 if v1 == v2 else 1)
 
     def add(self, value):
-        """7.3. Добавление нового элемента по значению add() с единственным
- параметром -- новым добавляемым значением (новый узел для него
- создавайте внутри метода add). Элемент должен вставиться автоматически
- между элементами с двумя подходящими значениями (либо в начало или
- конец списка) с учётом его значения и признака упорядоченности.
- Используйте для этого метод сравнения значений из предыдущего пункта."""
+        """TODO: 7.3. doc"""
+        # TODO: one cycle
         newNode = Node(value)
-        afterNode, _, add_direction = self.find_nearest_node(value)
-        if afterNode is None:
+        nodes = self.get_all()
+        if not nodes:
             self.head = newNode
             self.tail = newNode
-        elif add_direction == 'next':
-            newNode.prev = afterNode
-            if afterNode.next is not None:
-                afterNode.next.prev = newNode
-            else:
-                self.tail = newNode
-            newNode.next = afterNode.next
-            afterNode.next = newNode
-        elif add_direction == 'prev':
-            newNode.next = afterNode
-            if afterNode.prev is not None:
-                afterNode.prev.next = newNode
-            else:
+        else:
+            stop_search = 1 if self.__ascending else -1
+            for next_n in nodes:
+                comp_res = self.compare(next_n.value, value)
+                if comp_res == stop_search:
+                    afterNode = next_n.prev
+                    break
+                else:
+                    afterNode = next_n
+            if afterNode is None:  # prev of head
+                newNode.next = self.head
+                self.head.prev = newNode
                 self.head = newNode
-            newNode.prev = afterNode.prev
-            afterNode.prev = newNode
+            elif afterNode is self.tail:
+                self.tail.next = newNode
+                newNode.prev = self.tail
+                self.tail = newNode
+            else:
+                newNode.prev = afterNode
+                afterNode.next.prev = newNode
+                newNode.next = afterNode.next
+                afterNode.next = newNode
+                newNode.prev = afterNode
 
     def find(self, val):
         """7.5. Переделайте функцию поиска элемента по значению с учётом

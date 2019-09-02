@@ -52,7 +52,7 @@ def test_add(init_vals: list, asc: bool, val: int):
     expected = [get_node_vals_view(expected, i)
                 for i, v in enumerate(expected)]
     OList = OrderedList.create(init_vals, asc)
-    print('\ninit state', asc, ':', OList.vals)
+    print('\ninit state', asc, ':', [n.value for n in OList.get_all()])
     print('insert "{val}"'.format(val=val))
     print('expected:', expected)
     OList.add(val)
