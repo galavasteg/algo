@@ -1,6 +1,5 @@
 """
-TODO: 7.6. Добавьте тесты для добавления, удаления и поиска элемента
- по его значению -- каждый случай с учётом признака упорядоченности.
+TODO: 7.6. doc.
 """
 
 
@@ -30,23 +29,16 @@ class Node:
 
 class OrderedList:
     def __init__(self, asc):
-        """7.1. Реализуйте дополнительную опцию asc в конструкторе
- OrderedList, которая указывает, по возрастанию (True) или по
- убыванию (False) должны храниться элементы в массиве. Эту
- опцию сделайте приватной -- изменять её можно только в конструкторе
- и методе очистки clean()."""
+        """TODO: 7.1. doc"""
         self.head = None
         self.tail = None
         self.__ascending = asc
 
     def compare(self, v1, v2):
-        """7.2. Метод сравнения двух значений compare(). В общем случае,
- мы можем хранить в нашем списке произвольные объекты (например,
- экземпляры класса Cat), и способ, которым мы желаем их сравнивать,
- потенциально может быть самым произвольным. Пока сделайте базовый
- вариант этого метода, который сравнивает числовые значения."""
+        """TODO: 7.2. doc"""
         return (-1 if v1 < v2 else
-                0 if v1 == v2 else 1)
+                0 if v1 == v2 else
+                1)  # v2 > v2
 
     def add(self, value):
         """TODO: 7.3. doc"""
@@ -133,7 +125,7 @@ class OrderedStringList(OrderedList):
     def __init__(self, asc):
         super(OrderedStringList, self).__init__(asc)
 
-    def compare(self, v1: str, v2: str) -> int:
+    def compare(self, v1, v2):
         """TODO: 7.4. doc"""
         return super(OrderedStringList, self).compare(
             v1.strip(), v2.strip())

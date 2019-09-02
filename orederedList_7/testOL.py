@@ -127,15 +127,3 @@ def test_compare_strs(s1: str, s2: str, res: bool):
     print('result:', result)
     assert result == res
 
-
-# --------------------------- MAIN ----------------------------------
-
-if __name__ == '__main__':
-    test_add()
-    test_find()
-    # test_len()
-    # test_get_all()
-    # test_clean()
-    test_compare()
-    test_delete()
-
