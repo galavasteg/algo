@@ -70,7 +70,10 @@ class OrderedList:
  признака упорядоченности и возможности раннего прерывания поиска,
  если найден заведомо больший или меньший элемент, нежели искомый.
  Оцените сложность операции поиска, изменилась ли она?"""
-        return None  # здесь будет ваш код
+        nearest_n, comp_res, _ = self.find_nearest_node(val)
+        if comp_res == 0:
+            return nearest_n
+
     def find_nearest_node(self, val) -> tuple:
         half_n, iter_direction = ((self.head, 'next') if self.__ascending else
                                   (self.tail, 'prev'))
