@@ -61,9 +61,27 @@ class OrderedList:
  между элементами с двумя подходящими значениями (либо в начало или
  конец списка) с учётом его значения и признака упорядоченности.
  Используйте для этого метод сравнения значений из предыдущего пункта."""
-        pass
-        # автоматическая вставка value
-        # в нужную позицию
+        newNode = Node(value)
+        afterNode, _, add_direction = self.find_nearest_node(value)
+        if afterNode is None:
+            self.head = newNode
+            self.tail = newNode
+        elif add_direction == 'next':
+            newNode.prev = afterNode
+            if afterNode.next is not None:
+                afterNode.next.prev = newNode
+            else:
+                self.tail = newNode
+            newNode.next = afterNode.next
+            afterNode.next = newNode
+        elif add_direction == 'prev':
+            newNode.next = afterNode
+            if afterNode.prev is not None:
+                afterNode.prev.next = newNode
+            else:
+                self.head = newNode
+            newNode.prev = afterNode.prev
+            afterNode.prev = newNode
 
     def find(self, val):
         """7.5. Переделайте функцию поиска элемента по значению с учётом
