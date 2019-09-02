@@ -54,13 +54,8 @@ class BaseTest:
 
 # --------------------------- ADD -----------------------------------
 
-ADD_PARAMS = dict(
-    argnames='init_vals, asc, val',
-    argvalues=list(product(INIT_VALS, ASC_ARGS, VALS_ARGS)))
-
-
-@pytest.mark.parametrize(**ADD_PARAMS)
-def test_add(init_vals: list, asc: bool, val: int):
+@pytest.mark.parametrize(**PARAMS)
+def test_add(init_vals: list, asc: bool, val):
     expected = list(init_vals) + [val]
     expected = sorted(expected, reverse=not asc)
     expected = [get_node_vals_view(expected, i)
@@ -78,8 +73,8 @@ def test_add(init_vals: list, asc: bool, val: int):
 
 # --------------------------- FIND ----------------------------------
 
-@pytest.mark.parametrize(**ADD_PARAMS)
-def test_find(init_vals, asc, val):
+@pytest.mark.parametrize(**PARAMS)
+def test_find(init_vals: list, asc: bool, val):
     expected = list(init_vals)
     expected = sorted(expected, reverse=not asc)
     expected = get_correct_nodes_vals(expected, val)
