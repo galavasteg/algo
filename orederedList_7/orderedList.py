@@ -10,6 +10,29 @@ class Node:
         self.prev = None
         self.next = None
 
+    def _next_vals(self):
+        values = []
+        node = self.next
+        while node is not None:
+            values.append(node.value)
+            node = node.next
+        return values
+
+    def _prev_vals(self):
+        values = []
+        node = self.prev
+        while node is not None:
+            values.append(node.value)
+            node = node.prev
+        values.reverse()
+        return values
+
+    def __get_half_node(self, direction: str, num: int):
+        n = None
+        for _ in range(num):
+            n = self.__getattribute__(direction)
+        return n
+
 
 class OrderedList:
     def __init__(self, asc):
@@ -67,6 +90,22 @@ class OrderedList:
             r.append(node)
             node = node.next
         return r
+
+    @classmethod
+    def create(cls, vals: list, asc: bool):
+        list_ = cls(asc)
+        for v in vals:
+            list_.add(v)
+        return list_
+
+    @property
+    def vals(self) -> list:
+        values = []
+        if self.head is not None:
+            values = [self.head.value]
+            for v in self.head._next_vals():
+                values.append(v)
+        return values
 
 
 class OrderedStringList(OrderedList):
