@@ -16,11 +16,25 @@ def get_node_vals_view(l_vals: list, ind: int):
     return prev_vals, l_vals[ind], next_vals
 
 
+def get_correct_delete_vals(init_vals: list, del_val):
+    corr_vals = list(init_vals)  # copy list
+    try:
+        corr_vals.remove(del_val)
+    except ValueError:
+        pass
+    return [get_node_vals_view(corr_vals, i)
+            for i, v in enumerate(corr_vals)]
+
+
 VALS_ARGS = (-9, 0, 1, 1, 9)
 INIT_VALS = [[]] + [[v] for v in VALS_ARGS]
 INIT_VALS = tuple(INIT_VALS + [list(VALS_ARGS[:i] + VALS_ARGS[i+1:])
                                for i in range(len(VALS_ARGS))])
 ASC_ARGS = (True, False)
+
+PARAMS = dict(
+    argnames='init_vals, asc, val',
+    argvalues=list(product(INIT_VALS, ASC_ARGS, VALS_ARGS)))
 
 
 # --------------------------- pytest settings -----------------------
@@ -80,7 +94,22 @@ def test_find(init_vals, asc, val):
     assert result == expected
 
 
-    pass
+# --------------------------- DELETE --------------------------------
+
+@pytest.mark.parametrize(**PARAMS)
+def test_delete(init_vals: list, asc: bool, val):
+    expected = list(init_vals)
+    expected = sorted(expected, reverse=not asc)
+    expected = get_correct_delete_vals(expected, val)
+    OList = OrderedList.create(init_vals, asc)
+    print('\ninit state', asc, ':', [n.value for n in OList.get_all()])
+    print('delete "{val}"'.format(val=val))
+    print('expected:', expected)
+    OList.delete(val)
+    result = [(n._prev_vals(), n.value, n._next_vals())
+              for n in OList.get_all()]
+    print('result:', result)
+    assert result == expected
 
 
 # --------------------------- DELETE --------------------------------

@@ -90,13 +90,28 @@ class OrderedList:
 
     def delete(self, val):
         """Delete 1-st node with **val**"""
-        pass  # здесь будет ваш код
+        del_n = self.find(val)
+        if del_n is not None and del_n.value == val:
+            if del_n is self.head and del_n.next is None:
+                self.clean(self.__ascending)
+            elif del_n is self.tail:
+                self.tail = del_n.prev
+                del_n.prev.next = None
+            elif del_n is self.head:
+                self.head = del_n.next
+                del_n.next.prev = None
+            else:
+                del_n.prev.next = del_n.next
+                del_n.next.prev = del_n.prev
+            # TODO: delete links or not delete?
+            del_n.prev = None
+            del_n.next = None
 
     def clean(self, asc):
         self.__init__(asc)
 
     def len(self):
-        return len(self.vals)
+        return len(self.get_all())
 
     def get_all(self):
         r = []
