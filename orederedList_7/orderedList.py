@@ -117,11 +117,10 @@ class OrderedList:
         pass  # здесь будет ваш код
 
     def clean(self, asc):
-        self.__ascending = asc
-        pass  # здесь будет ваш код
+        self.__init__(asc)
 
     def len(self):
-        return 0  # здесь будет ваш код
+        return len(self.vals)
 
     def get_all(self):
         r = []
