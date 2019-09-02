@@ -16,7 +16,7 @@ def get_node_vals_view(l_vals: list, ind: int):
     return prev_vals, l_vals[ind], next_vals
 
 
-VALS_ARGS = (-9, -4, -1, 0, 1, 4, 9)
+VALS_ARGS = (-9, 0, 1, 1, 9)
 INIT_VALS = [[]] + [[v] for v in VALS_ARGS]
 INIT_VALS = tuple(INIT_VALS + [list(VALS_ARGS[:i] + VALS_ARGS[i+1:])
                                for i in range(len(VALS_ARGS))])
@@ -64,7 +64,22 @@ def test_add(init_vals: list, asc: bool, val: int):
 
 # --------------------------- FIND ----------------------------------
 
-def test_find():
+@pytest.mark.parametrize(**ADD_PARAMS)
+def test_find(init_vals, asc, val):
+    expected = list(init_vals)
+    expected = sorted(expected, reverse=not asc)
+    expected = get_correct_nodes_vals(expected, val)
+    OList = OrderedList.create(init_vals, asc)
+    print('\ninit state', asc, ':', [n.value for n in OList.get_all()])
+    print('find "{val}"'.format(val=val))
+    print('expected:', expected)
+    node = OList.find(val)
+    result = ((node._prev_vals(), val, node._next_vals())
+              if node else None)
+    print('result:', result)
+    assert result == expected
+
+
     pass
 
 

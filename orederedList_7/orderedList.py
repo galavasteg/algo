@@ -27,12 +27,6 @@ class Node:
         values.reverse()
         return values
 
-    def __get_half_node(self, direction: str, num: int):
-        n = None
-        for _ in range(num):
-            n = self.__getattribute__(direction)
-        return n
-
 
 class OrderedList:
     def __init__(self, asc):
@@ -87,33 +81,12 @@ class OrderedList:
                 newNode.prev = afterNode
 
     def find(self, val):
-        """7.5. Переделайте функцию поиска элемента по значению с учётом
- признака упорядоченности и возможности раннего прерывания поиска,
- если найден заведомо больший или меньший элемент, нежели искомый.
- Оцените сложность операции поиска, изменилась ли она?"""
-        nearest_n, comp_res, _ = self.find_nearest_node(val)
-        if comp_res == 0:
-            return nearest_n
-
-    def find_nearest_node(self, val) -> tuple:
-        half_n, iter_direction = ((self.head, 'next') if self.__ascending else
-                                  (self.tail, 'prev'))
-        comp_res = None
-        if half_n is not None:
-            comp_res = self.compare(half_n.value, val)
-            is_asc_next = comp_res == 1 != self.__ascending  # logic XOR
-            iter_direction = 'next' if is_asc_next else 'prev'
-
-        iter_num = self.len() // 2
-        while half_n is not None and iter_num != 0:
-            comp_res = self.compare(half_n.value, val)
-            if comp_res == 0:
-                break
-            is_asc_next = comp_res == 1 != self.__ascending
-            iter_direction = 'next' if is_asc_next else 'prev'
-            iter_num = iter_num // 2
-            half_n = half_n.__get_half_node(iter_direction, iter_num)
-        return half_n, comp_res, iter_direction
+        """TODO: 7.5. doc"""
+        node = self.head
+        while node != None:
+            if self.compare(node.value, val) == 0:
+                return node
+            node = node.next
 
     def delete(self, val):
         """Delete 1-st node with **val**"""
