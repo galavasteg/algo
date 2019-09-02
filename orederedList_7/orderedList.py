@@ -71,6 +71,25 @@ class OrderedList:
  если найден заведомо больший или меньший элемент, нежели искомый.
  Оцените сложность операции поиска, изменилась ли она?"""
         return None  # здесь будет ваш код
+    def find_nearest_node(self, val) -> tuple:
+        half_n, iter_direction = ((self.head, 'next') if self.__ascending else
+                                  (self.tail, 'prev'))
+        comp_res = None
+        if half_n is not None:
+            comp_res = self.compare(half_n.value, val)
+            is_asc_next = comp_res == 1 != self.__ascending  # logic XOR
+            iter_direction = 'next' if is_asc_next else 'prev'
+
+        iter_num = self.len() // 2
+        while half_n is not None and iter_num != 0:
+            comp_res = self.compare(half_n.value, val)
+            if comp_res == 0:
+                break
+            is_asc_next = comp_res == 1 != self.__ascending
+            iter_direction = 'next' if is_asc_next else 'prev'
+            iter_num = iter_num // 2
+            half_n = half_n.__get_half_node(iter_direction, iter_num)
+        return half_n, comp_res, iter_direction
 
     def delete(self, val):
         """Delete 1-st node with **val**"""
