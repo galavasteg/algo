@@ -128,25 +128,13 @@ class OrderedList:
             list_.add(v)
         return list_
 
-    @property
-    def vals(self) -> list:
-        values = []
-        if self.head is not None:
-            values = [self.head.value]
-            for v in self.head._next_vals():
-                values.append(v)
-        return values
-
 
 class OrderedStringList(OrderedList):
     def __init__(self, asc):
         super(OrderedStringList, self).__init__(asc)
 
     def compare(self, v1: str, v2: str) -> int:
-        """7.4. Создайте OrderedStringList -- наследник текущего класса,
- который будет упорядоченно хранить строки. Для этого переопределите
- в нём метод сравнения значений -- он должен сравнивать строки,
- очищенные от начальных и конечных пробелов."""
+        """TODO: 7.4. doc"""
         return super(OrderedStringList, self).compare(
             v1.strip(), v2.strip())
 

@@ -107,10 +107,25 @@ def test_delete(init_vals: list, asc: bool, val):
     assert result == expected
 
 
-# --------------------------- DELETE --------------------------------
+# --------------------------- COMPARE STRINGS -----------------------
 
-def test_delete():
-    pass
+STR_COMP_PARAMS = dict(
+    argnames='s1, s2, res',
+    argvalues=[('     sds sdcsdcs  ', 'sds sdcsdcs  ', 0),
+               ('       ', '', 0), ('', '', 0),
+               ('     sds Adcsdcs  ', 'sds sdcsdcs  ', -1),
+               ('     sds sdcsdcs  ', 'sds Sdcsdcs  ', 1),
+            ])
+
+
+@pytest.mark.parametrize(**STR_COMP_PARAMS)
+def test_compare_strs(s1: str, s2: str, res: bool):
+    OSList = OrderedStringList(True)
+    print('compare "{s1}" and "{s2}"'.format(s1=s1, s2=s2))
+    print('expected:', res)
+    result = OSList.compare(s1, s2)
+    print('result:', result)
+    assert result == res
 
 
 # --------------------------- MAIN ----------------------------------
