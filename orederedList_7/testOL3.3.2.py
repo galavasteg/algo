@@ -129,6 +129,6 @@ if __name__ == '__main__':
         test_add(ivs, asc, val)
         test_find(ivs, asc, val)
         test_delete(ivs, asc, val)
-    for s1, s2, res in STR_COMP_PARAMS:
+    for s1, s2, res in STR_COMP_PARAMS['argvalues']:
         test_compare_strs(s1, s2, res)
 
