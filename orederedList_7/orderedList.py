@@ -1,5 +1,6 @@
 """
-TODO: 7.6. doc.
+7.6. Write tests on add, delete and find functions
+ taking into **asc** attribute.
 """
 
 
@@ -29,20 +30,26 @@ class Node:
 
 class OrderedList:
     def __init__(self, asc):
-        """TODO: 7.1. doc"""
+        """7.1. Implement an additional private attribute
+        in the class constructor - **__ascending**: elements
+        should be stored in an array ascending (True) or
+        descending (False). This attribute can be changed by
+        **clean** method"""
         self.head = None
         self.tail = None
         self.__ascending = asc
 
     def compare(self, v1, v2):
-        """TODO: 7.2. doc"""
+        """7.2. Compare two values: **v1** < **v2** -> -1;
+        **v1** == **v2** -> 0; **v1** > **v2** -> 1"""
         return (-1 if v1 < v2 else
                 0 if v1 == v2 else
                 1)  # v2 > v2
 
     def add(self, value):
-        """TODO: 7.3. doc"""
-        # TODO: one cycle
+        """7.3. Automatically paste new Node with **value** into
+        an array taking into __ascending private attribute (use
+        compare method for it)"""
         newNode = Node(value)
         nodes = self.get_all()
         if not nodes:
@@ -73,12 +80,16 @@ class OrderedList:
                 newNode.prev = afterNode
 
     def find(self, val):
-        """TODO: 7.5. doc"""
+        """7.5. Find 1-st node by **val** taking into account
+        **__ascending** private attribute and the possibility
+        of early termination of the search. Rate the complexity
+        of this method."""
         node = self.head
         while node != None:
             if self.compare(node.value, val) == 0:
-                return node
+                break
             node = node.next
+        return node
 
     def delete(self, val):
         """Delete 1-st node with **val**"""
@@ -126,7 +137,8 @@ class OrderedStringList(OrderedList):
         super(OrderedStringList, self).__init__(asc)
 
     def compare(self, v1, v2):
-        """TODO: 7.4. doc"""
+        """7.4. Compare two strings cleared of
+        leading and trailing spaces."""
         return super(OrderedStringList, self).compare(
             v1.strip(), v2.strip())
 
