@@ -56,6 +56,7 @@ class OrderedList:
             self.head = newNode
             self.tail = newNode
         else:
+            # search afterNode element
             stop_search = 1 if self.__ascending else -1
             for next_n in nodes:
                 comp_res = self.compare(next_n.value, value)
@@ -64,6 +65,7 @@ class OrderedList:
                     break
                 else:
                     afterNode = next_n
+            # insert logic
             if afterNode is None:  # prev of head
                 newNode.next = self.head
                 self.head.prev = newNode
@@ -77,8 +79,8 @@ class OrderedList:
                 afterNode.next.prev = newNode
                 newNode.next = afterNode.next
                 afterNode.next = newNode
-                newNode.prev = afterNode
 
+    # O(n), the same as in LinkedList and LinkedList2
     def find(self, val):
         """7.5. Find 1-st node by **val** taking into account
         **__ascending** private attribute and the possibility
