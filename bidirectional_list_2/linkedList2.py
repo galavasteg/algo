@@ -68,7 +68,7 @@ class LinkedList2:
         self.tail = item
 
     def find(self, val):
-        """2.1.: Find 1-st node by **val*."""
+        """2.1.: Find 1-st node by **val**."""
         node = self.head
         while node is not None:
             if node.value == val:
