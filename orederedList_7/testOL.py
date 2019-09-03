@@ -37,21 +37,6 @@ PARAMS = dict(
     argvalues=list(product(INIT_VALS, ASC_ARGS, VALS_ARGS)))
 
 
-# --------------------------- pytest settings -----------------------
-
-class BaseTest:
-    @classmethod
-    def setup_class(cls):
-        print('============= {} STARTED ================='.format(cls.__name__))
-
-    @classmethod
-    def teardown_class(cls):
-        print('============= {} FINISHED ================'.format(cls.__name__))
-
-    def teardown_method(self, method):
-        print()
-
-
 # --------------------------- ADD -----------------------------------
 
 @pytest.mark.parametrize(**PARAMS)
