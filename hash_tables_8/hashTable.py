@@ -24,11 +24,14 @@ class HashTable:
         self.step = stp
         self.slots = [None] * self.size
 
+    @staticmethod
+    def hash(s: str, sz: int):
+        return sum(s.encode()) % sz
+
     def hash_fun(self, value):
         # в качестве value поступают строки!
-
         # всегда возвращает корректный индекс слота
-        return 0
+        return self.hash(value, self.size)
 
     def seek_slot(self, value):
         # находит индекс пустого слота для значения, или None
