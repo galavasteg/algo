@@ -47,5 +47,13 @@ class HashTable:
 
     def find(self, value):
         # находит индекс слота со значением, или None
-        return None
+        if value in self.slots:
+            return self.slots.index(value)
+
+    @classmethod
+    def create(cls, sz: int, stp: int, vals: tuple):
+        ht = cls(sz, stp)
+        for v in vals:
+            ht.put(v)
+        return ht
 
