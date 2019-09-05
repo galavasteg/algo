@@ -12,7 +12,8 @@ INIT_VALS = tuple(INIT_VALS + tuple(VALS_ARGS[:i] + VALS_ARGS[i+1:]
                                     for i in range(len(VALS_ARGS))))
 PARAMS = dict(
     argnames='sz, stp, vals, val',
-    argvalues=tuple(product(SIZES_ARGS, STEPS_ARGS, INIT_VALS, VALS_ARGS)))
+    argvalues=tuple(product(
+        SIZES_ARGS, STEPS_ARGS, INIT_VALS, VALS_ARGS)))
 
 
 # --------------------------- HASH ----------------------------------
@@ -24,11 +25,6 @@ def test_hash():
 
 
 # --------------------------- SEEK ----------------------------------
-
-SEEK_PARAMS = dict(
-    argnames='sz, stp, vals, val',
-    argvalues=tuple(product(SIZES_ARGS, STEPS_ARGS, INIT_VALS, VALS_ARGS)))
-
 
 def test_seek(sz, stp, vals, val):
     ht = HashTable.create(sz, stp, vals)
@@ -43,11 +39,6 @@ def test_seek(sz, stp, vals, val):
 
 
 # --------------------------- PUT -----------------------------------
-
-PUT_PARAMS = dict(
-    argnames='sz, stp, vals, val',
-    argvalues=tuple(product(SIZES_ARGS, STEPS_ARGS, INIT_VALS, VALS_ARGS)))
-
 
 def test_put(sz, stp, vals, val):
     ht = HashTable.create(sz, stp, vals)
@@ -65,11 +56,6 @@ def test_put(sz, stp, vals, val):
 
 # --------------------------- FIND ----------------------------------
 
-FIND_PARAMS = dict(
-    argnames='sz, stp, vals, val',
-    argvalues=tuple(product(SIZES_ARGS, STEPS_ARGS, INIT_VALS, VALS_ARGS)))
-
-
 def test_find(sz, stp, vals, val):
     ht = HashTable.create(sz, stp, vals)
     corr_res = ht.slots.index(val) if val in ht.slots else None
@@ -84,5 +70,7 @@ def test_find(sz, stp, vals, val):
 if __name__ == '__main__':
     test_hash()
     for sz, stp, vals, val in PARAMS['argvalues']:
+        test_seek(sz, stp, vals, val)
         test_put(sz, stp, vals, val)
+        test_find(sz, stp, vals, val)
 
