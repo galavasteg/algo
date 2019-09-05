@@ -51,10 +51,7 @@ PUT_PARAMS = dict(
 
 def test_put(sz, stp, vals, val):
     ht = HashTable.create(sz, stp, vals)
-    if val in ht.slots:
-        corr_slots = (ht.slots.index(val),)
-    else:
-        corr_slots = tuple(i for i, v in enumerate(ht.slots) if v is None)
+    corr_slots = tuple(i for i, v in enumerate(ht.slots) if v is None)
     if gcd(sz, stp) != 1:
         corr_slots = corr_slots + (None,)
     corr_slots = corr_slots or (None,)
@@ -86,4 +83,6 @@ def test_find(sz, stp, vals, val):
 
 if __name__ == '__main__':
     test_hash()
+    for sz, stp, vals, val in PARAMS['argvalues']:
+        test_put(sz, stp, vals, val)
 

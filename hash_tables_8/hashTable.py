@@ -50,11 +50,9 @@ class HashTable:
         # возвращается индекс слота или None,
         # если из-за коллизий элемент не удаётся
         # разместить
-        exists_in = i = self.find(value)
-        if exists_in is None:
-            i = self.seek_slot(value)
-            if i is not None:
-                self.slots[i] = value
+        i = self.seek_slot(value)
+        if i is not None:
+            self.slots[i] = value
         return i
 
     def find(self, value):
