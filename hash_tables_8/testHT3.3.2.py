@@ -42,6 +42,30 @@ def test_seek(sz, stp, vals, val):
     assert ht.seek_slot(val) in corr_slots
 
 
+# --------------------------- PUT -----------------------------------
+
+PUT_PARAMS = dict(
+    argnames='sz, stp, vals, val',
+    argvalues=tuple(product(SIZES_ARGS, STEPS_ARGS, INIT_VALS, VALS_ARGS)))
+
+
+def test_put(sz, stp, vals, val):
+    ht = HashTable.create(sz, stp, vals)
+    if val in ht.slots:
+        corr_slots = (ht.slots.index(val),)
+    else:
+        corr_slots = tuple(i for i, v in enumerate(ht.slots) if v is None)
+    if gcd(sz, stp) != 1:
+        corr_slots = corr_slots + (None,)
+    corr_slots = corr_slots or (None,)
+    print('\ninit state,', sz, stp, ':', ht.slots)
+    print('put "{val}"'.format(val=val))
+    print('expected put ind in:', corr_slots)
+    res = ht.put(val)
+    print('result:', ht.slots)
+    assert res in corr_slots
+
+
 # --------------------------- FIND ----------------------------------
 
 FIND_PARAMS = dict(
