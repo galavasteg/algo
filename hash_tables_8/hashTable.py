@@ -35,7 +35,14 @@ class HashTable:
 
     def seek_slot(self, value):
         # находит индекс пустого слота для значения, или None
-        return None
+        hash_i = i = self.hash_fun(value)
+        if self.slots[i] is not None:
+            i = (hash_i + self.step) % self.size
+            while (self.slots[i] is not None and hash_i != i):
+                print(hash_i, i)
+                i = (i + self.step) % self.size
+        if self.slots[i] is None:
+            return i
 
     def put(self, value):
         # записываем значение по хэш-функции

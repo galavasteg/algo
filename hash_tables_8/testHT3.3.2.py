@@ -23,6 +23,25 @@ def test_hash():
         assert ht.hash_fun(value) == HashTable.hash(value, sz)
 
 
+# --------------------------- SEEK ----------------------------------
+
+SEEK_PARAMS = dict(
+    argnames='sz, stp, vals, val',
+    argvalues=tuple(product(SIZES_ARGS, STEPS_ARGS, INIT_VALS, VALS_ARGS)))
+
+
+def test_seek(sz, stp, vals, val):
+    ht = HashTable.create(sz, stp, vals)
+    corr_slots = tuple(i for i, v in enumerate(ht.slots) if v is None)
+    if gcd(sz, stp) != 1:
+        corr_slots = corr_slots + (None,)
+    corr_slots = corr_slots or (None,)
+    print('\ninit state,', sz, stp, ':', ht.slots)
+    print('seek "{val}"'.format(val=val))
+    print('expected seek in :', corr_slots)
+    assert ht.seek_slot(val) in corr_slots
+
+
 # --------------------------- FIND ----------------------------------
 
 FIND_PARAMS = dict(
