@@ -22,12 +22,8 @@ PARAMS = dict(
 
 # --------------------------- IS KEY --------------------------------
 
-IS_KEY_PARAMS = dict(
-    argnames='sz, vals, key',
-    argvalues=tuple(product(SIZES, INIT_VALS, KEYS)))
 
-
-@pytest.mark.parametrize(**IS_KEY_PARAMS)
+@pytest.mark.parametrize(**PARAMS)
 def test_is_key(sz, vals, key):
     nd = ND.create(sz, vals)
     print('\ninit state', sz, ':', vals)
