@@ -47,9 +47,11 @@ class NativeDictionary:
         return key in self.slots
 
     def put(self, key, value):
-        pass
         # гарантированно записываем
         # значение value по ключу key
+        i = self.hash_fun(key)
+        self.slots[i] = key
+        self.values[i] = value
 
     def get(self, key):
         # возвращает value для key,

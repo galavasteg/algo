@@ -51,9 +51,36 @@ def test_get(sz, vals, key):
     assert nd.get(key) == corr_val
 
 
+# --------------------------- PUT -----------------------------------
+
+PUT_PARAMS = dict(
+    argnames='sz, vals, key, val',
+    argvalues=tuple(product(SIZES, INIT_VALS, KEYS, VALS)))
+
+
+@pytest.mark.parametrize(**PUT_PARAMS)
+def test_put(sz, vals, key, val):
+    nd = ND.create(sz, vals)
+    corr_view = list(zip(nd.slots, nd.values))
+    if key in nd.slots:
+        corr_view[nd.slots.index(key)] = (key, val)
+    else:
+        corr_view[nd.hash_fun(key)] = (key, val)
+    print('\ninit state,', sz, ':', vals)
+    print('keys:', '\t'.join(map(lambda s: '"%s"' % s, nd.slots)))
+    print('vals:', '\t'.join(map(str, nd.values)))
+    print('put "{key}": "{val}"'.format(key=key, val=val))
+    print('expected dict:', corr_view)
+    nd.put(key, val)
+    res = list(zip(nd.slots, nd.values))
+    print('result:', res)
+    assert res == corr_view
+
+
 # --------------------------- MAIN ----------------------------------
 
 if __name__ == '__main__':
     test_is_key()
+    test_put()
     test_get()
 
