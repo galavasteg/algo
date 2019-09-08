@@ -54,7 +54,9 @@ class NativeDictionary:
     def get(self, key):
         # возвращает value для key,
         # или None если ключ не найден
-        return None
+        if self.is_key(key):
+            i = self.hash_fun(key)
+            return self.values[i]
 
     @classmethod
     def create(cls, sz: int, vals: dict):

@@ -5,6 +5,21 @@ import pytest
 from native_dictionary_9.nativeDict import NativeDictionary as ND
 
 
+SIZES = (1, 3, 8, 11, 17)
+KEYS = ('', 'лещ', 'лещи', 'лщеи', 'dca', 'dac')
+VALS = ([None], 'что-то', (1, 3), 0, 831, '')
+
+INIT_VALS = tuple(({},) + tuple(
+    dict((k, v) for k, v
+         in zip(KEYS[i+1:] + KEYS[:i-1],
+                VALS[i+1:] + VALS[:i-1]))
+    for i in range(len(KEYS)))
+)
+PARAMS = dict(
+    argnames='sz, vals, key',
+    argvalues=tuple(product(SIZES, INIT_VALS, KEYS)))
+
+
 # --------------------------- IS KEY --------------------------------
 
 IS_KEY_PARAMS = dict(
@@ -22,8 +37,23 @@ def test_is_key(sz, vals, key):
     assert nd.is_key(key) == (key in nd.slots)
 
 
+# --------------------------- GET -----------------------------------
+
+@pytest.mark.parametrize(**PARAMS)
+def test_get(sz, vals, key):
+    nd = ND.create(sz, vals)
+    corr_val = vals[key] if key in nd.slots else None
+    print('\ninit state,', sz, ':', vals)
+    print('keys:', '\t'.join(map(lambda s: '"%s"' % s, nd.slots)))
+    print('vals:', '\t'.join(map(str, nd.values)))
+    print('get "{key}"'.format(key=key))
+    print('expected value:', corr_val)
+    assert nd.get(key) == corr_val
+
+
 # --------------------------- MAIN ----------------------------------
 
 if __name__ == '__main__':
     test_is_key()
+    test_get()
 
