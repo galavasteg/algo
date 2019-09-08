@@ -44,7 +44,7 @@ class NativeDictionary:
     def is_key(self, key):
         # возвращает True если ключ имеется,
         # иначе False
-        return False
+        return key in self.slots
 
     def put(self, key, value):
         pass
