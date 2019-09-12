@@ -35,5 +35,6 @@ class BloomFilter:
 
     def is_value(self, str1):
         # проверка, имеется ли строка str1 в
-        pass
+        h1, h2 = self.hash1(str1), self.hash2(str1)
+        return all((self.storage[h1], self.storage[h2]))
 
