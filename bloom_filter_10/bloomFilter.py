@@ -38,3 +38,10 @@ class BloomFilter:
         h1, h2 = self.hash1(str1), self.hash2(str1)
         return all((self.storage[h1], self.storage[h2]))
 
+    @classmethod
+    def create(cls, sz: int, vals: tuple):
+        instance = cls(sz)
+        for v in vals:
+            instance.add(v)
+        return instance
+
