@@ -6,6 +6,7 @@ TODO: EN doc
 class BloomFilter:
     def __init__(self, f_len):
         self.filter_len = f_len
+        self.storage = [0] * self.filter_len
         # создаём битовый массив длиной f_len ...
 
     @staticmethod
@@ -29,7 +30,8 @@ class BloomFilter:
 
     def add(self, str1):
         # добавляем строку str1 в фильтр
-        pass
+        h1, h2 = self.hash1(str1), self.hash2(str1)
+        self.storage[h1] = self.storage[h2] = 1
 
     def is_value(self, str1):
         # проверка, имеется ли строка str1 в
