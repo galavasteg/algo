@@ -1,7 +1,7 @@
 """
 TODO: На основе класса HashTable создайте реализующий множество
  класс PowerSet, который
- 11.1 не должен допускать добавление уже существующего в множестве
+ 11.1. не должен допускать добавление уже существующего в множестве
  значения -- надо изменить оригинальный метод put().
  11.2. дополнительно реализуем следующие типичные для множества методы:
  - remove(значение) -- удаление элемента из множества;
@@ -41,16 +41,21 @@ TODO: На основе класса HashTable создайте реализую
 class PowerSet:
     def __init__(self):
         # ваша реализация хранилища
-        pass
+        self.sz = 20000
+        self.slots = [None] * self.sz
+
+    def hash_fun(self, value):
+        # TODO: doc
+        return sum(value.encode()) % self.sz
 
     def size(self):
-        # количество элементов в множестве
-        return 0
+        # TODO: количество элементов в множестве
+        return len(self.get_vals())
 
     def get(self, value):
-        # возвращает True если value имеется в множестве,
-        # иначе False
-        return False
+        # TODO: возвращает True если value имеется в множестве, иначе False
+        i = self.hash_fun(value)
+        return self.slots[i] is not None
 
     def put(self, value):
         # всегда срабатывает
@@ -78,4 +83,14 @@ class PowerSet:
         # подмножество текущего множества,
         # иначе False
         return False
+
+    def get_vals(self):
+        return tuple(filter(lambda x: x is not None, self.slots))
+
+    @classmethod
+    def create(cls, vals):
+        p_set = cls()
+        for v in vals:
+            p_set.put(v)
+        return p_set
 
