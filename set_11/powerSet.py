@@ -18,7 +18,7 @@ class PowerSet:
         return len(self.get_vals())
 
     def get(self, value):
-        # TODO: возвращает True если value имеется в множестве, иначе False
+        # TODO: EN doc
         i = self.hash_fun(value)
         return self.slots[i] is not None
 
@@ -38,7 +38,7 @@ class PowerSet:
         return is_rm
 
     def intersection(self, set2):
-        # TODO: пересечение текущего множества и set2
+        # TODO: EN doc
         intersection_vals = tuple(v1 for v1, v2 in
                                   zip(self.slots, set2.slots)
                                   if v1 is not None and v1 == v2)
