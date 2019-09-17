@@ -114,4 +114,20 @@ def test_diff(vals1, vals2):
 
 # --------------------------- ISSUBSET ------------------------------
 
+@pytest.mark.parametrize(**SETS_PARAMS)
+def test_issubset(vals1, vals2):
+    print()
+    ps1 = PowerSet.create(vals1)
+    ps2 = PowerSet.create(vals2)
+    i_val_map1 = dict(filter(lambda x: x[1] is not None, enumerate(ps1.slots)))
+    i_val_map2 = dict(filter(lambda x: x[1] is not None, enumerate(ps2.slots)))
+    init_set1 = set(i_val_map1.values())
+    init_set2 = set(i_val_map2.values())
+    print('init A ind-val mapping:', i_val_map1)
+    print('init B ind-val mapping:', i_val_map2)
+    print('init sets:', init_set1, init_set2)
+    expected = init_set2.issubset(init_set1)
+    print('issubset expected', expected)
+    res = ps1.issubset(ps2)
+    assert res == expected
 

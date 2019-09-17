@@ -91,10 +91,12 @@ class PowerSet:
         return self.create(diff_vals)
 
     def issubset(self, set2):
-        # возвращает True, если set2 есть
-        # подмножество текущего множества,
-        # иначе False
-        return False
+        # TODO: возвращает True, если set2 есть подмножество
+        #  текущего множества, иначе False
+        equal_vals = tuple(self.slots[i] == v2 for i, v2 in
+                           enumerate(set2.slots)
+                           if v2 is not None)
+        return all(equal_vals)
 
     def get_vals(self):
         return tuple(filter(lambda x: x is not None, self.slots))
