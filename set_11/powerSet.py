@@ -78,8 +78,9 @@ class PowerSet:
         return self.create(intersection_vals)
 
     def union(self, set2):
-        # объединение текущего множества и set2
-        return None
+        # TODO: объединение текущего множества и set2
+        union_vals = self.get_vals() + set2.get_vals()
+        return self.create(union_vals)
 
     def difference(self, set2):
         # разница текущего множества и set2
