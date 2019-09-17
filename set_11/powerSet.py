@@ -62,9 +62,13 @@ class PowerSet:
         pass
 
     def remove(self, value):
-        # возвращает True если value удалено
-        # иначе False
-        return False
+        # TODO: возвращает True если value удалено, иначе False
+        i = self.hash_fun(value)
+        is_rm = False
+        if self.slots[i] is not None:
+            self.slots[i] = None
+            is_rm = True
+        return is_rm
 
     def intersection(self, set2):
         # пересечение текущего множества и set2
