@@ -83,8 +83,12 @@ class PowerSet:
         return self.create(union_vals)
 
     def difference(self, set2):
-        # разница текущего множества и set2
-        return None
+        # TODO: разница текущего множества и set2
+        # TODO: test another approach
+        diff_vals = tuple(v1 for v1, v2
+                          in zip(self.slots, set2.slots)
+                          if v1 is not None and v1 != v2)
+        return self.create(diff_vals)
 
     def issubset(self, set2):
         # возвращает True, если set2 есть
