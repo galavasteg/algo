@@ -71,8 +71,11 @@ class PowerSet:
         return is_rm
 
     def intersection(self, set2):
-        # пересечение текущего множества и set2
-        return None
+        # TODO: пересечение текущего множества и set2
+        intersection_vals = tuple(v1 for v1, v2 in
+                                  zip(self.slots, set2.slots)
+                                  if v1 is not None and v1 == v2)
+        return self.create(intersection_vals)
 
     def union(self, set2):
         # объединение текущего множества и set2
