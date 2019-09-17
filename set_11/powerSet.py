@@ -60,9 +60,8 @@ class PowerSet:
     def put(self, value):
         # TODO: всегда срабатывает
         i = self.hash_fun(value)
-        if self.slots[i] is None:
-            self.slots[i] = value
-            return i
+        self.slots[i] = value
+        return i
 
     def remove(self, value):
         # TODO: возвращает True если value удалено, иначе False

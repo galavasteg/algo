@@ -26,8 +26,9 @@ def test_put(vals, val):
     ps = PowerSet.create(vals)
     i_val_map = dict(filter(lambda x: x[1] is not None, enumerate(ps.slots)))
     init_set = set(i_val_map.values())
-    free_slots = (tuple(i for i, v in enumerate(ps.slots) if v is None)
-                  if val not in init_set else (None,))
+    corr_slots = (tuple(i for i, v in enumerate(ps.slots) if v is None)
+                  if val not in init_set else
+                  (ps.slots.index(val),))
     print('\ninit ind-val mapping:', i_val_map)
     print('init set:', init_set)
     print('put "{val}"'.format(val=val))
@@ -36,7 +37,7 @@ def test_put(vals, val):
     res_i = ps.put(val)
     res_set = set(filter(lambda x: x is not None, ps.slots))
     print('result:', res_set)
-    assert res_i in free_slots and res_set == init_set
+    assert res_i in corr_slots and res_set == init_set
 
 
 # --------------------------- REMOVE --------------------------------
