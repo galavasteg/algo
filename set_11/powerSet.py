@@ -58,12 +58,36 @@ class PowerSet:
         # ind of new/existing val, None if set is overflow
         return i
 
+    def _get_last_collision_slot(self, hash_i, from_i):
+        lastCollisionSlot = from_i
+        i = self.get_next_index(hash_i)
+        while (self.slots[i] is not None and  # slot is busy
+               # there are free slots <= step is prime for size
+               hash_i != i):
+            # hash of value in i-slot equal to *hash_i*
+            if self.hash_fun(self.slots[i]) == hash_i:
+                lastCollisionSlot = i
+            i = self.get_next_index(i)
+        return lastCollisionSlot
+
     def remove(self, value):
         # TODO: EN doc
-        is_rm = False
-        if self.get(value):
-            i = self._get_exist_val_index(value)
-            self.slots[i] = None
+        is_rm, valueSlot, hash_i = False, None, self.hash_fun(value)
+        if self.slots[hash_i] == value:
+            valueSlot = hash_i
+        elif self.slots[hash_i] is not None:
+            i = self.get_next_index(hash_i)
+            while self.slots[i] is not None and hash_i != i:
+                if self.slots[i] == value:
+                    valueSlot = i
+                    break
+                i = self.get_next_index(i)
+
+        if valueSlot is not None:
+            lastCollisionSlot = self._get_last_collision_slot(hash_i, valueSlot)
+            # replace value in last collision slot to slot of exiting
+            self.slots[valueSlot] = self.slots[lastCollisionSlot]
+            self.slots[lastCollisionSlot] = None
             is_rm = True
         return is_rm
 
