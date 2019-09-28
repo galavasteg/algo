@@ -18,7 +18,7 @@ class PowerSet:
         # TODO: EN doc
         return len(self.get_vals())
 
-    def get_next_index(self, ind):
+    def _get_next_slot(self, ind):
         return (ind + self.stp) % self.sz
 
     def get(self, value):
@@ -28,12 +28,12 @@ class PowerSet:
         if self.slots[hash_i] == value:
             isExist = True
         elif self.slots[hash_i] is not None:
-            i = self.get_next_index(hash_i)
+            i = self._get_next_slot(hash_i)
             while self.slots[i] is not None and hash_i != i:
                 if self.slots[i] == value:
                     isExist = True
                     break
-                i = self.get_next_index(i)
+                i = self._get_next_slot(i)
         return isExist
 
     def put(self, value):
@@ -44,13 +44,13 @@ class PowerSet:
         if self.slots[hash_i] == value:
             valueSlot = hash_i
         elif self.slots[hash_i] is not None:
-            i = self.get_next_index(hash_i)
+            i = self._get_next_slot(hash_i)
             while self.slots[i] is not None and hash_i != i:
                 if self.slots[i] == value:
                     # *value* is collision of another element
                     valueSlot = i
                     break
-                i = self.get_next_index(i)
+                i = self._get_next_slot(i)
         # *value* is not in Set and *i* is a free slot
         if valueSlot is None and self.slots[i] is None:
             self.slots[i] = value
@@ -60,14 +60,14 @@ class PowerSet:
 
     def _get_last_collision_slot(self, hash_i, from_i):
         lastCollisionSlot = from_i
-        i = self.get_next_index(hash_i)
+        i = self._get_next_slot(hash_i)
         while (self.slots[i] is not None and  # slot is busy
                # there are free slots <= step is prime for size
                hash_i != i):
             # hash of value in i-slot equal to *hash_i*
             if self.hash_fun(self.slots[i]) == hash_i:
                 lastCollisionSlot = i
-            i = self.get_next_index(i)
+            i = self._get_next_slot(i)
         return lastCollisionSlot
 
     def remove(self, value):
@@ -76,13 +76,13 @@ class PowerSet:
         if self.slots[hash_i] == value:
             valueSlot = hash_i
         elif self.slots[hash_i] is not None:
-            i = self.get_next_index(hash_i)
+            i = self._get_next_slot(hash_i)
             while self.slots[i] is not None and hash_i != i:
                 if self.slots[i] == value:
                     # *value* is collision of another element
                     valueSlot = i
                     break
-                i = self.get_next_index(i)
+                i = self._get_next_slot(i)
 
         if valueSlot is not None:
             lastCollisionSlot = self._get_last_collision_slot(hash_i, valueSlot)
