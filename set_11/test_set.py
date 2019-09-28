@@ -11,6 +11,10 @@ INIT_VALS = (INIT_VALS +
              tuple(VALS_ARGS[:i] + VALS_ARGS[i+1:]
                    for i in range(len(VALS_ARGS))) +
              (VALS_ARGS,))
+UNION_PARAMS = dict(
+    argnames='vals1, vals2',
+    argvalues=tuple(product(INIT_VALS, INIT_VALS)))
+
 # put a lot of numbers
 INIT_VALS = INIT_VALS + (tuple(map(str, range(20000))),)
 
