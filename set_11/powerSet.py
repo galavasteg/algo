@@ -49,14 +49,24 @@ class PowerSet:
 
     def put(self, value):
         # TODO: EN doc
-        if self.get(value):
-            i = self._get_exist_val_index(value)
-        else:
-            i = self.seek_slot(value)
-            if i is not None:
-                self.slots[i] = value
-        # ind of new/existing val, None if set is overflow
-        return i
+        # get existing/new *value* slot
+        valueSlot = None
+        hash_i = i = self.hash_fun(value)
+        if self.slots[hash_i] == value:
+            valueSlot = hash_i
+        elif self.slots[hash_i] is not None:
+            i = self.get_next_index(hash_i)
+            while self.slots[i] is not None and hash_i != i:
+                if self.slots[i] == value:
+                    valueSlot = i
+                    break
+                i = self.get_next_index(i)
+        # if there is a free slot
+        if valueSlot is None and self.slots[i] is None:
+            self.slots[i] = value
+            valueSlot = i
+        # slot of existing/new *value* or None (if set is overflow)
+        return valueSlot
 
     def _get_last_collision_slot(self, hash_i, from_i):
         lastCollisionSlot = from_i
