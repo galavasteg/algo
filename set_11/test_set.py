@@ -35,8 +35,9 @@ def test_put(vals, val):
     print('expected:', init_set)
     res_i = ps.put(val)
     res_set = set(filter(lambda x: x is not None, ps.slots))
-    print('result:', res_set)
-    assert res_i in corr_slots and res_set == init_set
+    print('result:', ps.size(), res_set)
+    assert (res_i in corr_slots and res_set == init_set and
+            ps.size() == len(init_set))
 
 
 # --------------------------- REMOVE --------------------------------
@@ -56,8 +57,9 @@ def test_remove(vals, val):
     print('expected:', init_set)
     res = ps.remove(val)
     res_set = set(filter(lambda x: x is not None, ps.slots))
-    print('result:', res_set)
-    assert res == expected and res_set == init_set
+    print('result:', ps.size(), res_set)
+    assert (res == expected and res_set == init_set and
+            ps.size() == len(init_set))
 
 
 # --------------------------- INTERSECTION --------------------------
