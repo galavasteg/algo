@@ -6,7 +6,7 @@ TODO: EN doc
 # TODO: EN doc
 class PowerSet:
     def __init__(self):
-        self.sz = 20000
+        self.sz, self.stp = 20000, 71
         self.slots = [None] * self.sz
 
     def hash_fun(self, value):
@@ -18,10 +18,23 @@ class PowerSet:
         # TODO: EN doc
         return len(self.get_vals())
 
+    def get_next_index(self, ind):
+        return (ind + self.stp) % self.sz
+
     def get(self, value):
         # TODO: EN doc
         i = self.hash_fun(value)
         return self.slots[i] is not None
+
+    def seek_slot(self, value):
+        # TODO: doc
+        hash_i = i = self.hash_fun(value)
+        if self.slots[i] is not None:
+            i = self.get_next_index(hash_i)
+            while self.slots[i] is not None and hash_i != i:
+                i = self.get_next_index(i)
+        if self.slots[i] is None:
+            return i
 
     def put(self, value):
         # TODO: EN doc
