@@ -5,11 +5,15 @@ import pytest
 from set_11.powerSet import PowerSet
 
 
-VALS_ARGS = ('', 'лещ', 'dca')
-INIT_VALS = (tuple(),) + tuple((v,) for v in VALS_ARGS)
-INIT_VALS = tuple(INIT_VALS + tuple(VALS_ARGS[:i] + VALS_ARGS[i+1:]
-                                    for i in range(len(VALS_ARGS))) +
-                  (VALS_ARGS,))
+VALS_ARGS = ('', 'лещ', 'dca', 'cda', '0', '-115')
+INIT_VALS = ((),) + tuple((v,) for v in VALS_ARGS)
+INIT_VALS = (INIT_VALS +
+             tuple(VALS_ARGS[:i] + VALS_ARGS[i+1:]
+                   for i in range(len(VALS_ARGS))) +
+             (VALS_ARGS,))
+# put a lot of numbers
+INIT_VALS = INIT_VALS + (tuple(map(str, range(20000))),)
+
 PARAMS = dict(
     argnames='vals, val',
     argvalues=tuple(product(INIT_VALS, VALS_ARGS)))
