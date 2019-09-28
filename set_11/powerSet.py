@@ -11,7 +11,8 @@ class PowerSet:
 
     def hash_fun(self, value):
         # TODO: EN doc
-        return sum(value.encode()) % self.sz
+        bStr = value.encode()
+        return int('0' + ''.join(str(b) for b in bStr)) % self.sz
 
     def size(self):
         # TODO: EN doc
