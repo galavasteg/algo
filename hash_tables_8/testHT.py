@@ -45,7 +45,8 @@ def test_seek(sz, stp, vals, val):
 @pytest.mark.parametrize(**PARAMS)
 def test_put(sz, stp, vals, val):
     ht = HashTable.create(sz, stp, vals)
-    corr_slots = tuple(i for i, v in enumerate(ht.slots) if v is None)
+    corr_slots = tuple(i for i, v in enumerate(ht.slots)
+                       if v is None)
     if gcd(sz, stp) != 1:
         corr_slots = corr_slots + (None,)
     corr_slots = corr_slots or (None,)
