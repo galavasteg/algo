@@ -5,6 +5,7 @@ import pytest
 from set_11.powerSet import PowerSet
 
 
+# TODO: extend SET_PARAMS (different collision resolving in sets)
 VALS_ARGS = ('', 'лещ', 'dca', 'cda', '0', '-115')
 INIT_VALS = ((),) + tuple((v,) for v in VALS_ARGS)
 INIT_VALS = (INIT_VALS +
