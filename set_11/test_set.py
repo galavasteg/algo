@@ -79,13 +79,13 @@ def test_inters(vals1, vals2):
     res = ps1.intersection(ps2)
     i_val_res_map = dict(filter(lambda x: x[1] is not None, enumerate(res.slots)))
     init_res_set = set(i_val_res_map.values())
-    print('result:', init_res_set)
-    assert init_res_set == expected
+    print('result:', res.size(), init_res_set)
+    assert init_res_set == expected and res.size() == len(init_res_set)
 
 
 # --------------------------- UNION ---------------------------------
 
-@pytest.mark.parametrize(**SETS_PARAMS)
+@pytest.mark.parametrize(**UNION_PARAMS)
 def test_union(vals1, vals2):
     print()
     ps1 = PowerSet.create(vals1)
@@ -102,8 +102,8 @@ def test_union(vals1, vals2):
     res = ps1.union(ps2)
     i_val_res_map = dict(filter(lambda x: x[1] is not None, enumerate(res.slots)))
     init_res_set = set(i_val_res_map.values())
-    print('result:', init_res_set)
-    assert init_res_set == expected
+    print('result:', res.size(), init_res_set)
+    assert init_res_set == expected and res.size() == len(expected)
 
 
 # --------------------------- DIFFERENCE ----------------------------
@@ -125,8 +125,8 @@ def test_diff(vals1, vals2):
     res = ps1.difference(ps2)
     i_val_res_map = dict(filter(lambda x: x[1] is not None, enumerate(res.slots)))
     init_res_set = set(i_val_res_map.values())
-    print('result:', init_res_set)
-    assert init_res_set == expected
+    print('result:', res.size(), init_res_set)
+    assert init_res_set == expected and res.size() == len(expected)
 
 
 # --------------------------- ISSUBSET ------------------------------
