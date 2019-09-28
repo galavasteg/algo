@@ -47,10 +47,11 @@ class PowerSet:
             i = self.get_next_index(hash_i)
             while self.slots[i] is not None and hash_i != i:
                 if self.slots[i] == value:
+                    # *value* is collision of another element
                     valueSlot = i
                     break
                 i = self.get_next_index(i)
-        # if there is a free slot
+        # *value* is not in Set and *i* is a free slot
         if valueSlot is None and self.slots[i] is None:
             self.slots[i] = value
             valueSlot = i
@@ -78,13 +79,14 @@ class PowerSet:
             i = self.get_next_index(hash_i)
             while self.slots[i] is not None and hash_i != i:
                 if self.slots[i] == value:
+                    # *value* is collision of another element
                     valueSlot = i
                     break
                 i = self.get_next_index(i)
 
         if valueSlot is not None:
             lastCollisionSlot = self._get_last_collision_slot(hash_i, valueSlot)
-            # replace value in last collision slot to slot of exiting
+            # replace value in last collisions slot to slot of *value*
             self.slots[valueSlot] = self.slots[lastCollisionSlot]
             self.slots[lastCollisionSlot] = None
             is_rm = True
