@@ -33,13 +33,17 @@ def test_put(vals, val):
     ps = PowerSet.create(vals)
     i_val_map = dict(filter(lambda x: x[1] is not None, enumerate(ps.slots)))
     init_set = set(i_val_map.values())
-    corr_slots = (tuple(i for i, v in enumerate(ps.slots) if v is None)
-                  if val not in init_set else
-                  (ps.slots.index(val),))
+    if len(init_set) < ps.sz and val not in init_set:
+        corr_slots = tuple(i for i, v in enumerate(ps.slots)
+                           if v is None)
+    else:
+        corr_slots = (ps.slots.index(val) if val in init_set
+                      else None,)
     print('\ninit ind-val mapping:', i_val_map)
     print('init set:', init_set)
     print('put "{val}"'.format(val=val))
-    init_set.add(val)  # expected
+    if len(init_set) < ps.sz:
+        init_set.add(val)  # expected
     print('expected:', init_set)
     res_i = ps.put(val)
     res_set = set(filter(lambda x: x is not None, ps.slots))

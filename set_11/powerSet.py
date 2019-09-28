@@ -45,11 +45,17 @@ class PowerSet:
                 i = self.get_next_index(i)
         if self.slots[i] is None:
             return i
+        # None if set is overflow
 
     def put(self, value):
         # TODO: EN doc
-        i = self.hash_fun(value)
-        self.slots[i] = value
+        if self.get(value):
+            i = self._get_exist_val_index(value)
+        else:
+            i = self.seek_slot(value)
+            if i is not None:
+                self.slots[i] = value
+        # ind of new/existing val, None if set is overflow
         return i
 
     def remove(self, value):
