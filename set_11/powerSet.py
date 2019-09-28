@@ -69,9 +69,9 @@ class PowerSet:
 
     def intersection(self, set2):
         # TODO: EN doc
-        intersection_vals = tuple(v1 for v1, v2 in
-                                  zip(self.slots, set2.slots)
-                                  if v1 is not None and v1 == v2)
+        vals1, vals2 = self.get_vals(), set2.get_vals()
+        intersection_vals = tuple(v1 for v1 in vals1
+                                  if v1 in vals2)
         return self.create(intersection_vals)
 
     def union(self, set2):
@@ -81,16 +81,20 @@ class PowerSet:
 
     def difference(self, set2):
         # TODO: EN doc
-        diff_vals = tuple(v1 for v1, v2
-                          in zip(self.slots, set2.slots)
-                          if v1 is not None and v1 != v2)
+        vals1, vals2 = self.get_vals(), set2.get_vals()
+        diff_vals = tuple(v1 for v1 in vals1
+                          if v1 not in vals2)
         return self.create(diff_vals)
 
     def issubset(self, set2):
         # TODO: EN doc
-        equal_vals = tuple(self.slots[i] == v2 for i, v2 in
-                           enumerate(set2.slots)
-                           if v2 is not None)
+        vals2 = set2.get_vals()
+        if vals2:
+            intersection_vals = self.intersection(set2).get_vals()
+            vals2 = set2.get_vals()
+            equal_vals = tuple(v2 in intersection_vals for v2 in vals2)
+        else:
+            equal_vals = ()
         return all(equal_vals)
 
     def get_vals(self):
