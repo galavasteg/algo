@@ -23,29 +23,18 @@ class PowerSet:
 
     def get(self, value):
         # TODO: EN doc
-        hash_i = i = self.hash_fun(value)
-        collisionsInds = [hash_i]
-        while self.slots[i] is not None and hash_i != i:
-            collisionsInds.append(i)
-            i = self.get_next_index(i)
-        return any(self.slots[i] == value for i in collisionsInds)
-
-    def _get_exist_val_index(self, value):
-        i = self.hash_fun(value)
-        while self.slots[i] != value:
-            i = self.get_next_index(i)
-        return i
-
-    def seek_slot(self, value):
-        # TODO: doc
-        hash_i = i = self.hash_fun(value)
-        if self.slots[i] is not None:
+        isExist = False
+        hash_i = self.hash_fun(value)
+        if self.slots[hash_i] == value:
+            isExist = True
+        elif self.slots[hash_i] is not None:
             i = self.get_next_index(hash_i)
             while self.slots[i] is not None and hash_i != i:
+                if self.slots[i] == value:
+                    isExist = True
+                    break
                 i = self.get_next_index(i)
-        if self.slots[i] is None:
-            return i
-        # None if set is overflow
+        return isExist
 
     def put(self, value):
         # TODO: EN doc
