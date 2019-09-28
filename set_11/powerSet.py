@@ -60,9 +60,9 @@ class PowerSet:
 
     def remove(self, value):
         # TODO: EN doc
-        i = self.hash_fun(value)
         is_rm = False
-        if self.slots[i] is not None:
+        if self.get(value):
+            i = self._get_exist_val_index(value)
             self.slots[i] = None
             is_rm = True
         return is_rm
