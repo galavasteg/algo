@@ -6,33 +6,63 @@ TODO: EN doc
 # TODO: EN doc
 class PowerSet:
     def __init__(self):
-        self.sz = 20000
+        self.sz, self.stp = 20000, 71
         self.slots = [None] * self.sz
 
     def hash_fun(self, value):
         # TODO: EN doc
-        return sum(value.encode()) % self.sz
+        bStr = value.encode()
+        return int('0' + ''.join(str(b) for b in bStr)) % self.sz
 
     def size(self):
         # TODO: EN doc
         return len(self.get_vals())
 
+    def get_next_index(self, ind):
+        return (ind + self.stp) % self.sz
+
     def get(self, value):
         # TODO: EN doc
+        hash_i = i = self.hash_fun(value)
+        collisionsInds = [hash_i]
+        while self.slots[i] is not None and hash_i != i:
+            collisionsInds.append(i)
+            i = self.get_next_index(i)
+        return any(self.slots[i] == value for i in collisionsInds)
+
+    def _get_exist_val_index(self, value):
         i = self.hash_fun(value)
-        return self.slots[i] is not None
+        while self.slots[i] != value:
+            i = self.get_next_index(i)
+        return i
+
+    def seek_slot(self, value):
+        # TODO: doc
+        hash_i = i = self.hash_fun(value)
+        if self.slots[i] is not None:
+            i = self.get_next_index(hash_i)
+            while self.slots[i] is not None and hash_i != i:
+                i = self.get_next_index(i)
+        if self.slots[i] is None:
+            return i
+        # None if set is overflow
 
     def put(self, value):
         # TODO: EN doc
-        i = self.hash_fun(value)
-        self.slots[i] = value
+        if self.get(value):
+            i = self._get_exist_val_index(value)
+        else:
+            i = self.seek_slot(value)
+            if i is not None:
+                self.slots[i] = value
+        # ind of new/existing val, None if set is overflow
         return i
 
     def remove(self, value):
         # TODO: EN doc
-        i = self.hash_fun(value)
         is_rm = False
-        if self.slots[i] is not None:
+        if self.get(value):
+            i = self._get_exist_val_index(value)
             self.slots[i] = None
             is_rm = True
         return is_rm

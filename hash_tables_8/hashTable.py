@@ -23,7 +23,6 @@ class HashTable:
         if self.slots[i] is not None:
             i = (hash_i + self.step) % self.size
             while (self.slots[i] is not None and hash_i != i):
-                print(hash_i, i)
                 i = (i + self.step) % self.size
         if self.slots[i] is None:
             return i
