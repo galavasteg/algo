@@ -23,47 +23,72 @@ class PowerSet:
 
     def get(self, value):
         # TODO: EN doc
-        hash_i = i = self.hash_fun(value)
-        collisionsInds = [hash_i]
-        while self.slots[i] is not None and hash_i != i:
-            collisionsInds.append(i)
-            i = self.get_next_index(i)
-        return any(self.slots[i] == value for i in collisionsInds)
-
-    def _get_exist_val_index(self, value):
-        i = self.hash_fun(value)
-        while self.slots[i] != value:
-            i = self.get_next_index(i)
-        return i
-
-    def seek_slot(self, value):
-        # TODO: doc
-        hash_i = i = self.hash_fun(value)
-        if self.slots[i] is not None:
+        isExist = False
+        hash_i = self.hash_fun(value)
+        if self.slots[hash_i] == value:
+            isExist = True
+        elif self.slots[hash_i] is not None:
             i = self.get_next_index(hash_i)
             while self.slots[i] is not None and hash_i != i:
+                if self.slots[i] == value:
+                    isExist = True
+                    break
                 i = self.get_next_index(i)
-        if self.slots[i] is None:
-            return i
-        # None if set is overflow
+        return isExist
 
     def put(self, value):
         # TODO: EN doc
-        if self.get(value):
-            i = self._get_exist_val_index(value)
-        else:
-            i = self.seek_slot(value)
-            if i is not None:
-                self.slots[i] = value
-        # ind of new/existing val, None if set is overflow
-        return i
+        # get existing/new *value* slot
+        valueSlot = None
+        hash_i = i = self.hash_fun(value)
+        if self.slots[hash_i] == value:
+            valueSlot = hash_i
+        elif self.slots[hash_i] is not None:
+            i = self.get_next_index(hash_i)
+            while self.slots[i] is not None and hash_i != i:
+                if self.slots[i] == value:
+                    # *value* is collision of another element
+                    valueSlot = i
+                    break
+                i = self.get_next_index(i)
+        # *value* is not in Set and *i* is a free slot
+        if valueSlot is None and self.slots[i] is None:
+            self.slots[i] = value
+            valueSlot = i
+        # slot of existing/new *value* or None (if set is overflow)
+        return valueSlot
+
+    def _get_last_collision_slot(self, hash_i, from_i):
+        lastCollisionSlot = from_i
+        i = self.get_next_index(hash_i)
+        while (self.slots[i] is not None and  # slot is busy
+               # there are free slots <= step is prime for size
+               hash_i != i):
+            # hash of value in i-slot equal to *hash_i*
+            if self.hash_fun(self.slots[i]) == hash_i:
+                lastCollisionSlot = i
+            i = self.get_next_index(i)
+        return lastCollisionSlot
 
     def remove(self, value):
         # TODO: EN doc
-        is_rm = False
-        if self.get(value):
-            i = self._get_exist_val_index(value)
-            self.slots[i] = None
+        is_rm, valueSlot, hash_i = False, None, self.hash_fun(value)
+        if self.slots[hash_i] == value:
+            valueSlot = hash_i
+        elif self.slots[hash_i] is not None:
+            i = self.get_next_index(hash_i)
+            while self.slots[i] is not None and hash_i != i:
+                if self.slots[i] == value:
+                    # *value* is collision of another element
+                    valueSlot = i
+                    break
+                i = self.get_next_index(i)
+
+        if valueSlot is not None:
+            lastCollisionSlot = self._get_last_collision_slot(hash_i, valueSlot)
+            # replace value in last collisions slot to slot of *value*
+            self.slots[valueSlot] = self.slots[lastCollisionSlot]
+            self.slots[lastCollisionSlot] = None
             is_rm = True
         return is_rm
 
