@@ -6,8 +6,9 @@ TODO: EN doc
 # TODO: EN doc
 class PowerSet:
     def __init__(self):
-        self.sz, self.stp = 20000, 71
-        self.slots = [None] * self.sz
+        self.sz = 20000
+        self.__slots = tuple([] for _ in range(self.sz))
+        self.__count = 0
 
     def hash_fun(self, value):
         # TODO: EN doc
@@ -16,81 +17,32 @@ class PowerSet:
 
     def size(self):
         # TODO: EN doc
-        return len(self.get_vals())
-
-    def get_next_index(self, ind):
-        return (ind + self.stp) % self.sz
+        return self.__count
 
     def get(self, value):
         # TODO: EN doc
-        isExist = False
         hash_i = self.hash_fun(value)
-        if self.slots[hash_i] == value:
-            isExist = True
-        elif self.slots[hash_i] is not None:
-            i = self.get_next_index(hash_i)
-            while self.slots[i] is not None and hash_i != i:
-                if self.slots[i] == value:
-                    isExist = True
-                    break
-                i = self.get_next_index(i)
-        return isExist
+        return value in self.__slots[hash_i]
 
     def put(self, value):
         # TODO: EN doc
-        # get existing/new *value* slot
-        valueSlot = None
-        hash_i = i = self.hash_fun(value)
-        if self.slots[hash_i] == value:
-            valueSlot = hash_i
-        elif self.slots[hash_i] is not None:
-            i = self.get_next_index(hash_i)
-            while self.slots[i] is not None and hash_i != i:
-                if self.slots[i] == value:
-                    # *value* is collision of another element
-                    valueSlot = i
-                    break
-                i = self.get_next_index(i)
-        # *value* is not in Set and *i* is a free slot
-        if valueSlot is None and self.slots[i] is None:
-            self.slots[i] = value
-            valueSlot = i
-        # slot of existing/new *value* or None (if set is overflow)
-        return valueSlot
-
-    def _get_last_collision_slot(self, hash_i, from_i):
-        lastCollisionSlot = from_i
-        i = self.get_next_index(hash_i)
-        while (self.slots[i] is not None and  # slot is busy
-               # there are free slots <= step is prime for size
-               hash_i != i):
-            # hash of value in i-slot equal to *hash_i*
-            if self.hash_fun(self.slots[i]) == hash_i:
-                lastCollisionSlot = i
-            i = self.get_next_index(i)
-        return lastCollisionSlot
+        if self.__count < self.sz:
+            hash_i = self.hash_fun(value)
+            collisions = self.__slots[hash_i]
+            if not collisions or value not in collisions:
+                self.__slots[hash_i].append(value)
+                self.__count += 1
 
     def remove(self, value):
         # TODO: EN doc
-        is_rm, valueSlot, hash_i = False, None, self.hash_fun(value)
-        if self.slots[hash_i] == value:
-            valueSlot = hash_i
-        elif self.slots[hash_i] is not None:
-            i = self.get_next_index(hash_i)
-            while self.slots[i] is not None and hash_i != i:
-                if self.slots[i] == value:
-                    # *value* is collision of another element
-                    valueSlot = i
-                    break
-                i = self.get_next_index(i)
-
-        if valueSlot is not None:
-            lastCollisionSlot = self._get_last_collision_slot(hash_i, valueSlot)
-            # replace value in last collisions slot to slot of *value*
-            self.slots[valueSlot] = self.slots[lastCollisionSlot]
-            self.slots[lastCollisionSlot] = None
-            is_rm = True
-        return is_rm
+        isRemoved = False
+        hash_i = self.hash_fun(value)
+        collisions = self.__slots[hash_i]
+        if collisions and value in collisions:
+            self.__slots[hash_i].remove(value)
+            self.__count -= 1
+            isRemoved = True
+        return isRemoved
 
     def intersection(self, set2):
         # TODO: EN doc
@@ -123,7 +75,7 @@ class PowerSet:
         return all(equal_vals)
 
     def get_vals(self):
-        return tuple(filter(lambda x: x is not None, self.slots))
+        return sum((collis for collis in self.__slots if collis), [])
 
     @classmethod
     def create(cls, vals):

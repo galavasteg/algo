@@ -31,48 +31,43 @@ SETS_PARAMS = dict(
 
 @pytest.mark.parametrize(**PARAMS)
 def test_put(vals, val):
+    print()
     ps = PowerSet.create(vals)
-    i_val_map = dict(filter(lambda x: x[1] is not None, enumerate(ps.slots)))
-    init_set = set(i_val_map.values())
-    if len(init_set) < ps.sz and val not in init_set:
-        corr_slots = tuple(i for i, v in enumerate(ps.slots)
-                           if v is None)
-    else:
-        corr_slots = (ps.slots.index(val) if val in init_set
-                      else None,)
-    print('\ninit ind-val mapping:', i_val_map)
-    print('init set:', init_set)
-    print('put "{val}"'.format(val=val))
-    if len(init_set) < ps.sz:
+    init_set = set(vals)
+    init_length = len(init_set)
+    print('init set:', init_length, init_set)
+    print('remove "{val}"'.format(val=val))
+    if init_length < ps.sz:
         init_set.add(val)  # expected
-    print('expected:', init_set)
-    res_i = ps.put(val)
-    res_set = set(filter(lambda x: x is not None, ps.slots))
+    exp_size = len(init_set)
+    print('expected:', exp_size, init_set)
+    ps.put(val)
+    res_set = set(ps.get_vals())
     print('result:', ps.size(), res_set)
-    assert (res_i in corr_slots and res_set == init_set and
-            ps.size() == len(init_set))
+    assert (res_set == init_set and ps.size() == exp_size)
 
 
 # --------------------------- REMOVE --------------------------------
 
 @pytest.mark.parametrize(**PARAMS)
 def test_remove(vals, val):
+    print()
     ps = PowerSet.create(vals)
-    i_val_map = dict(filter(lambda x: x[1] is not None, enumerate(ps.slots)))
-    init_set = set(i_val_map.values())
-    print('\ninit ind-val mapping:', i_val_map)
-    print('init set:', init_set)
+    init_set = set(vals)
+    init_length = len(init_set)
+    print('init set:', init_length, init_set)
     print('remove "{val}"'.format(val=val))
     expected = False
     if val in init_set:
         expected = True
         init_set.remove(val)  # expected set
-    print('expected:', init_set)
+    exp_size = len(init_set)
+    print('expected:', exp_size, init_set)
     res = ps.remove(val)
-    res_set = set(filter(lambda x: x is not None, ps.slots))
+    res_set = set(ps.get_vals())
     print('result:', ps.size(), res_set)
     assert (res == expected and res_set == init_set and
-            ps.size() == len(init_set))
+            ps.size() == exp_size)
 
 
 # --------------------------- INTERSECTION --------------------------
@@ -80,22 +75,15 @@ def test_remove(vals, val):
 @pytest.mark.parametrize(**SETS_PARAMS)
 def test_inters(vals1, vals2):
     print()
-    ps1 = PowerSet.create(vals1)
-    ps2 = PowerSet.create(vals2)
-    i_val_map1 = dict(filter(lambda x: x[1] is not None, enumerate(ps1.slots)))
-    i_val_map2 = dict(filter(lambda x: x[1] is not None, enumerate(ps2.slots)))
-    init_set1 = set(i_val_map1.values())
-    init_set2 = set(i_val_map2.values())
-    print('init A ind-val mapping:', i_val_map1)
-    print('init B ind-val mapping:', i_val_map2)
+    ps1, ps2 = PowerSet.create(vals1), PowerSet.create(vals2)
+    init_set1, init_set2 = set(vals1), set(vals2)
     print('init sets:', init_set1, init_set2)
     expected = init_set1.intersection(init_set2)
-    print('intersection expected', expected)
+    exp_size = len(expected)
+    print('intersection expected', exp_size, expected)
     res = ps1.intersection(ps2)
-    i_val_res_map = dict(filter(lambda x: x[1] is not None, enumerate(res.slots)))
-    init_res_set = set(i_val_res_map.values())
-    print('result:', res.size(), init_res_set)
-    assert init_res_set == expected and res.size() == len(init_res_set)
+    res_set = set(res.get_vals())
+    assert res_set == expected and res.size() == exp_size
 
 
 # --------------------------- UNION ---------------------------------
@@ -103,22 +91,15 @@ def test_inters(vals1, vals2):
 @pytest.mark.parametrize(**UNION_PARAMS)
 def test_union(vals1, vals2):
     print()
-    ps1 = PowerSet.create(vals1)
-    ps2 = PowerSet.create(vals2)
-    i_val_map1 = dict(filter(lambda x: x[1] is not None, enumerate(ps1.slots)))
-    i_val_map2 = dict(filter(lambda x: x[1] is not None, enumerate(ps2.slots)))
-    init_set1 = set(i_val_map1.values())
-    init_set2 = set(i_val_map2.values())
-    print('init A ind-val mapping:', i_val_map1)
-    print('init B ind-val mapping:', i_val_map2)
+    ps1, ps2 = PowerSet.create(vals1), PowerSet.create(vals2)
+    init_set1, init_set2 = set(vals1), set(vals2)
     print('init sets:', init_set1, init_set2)
     expected = init_set1.union(init_set2)
-    print('union expected', expected)
+    exp_size = len(expected)
+    print('union expected', exp_size, expected)
     res = ps1.union(ps2)
-    i_val_res_map = dict(filter(lambda x: x[1] is not None, enumerate(res.slots)))
-    init_res_set = set(i_val_res_map.values())
-    print('result:', res.size(), init_res_set)
-    assert init_res_set == expected and res.size() == len(expected)
+    res_set = set(res.get_vals())
+    assert res_set == expected and res.size() == exp_size
 
 
 # --------------------------- DIFFERENCE ----------------------------
@@ -126,22 +107,15 @@ def test_union(vals1, vals2):
 @pytest.mark.parametrize(**SETS_PARAMS)
 def test_diff(vals1, vals2):
     print()
-    ps1 = PowerSet.create(vals1)
-    ps2 = PowerSet.create(vals2)
-    i_val_map1 = dict(filter(lambda x: x[1] is not None, enumerate(ps1.slots)))
-    i_val_map2 = dict(filter(lambda x: x[1] is not None, enumerate(ps2.slots)))
-    init_set1 = set(i_val_map1.values())
-    init_set2 = set(i_val_map2.values())
-    print('init A ind-val mapping:', i_val_map1)
-    print('init B ind-val mapping:', i_val_map2)
+    ps1, ps2 = PowerSet.create(vals1), PowerSet.create(vals2)
+    init_set1, init_set2 = set(vals1), set(vals2)
     print('init sets:', init_set1, init_set2)
     expected = init_set1 - init_set2
-    print('diff expected', expected)
+    exp_size = len(expected)
+    print('diff expected', exp_size, expected)
     res = ps1.difference(ps2)
-    i_val_res_map = dict(filter(lambda x: x[1] is not None, enumerate(res.slots)))
-    init_res_set = set(i_val_res_map.values())
-    print('result:', res.size(), init_res_set)
-    assert init_res_set == expected and res.size() == len(expected)
+    res_set = set(res.get_vals())
+    assert res_set == expected and res.size() == exp_size
 
 
 # --------------------------- ISSUBSET ------------------------------
@@ -149,14 +123,8 @@ def test_diff(vals1, vals2):
 @pytest.mark.parametrize(**SETS_PARAMS)
 def test_issubset(vals1, vals2):
     print()
-    ps1 = PowerSet.create(vals1)
-    ps2 = PowerSet.create(vals2)
-    i_val_map1 = dict(filter(lambda x: x[1] is not None, enumerate(ps1.slots)))
-    i_val_map2 = dict(filter(lambda x: x[1] is not None, enumerate(ps2.slots)))
-    init_set1 = set(i_val_map1.values())
-    init_set2 = set(i_val_map2.values())
-    print('init A ind-val mapping:', i_val_map1)
-    print('init B ind-val mapping:', i_val_map2)
+    ps1, ps2 = PowerSet.create(vals1), PowerSet.create(vals2)
+    init_set1, init_set2 = set(vals1), set(vals2)
     print('init sets:', init_set1, init_set2)
     expected = init_set2.issubset(init_set1)
     print('issubset expected', expected)
