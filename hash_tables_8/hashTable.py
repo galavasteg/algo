@@ -32,7 +32,7 @@ class HashTable:
         i = self.seek_slot(value)
         if i is not None:
             self.slots[i] = value
-        return i
+        return i  # None or int
 
     def find(self, value):
         # TODO: doc
