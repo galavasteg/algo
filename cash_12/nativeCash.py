@@ -1,14 +1,5 @@
 """
-TODO: Реализуйте на основе словаря новый класс NativeCache, который
- дополнительно будет учитывать количество обращений к каждому ключу. Когда
- хэш-таблица заполняется и найти свободное место не удаётся, вытесняйте
- элемент с наименьшим количеством обращений. Для этого в дополнение к
- self.values и self.slots заведите массив self.hits, который будет хранить
- соответствующие количества обращений.
- Смоделируйте в тестах программно ситуацию:
- - когда хэш-таблица заполнена (например, организуйте множество коллизий)
-   и проверьте, правильно ли работает схема вытеснения.
- - корректно ли учитывается количество обращений к ключам.
+TODO: EN doc
 """
 
 
@@ -18,4 +9,35 @@ class NativeCache:
         self.slots = [None] * self.size
         self.values = [None] * self.size
         self.hits = [0] * self.size
+        self.__count = 0
+
+    def hash_fun(self, key):
+        # TODO: EN doc
+        return sum(key.encode()) % self.size
+
+    def __get_collision_sub_slot(self, slot, key):
+        if self.slots[slot] is not None:
+            subSlot_ = next(filter(
+                    lambda x: x[1] == key,
+                    enumerate(self.slots[slot])),
+                    None)
+            return subSlot_[0] if subSlot_ else None
+
+    def __get_least_hits_slot(self):
+        return min((slot for slot in range(self.size)
+                    if self.slots[slot] is not None),
+                   key=lambda slot: min(self.hits[slot]))
+
+    def __clear_slot(self, slot, sub_slot):
+        subSlots = self.hits[slot]
+        if len(subSlots) == 1:
+            self.slots[slot] = None
+            self.values[slot] = None
+            self.hits[slot] = 0
+        else:
+            self.slots[slot].pop(sub_slot)
+            self.values[slot].pop(sub_slot)
+            self.hits[slot].pop(sub_slot)
+        self.__count -= 1
+
 
