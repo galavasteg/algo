@@ -44,6 +44,31 @@ class NativeCache:
         slot = self.hash_fun(key)
         return self.__get_collision_sub_slot(slot, key) is not None
 
+    def put(self, key, value):
+        slot = self.hash_fun(key)
+        subSlot = self.__get_collision_sub_slot(slot, key)
+
+        if subSlot is None:
+            if self.__count == self.size:
+                minHitsSlot = self.__get_least_hits_slot()
+                minHits = min(self.hits[minHitsSlot])
+                minHitsSubSlot = self.hits[minHitsSlot].index(minHits)
+                self.__clear_slot(minHitsSlot, minHitsSubSlot)
+
+            if self.slots[slot] is None:
+                subSlot = 0
+                self.slots[slot] = [key]
+                self.hits[slot] = [0]
+                self.values[slot] = ['<placeholder>']
+            else:
+                subSlot = len(self.slots[slot])
+                self.slots[slot].append(key)
+                self.hits[slot].append(0)
+                self.values[slot].append('<placeholder>')
+            self.__count += 1
+
+        self.values[slot][subSlot] = value
+
     def get(self, key):
         slot = self.hash_fun(key)
         subSlot = self.__get_collision_sub_slot(slot, key)
