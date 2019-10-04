@@ -40,4 +40,21 @@ class NativeCache:
             self.hits[slot].pop(sub_slot)
         self.__count -= 1
 
+    def is_key(self, key):
+        slot = self.hash_fun(key)
+        return self.__get_collision_sub_slot(slot, key) is not None
+
+    def get(self, key):
+        slot = self.hash_fun(key)
+        subSlot = self.__get_collision_sub_slot(slot, key)
+        if subSlot is not None:
+            self.hits[slot][subSlot] += 1
+            return self.values[slot][subSlot]
+
+    @classmethod
+    def create(cls, sz: int, vals: dict):
+        instance = cls(sz)
+        for k, v in vals.items():
+            instance.put(k, v)
+        return instance
 
