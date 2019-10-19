@@ -25,6 +25,20 @@ def test_get_all_and_count(n: int):
     assert t.Count() == n
 
 
+def test_add_find(n: int):
+    t = get_random_tree(n)
+    assert t.FindNodesByValue(1) == [t.Root]
+
+    t.AddChild(t.Root, SimpleTreeNode('new', None))
+    assert any(node.NodeValue == 'new' for node in t.Root.Children)
+
+    val = '=)'
+    for vals_count in range(1, 1000):
+        t.AddChild(choice(t.GetAllNodes()), SimpleTreeNode(val, None))
+        found_nodes = t.FindNodesByValue(val)
+        assert len(found_nodes) == vals_count
+
+
 def test_leaf(n: int, leafs: int):
     t = SimpleTree(SimpleTreeNode('root', None))
     for c in splitOnChunks(range(n), n // leafs):
@@ -56,6 +70,7 @@ def test_leaf(n: int, leafs: int):
 if __name__ == '__main__':
     for n in (5, 10):
         test_get_all_and_count(n)
+        test_add_find(n)
     for n, leafs in ((15, 3), (12, 4), (10000, 100)):
         test_leaf(n, leafs)
 

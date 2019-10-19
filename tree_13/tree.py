@@ -93,11 +93,19 @@ class SimpleTree:
             nodes = list(self.Root.nodes_iterator())
         return nodes
 
-    def Count(self):
+    def FindNodesByValue(self, val) -> list:
+        """Find all nodes with a specific value"""
+        foundNodes = []
+        if self.Root:
+            foundNodes = [node for node in self.Root.nodes_iterator()
+                          if node.NodeValue == val]
+        return foundNodes
+
+    def Count(self) -> int:
         """Number of Nodes in the tree"""
         return len(self.GetAllNodes())
 
-    def LeafCount(self):
+    def LeafCount(self) -> int:
         """Number of Nodes without children"""
         leafsCount = 0
         if self.Root:
