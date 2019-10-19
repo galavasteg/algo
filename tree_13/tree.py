@@ -145,7 +145,7 @@ class SimpleTree:
             node = node.Parent
 
     def ResetSubTreeLevels(self, start_node):
-        """TODO: Go around the whole sub tree and
+        """Go around the whole sub tree and
         set the level for each Node"""
         if start_node:
             for node in start_node.nodes_iterator():
