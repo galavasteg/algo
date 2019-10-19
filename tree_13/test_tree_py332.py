@@ -145,7 +145,9 @@ def test_leaf(n: int, leafs: int):
         parent = choice(possible_parents)
         t.MoveNode(orig, parent)
 
-    assert t.LeafCount() == len([node for node in t.GetAllNodes() if not node.Children])
+    assert t.LeafCount() == len(
+        [node for node in t.GetAllNodes() if not node.Children])
+    assert t.Count() == n + 1
 
 
 # --------------------------- MAIN ----------------------------------
