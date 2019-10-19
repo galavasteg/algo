@@ -72,4 +72,37 @@ class SimpleTree:
                 nodes += cls.__get_nodes_recursive(childNode)
         return nodes
 
+    def AddChild(self, ParentNode, NewChild: SimpleTreeNode):
+        """Add child Node to existing parent Node"""
+        __before_nodes = tuple(NewChild.nodes_iterator())
+        if ParentNode:
+            if ParentNode.Children:
+                ParentNode.Children[-1]._next_brother = NewChild
+            ParentNode.Children.append(NewChild)
+            NewChild.level = ParentNode.level + 1
+            NewChild.Parent = ParentNode
+            assert NewChild in ParentNode.Children
+            assert NewChild.level == ParentNode.level + 1
+        else:
+            self.Root = NewChild
+        assert tuple(NewChild.nodes_iterator()) == __before_nodes
+
+    def GetAllNodes(self) -> list:
+        nodes = []
+        if self.Root:
+            nodes = list(self.Root.nodes_iterator())
+        return nodes
+
+    def Count(self):
+        """Number of Nodes in the tree"""
+        return len(self.GetAllNodes())
+
+    def LeafCount(self):
+        """Number of Nodes without children"""
+        leafsCount = 0
+        if self.Root:
+            for node in self.Root.nodes_iterator():
+                if not node.Children:
+                    leafsCount += 1
+        return leafsCount
 
