@@ -87,6 +87,21 @@ class SimpleTree:
             self.Root = NewChild
         assert tuple(NewChild.nodes_iterator()) == __before_nodes
 
+    def DeleteNode(self, NodeToDelete: SimpleTreeNode):
+        """Delete not root Node"""
+        delN = NodeToDelete
+        assert delN is not self.Root
+        parent = delN.Parent
+        ind = parent.Children.index(delN)
+        if ind:
+            prevBro = parent.Children[ind-1]
+            prevBro._next_brother = delN._next_brother
+        delN._next_brother = None
+        parent.Children.pop(ind)
+        delN.Parent = None
+        assert not any((
+            delN._next_brother, delN.Parent, delN in parent.Children))
+
     def GetAllNodes(self) -> list:
         nodes = []
         if self.Root:
@@ -101,6 +116,14 @@ class SimpleTree:
                           if node.NodeValue == val]
         return foundNodes
 
+    def MoveNode(self, OriginalNode: SimpleTreeNode, NewParent: SimpleTreeNode):
+        """Move not root **OriginalNode** with his subtree as
+        a child to **NewParent**"""
+        assert OriginalNode is not self.Root
+        self.DeleteNode(OriginalNode)
+        self.AddChild(NewParent, OriginalNode)
+        self.ResetSubTreeLevels(OriginalNode)
+
     def Count(self) -> int:
         """Number of Nodes in the tree"""
         return len(self.GetAllNodes())
@@ -113,4 +136,18 @@ class SimpleTree:
                 if not node.Children:
                     leafsCount += 1
         return leafsCount
+
+    def _reset_node_lvl(self, Node: SimpleTreeNode):
+        Node.level = 0
+        node = Node
+        while node.Parent:
+            Node.level += 1
+            node = node.Parent
+
+    def ResetSubTreeLevels(self, start_node):
+        """TODO: Go around the whole sub tree and
+        set the level for each Node"""
+        if start_node:
+            for node in start_node.nodes_iterator():
+                self._reset_node_lvl(node)
 
