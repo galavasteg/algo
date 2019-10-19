@@ -29,11 +29,47 @@ class SimpleTreeNode:
         self.NodeValue = val
         self.Parent = parent
         self.Children = []  # child Nodes
+        self.level = 0  # the shortest path to the Root
+        # next Node on the same level (for nodes iteration)
+        self._next_brother = None
+
+    def nodes_iterator(self):
+        # 1) Create an empty stack S.
+        stack = []
+        # 2) Initialize currentNode as root
+        currentNode = self
+        # 5) If currentNode is NULL and stack is empty then we are done.
+        while currentNode or stack:
+            # 3) Push the currentNode node to S and set currentNode
+            # to his 1-st childNode until currentNode is NULL.
+            # Another words: find the leftmost leaf.
+            while currentNode:
+                stack.append(currentNode)
+                currentNode = (currentNode.Children[0]
+                               if currentNode.Children
+                               else None)
+            # 4) If currentNode is NULL and stack is not empty then
+            currentNode = stack.pop()  # a) Pop the top item from stack
+            yield currentNode          # b) yield it
+            # set currentNode to popped item next "bro" (Node on the same lvl)
+            currentNode = currentNode._next_brother
+            # currentNode = getattr(currentNode, '_next_brother', None)
+            # c) Go to step 3.
 
 
 class SimpleTree:
     def __init__(self, root):
         """:param root: tree root or None"""
         self.Root = root
+
+    @classmethod
+    def __get_nodes_recursive(cls, start_node: SimpleTreeNode):
+        """NOTE: Remember about maximum recursion depth: 987"""
+        nodes = []
+        if start_node:
+            nodes += start_node.Children
+            for childNode in start_node.Children:
+                nodes += cls.__get_nodes_recursive(childNode)
+        return nodes
 
 
