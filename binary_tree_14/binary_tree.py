@@ -78,6 +78,19 @@ class BST:
 
     def AddKeyValue(self, key, val) -> bool:
         """Add new node if possible """
+        found = self.FindNodeByKey(key)
+        parent = found.Node
+        added = (parent and not found.NodeHasKey
+                 or not self.Root)
+        # Add new node to the found leaf (or as root)
+        # if the key does not exist in the tree then
+        if added:
+            newNode = BSTNode(key, val, parent)
+            if not self.Root:
+                self.Root = newNode
+            else:
+                LR = 'LeftChild' if found.ToLeft else 'RightChild'
+                setattr(parent, LR, newNode)
         # False if the node with the *key* is already in the tree
         return added
 

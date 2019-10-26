@@ -27,10 +27,34 @@ n5 = n6.LeftChild = BSTNode(5, '5', n6)
 
 # print(t._get_all_nodes())
 assert t.Count() == 7
+t.AddKeyValue(3, 'exist')
+t.AddKeyValue(1, 'exist')
+t.AddKeyValue(4, 'exist')
+# print(t._get_all_nodes())
+
+# find min/max
+assert t.FinMinMax(t.Root, True) is n7
+assert t.FinMinMax(t.Root, False) is n1
+
+assert t.FinMinMax(n3, True) is n3
+assert t.FinMinMax(n3, False) is n3
+
+assert t.FinMinMax(n2, True) is n3
+assert t.FinMinMax(n2, False) is n1
+
+
+def test_left_branch_only():
+    t_ = BST(None)
+    for k in range(5, 0, -1):
+        t_.AddKeyValue(k, str(k))
+
+    print(t_._get_all_nodes())
+    assert t_.Count() == 5
+    assert not any(n.RightChild for n in t_._get_all_nodes())
 
 
 # --------------------------- MAIN ----------------------------------
 
 if __name__ == '__main__':
-    pass
+    test_left_branch_only()
 
