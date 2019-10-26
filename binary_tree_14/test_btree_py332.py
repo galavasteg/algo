@@ -2,6 +2,11 @@ from binary_tree_14.binary_tree import BST, BSTNode, BSTFind
 
 
 BSTNode.__repr__ = lambda x: 'Node %s %s' % (x.NodeKey, x.NodeValue)
+BSTFind.__repr__ = lambda x: 'Find %s %s %s' % (
+    x.Node.NodeKey if x.Node else None,
+    int(x.NodeHasKey), int(x.ToLeft))
+BST.__repr__ = lambda x: 'BST r:%s mn:%s mx:%s' % (
+    x.Root, x.FinMinMax(x.Root, False), x.FinMinMax(x.Root, True))
 
 
 # --------------------------- TESTS ---------------------------------

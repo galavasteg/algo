@@ -47,6 +47,14 @@ class BSTFind:
         # added to **Node** as a LeftChild Node
         self.ToLeft = False
 
+    def search_direction(self, key):
+        n = self.Node
+        if n and n.NodeKey == key:
+            self.NodeHasKey = True
+        self.ToLeft = n and n.NodeKey > key
+        return ('LeftChild' if self.ToLeft
+                else 'RightChild')
+
 
 class BST:
     def __init__(self, node):
@@ -58,6 +66,14 @@ class BST:
         a Node with the same key OR a Node which last
         **L/R** child is None"""
         found = BSTFind()
+        # start from root
+        n = found.Node = self.Root
+        # If *key* < key or the current node go to the left
+        # (right otherwise) child
+        LR = found.search_direction(key)  # NodeHasKey sets here
+        while n and not found.NodeHasKey and getattr(n, LR):
+            n = found.Node = getattr(n, LR)
+            LR = found.search_direction(key)
         return found
 
     def AddKeyValue(self, key, val) -> bool:
@@ -67,6 +83,10 @@ class BST:
 
     def FinMinMax(self, FromNode: BSTNode, FindMax: bool):
         """Search for the node with min/max key"""
+        LR = 'RightChild' if FindMax else 'LeftChild'
+        node = FromNode
+        while node and getattr(node, LR):
+            node = getattr(node, LR)
         return node
 
     def DeleteNodeByKey(self, key):
