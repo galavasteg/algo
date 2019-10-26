@@ -70,6 +70,22 @@ def test_delete_root():
     assert t.FinMinMax(n6, True) is n7
 
 
+def test_fill_empty_tree_and_clear():
+    t_ = BST(BSTNode(0, '0', None))
+    assert t_.Count() == 1
+    t_.DeleteNodeByKey(0)
+    assert t_.Count() == 0
+    t_.AddKeyValue(0, '0')
+    t_.AddKeyValue(-1, '-1')
+    t_.AddKeyValue(1, '1')
+    print(t_._get_all_nodes())
+    assert t_.Count() == 3
+    t_.DeleteNodeByKey(0)
+    t_.DeleteNodeByKey(1)
+    t_.DeleteNodeByKey(-1)
+    assert t_.Count() == 0
+
+
 def test_find_add():
     # add
     t.AddKeyValue(4, '4')  # add 4
@@ -177,6 +193,7 @@ if __name__ == '__main__':
     test_delete_root()
     n8, n9 = test_find_add()
     n8 = test_delete_and_add()
+    test_fill_empty_tree_and_clear()
     test_left_branch_only()
     for n in (5, 32, 100):
         test_create_and_cleare_random_tree(n, False)
