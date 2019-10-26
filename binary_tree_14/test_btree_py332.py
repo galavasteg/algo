@@ -1,3 +1,5 @@
+from random import shuffle
+
 from binary_tree_14.binary_tree import BST, BSTNode, BSTFind
 
 
@@ -7,6 +9,19 @@ BSTFind.__repr__ = lambda x: 'Find %s %s %s' % (
     int(x.NodeHasKey), int(x.ToLeft))
 BST.__repr__ = lambda x: 'BST r:%s mn:%s mx:%s' % (
     x.Root, x.FinMinMax(x.Root, False), x.FinMinMax(x.Root, True))
+
+
+def get_random_tree(nodes_count: int):
+    t = BST(None)
+    keys = list(range(nodes_count))
+    shuffle(keys)
+    keys = tuple(keys)
+    for k in keys:
+        t.AddKeyValue(k, str(k))
+    assert t.Count() == nodes_count
+    assert t.FinMinMax(t.Root, False).NodeKey == 0
+    assert t.FinMinMax(t.Root, True).NodeKey == nodes_count-1
+    return t
 
 
 # --------------------------- TESTS ---------------------------------
@@ -145,6 +160,17 @@ def test_left_branch_only():
 
     assert t_.Count() == 0
 
+
+def test_create_and_cleare_random_tree(n: int, verbose=True):
+    tree = get_random_tree(n)
+    print(tree._get_all_nodes()[: n if verbose else 10])
+
+    for k in range(n):
+        tree.DeleteNodeByKey(k)
+
+    assert tree.Count() == 0
+
+
 # --------------------------- MAIN ----------------------------------
 
 if __name__ == '__main__':
@@ -152,4 +178,7 @@ if __name__ == '__main__':
     n8, n9 = test_find_add()
     n8 = test_delete_and_add()
     test_left_branch_only()
+    for n in (5, 32, 100):
+        test_create_and_cleare_random_tree(n, False)
+    test_create_and_cleare_random_tree(10000, False)
 
