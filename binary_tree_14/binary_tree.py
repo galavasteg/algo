@@ -11,6 +11,32 @@ class BSTNode:
         self.LeftChild = None  # link on left child node
         self.RightChild = None  # link on right child node
 
+    def nodes_iterator(self):
+        # 1) Create an empty stack S.
+        stack = []
+        # 2) Initialize currentNode as root
+        currentNode = self
+        # 5) If currentNode is NULL and stack is empty then we are done.
+        while currentNode or stack:
+            # 3) Push the currentNode to S and set currentNode
+            # to his left or right (if left foes not exist)
+            # childNode until currentNode is None.
+            # Another words: find the deepest leaf of a subtree.
+            while currentNode:
+                stack.append(currentNode)
+                currentNode = (currentNode.LeftChild
+                               or currentNode.RightChild)
+            # 4) If currentNode is NULL and stack is not empty then
+            currentNode = stack.pop()  # a) Pop the top item from stack
+            yield currentNode          # b) yield it
+            # set currentNode to popped item's "right" brother
+            # if it is possible
+            p = currentNode.Parent
+            currentNode = (p.RightChild
+                           if p and currentNode is not p.RightChild else
+                           None)
+            # c) Go to step 3.
+
 
 class BSTFind:
     """Partial result of searching"""
@@ -47,7 +73,12 @@ class BST:
         # TODO: EN doc
         return deleted
 
+    def _get_all_nodes(self) -> tuple:
+        # call nodes_iterator or create empty tuple
+        return tuple(getattr(self.Root, 'nodes_iterator',
+                             tuple)())
+
     def Count(self):
         """Count of nodes in the tree"""
-        return 0
+        return len(self._get_all_nodes())
 
