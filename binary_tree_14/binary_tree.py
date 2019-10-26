@@ -104,6 +104,46 @@ class BST:
 
     def DeleteNodeByKey(self, key):
         # TODO: EN doc
+        found = self.FindNodeByKey(key)
+        dN = found.Node
+        deleted = dN and found.NodeHasKey  # если узел не найден
+        if deleted:
+            # successor node
+            heir = self.FinMinMax(dN.RightChild or dN.LeftChild,
+                                  FindMax=False)
+            if heir:
+                # pop heir from tree
+                LR = ('LeftChild' if heir is heir.Parent.LeftChild
+                      else 'RightChild')
+                setattr(heir.Parent, LR, heir.RightChild)
+                for child in (heir.RightChild, heir.LeftChild):
+                    if child:
+                        child.Parent = heir.Parent
+                # link heir with parent of deleted node
+                heir.Parent = dN.Parent
+                # link parent with children of deleted node
+                heir.LeftChild = (dN.LeftChild
+                                  if heir.NodeKey > dN.NodeKey
+                                  else dN.RightChild)
+                heir.RightChild = (dN.LeftChild
+                                   if heir.NodeKey < dN.NodeKey
+                                   else dN.RightChild)
+
+            # link parent of deleted node with heir
+            if dN.Parent:
+                LR = ('LeftChild' if dN is dN.Parent.LeftChild
+                      else 'RightChild')
+                setattr(dN.Parent, LR, heir)
+            else:
+                self.Root = heir
+
+            # link children of deleted node with heir
+            for child in (dN.LeftChild, dN.RightChild):
+                if child:
+                    child.Parent = heir
+
+            dN.Parent = dN.LeftChild = dN.RightChild = None
+
         return deleted
 
     def _get_all_nodes(self) -> tuple:
