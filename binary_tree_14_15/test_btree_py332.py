@@ -80,12 +80,11 @@ n6 = t.Root.RightChild = BSTNode(6, '6', t.Root)
 n7 = n6.RightChild = BSTNode(7, '7', n6)
 n5 = n6.LeftChild = BSTNode(5, '5', n6)
 
-# print(t._get_all_nodes())
 assert t.Count() == 7
 t.AddKeyValue(3, 'exist')
 t.AddKeyValue(1, 'exist')
 t.AddKeyValue(4, 'exist')
-# print(t._get_all_nodes())
+check_iterators(t)
 
 # find min/max
 assert t.FinMinMax(t.Root, True) is n7
@@ -101,7 +100,7 @@ assert t.FinMinMax(n2, False) is n1
 def test_delete_root():
     # delete
     t.DeleteNodeByKey(4)
-    print(t._get_all_nodes())
+    check_iterators(t)
     assert t.Count() == 6
     assert t.Root is n5
     assert t.FinMinMax(n5, True) is n7
@@ -111,6 +110,7 @@ def test_delete_root():
 
 
 def test_fill_empty_tree_and_clear():
+    print()
     t_ = BST(BSTNode(0, '0', None))
     assert t_.Count() == 1
     t_.DeleteNodeByKey(0)
@@ -118,18 +118,20 @@ def test_fill_empty_tree_and_clear():
     t_.AddKeyValue(0, '0')
     t_.AddKeyValue(-1, '-1')
     t_.AddKeyValue(1, '1')
-    print(t_._get_all_nodes())
+    check_iterators(t_)
     assert t_.Count() == 3
     t_.DeleteNodeByKey(0)
     t_.DeleteNodeByKey(1)
     t_.DeleteNodeByKey(-1)
+    check_iterators(t_)
     assert t_.Count() == 0
 
 
 def test_find_add():
+    print()
     # add
     t.AddKeyValue(4, '4')  # add 4
-    print(t._get_all_nodes())
+    check_iterators(t)
     assert t.Count() == 7
     f = t.FindNodeByKey(4)
     assert not f.ToLeft and f.NodeHasKey
@@ -164,7 +166,7 @@ def test_find_add():
     assert t.Count() == 9
     n9 = f.Node
 
-    print(t._get_all_nodes())
+    check_iterators(t)
     assert n8, n9
     assert t.FinMinMax(t.Root, True) is t.FinMinMax(n6, True) is t.FinMinMax(n7, True) is n9
     assert n7.RightChild is n8 and n8.RightChild is n9
@@ -184,12 +186,13 @@ def test_find_add():
 
 
 def test_delete_and_add():
+    print()
     assert t.Count() == 9
     t.DeleteNodeByKey(8)
-    print(t._get_all_nodes())
+    check_iterators(t)
     assert t.Count() == 8
     t.AddKeyValue(8, '8')
-    print(t._get_all_nodes())
+    check_iterators(t)
     assert t.Count() == 9
     n8 = t.FindNodeByKey(8).Node
     assert n8
@@ -200,17 +203,18 @@ def test_delete_and_add():
 
 
 def test_left_branch_only():
+    print()
     t_ = BST(None)
     for k in range(5, 0, -1):
         t_.AddKeyValue(k, str(k))
 
-    print(t_._get_all_nodes())
+    check_iterators(t_)
     assert t_.Count() == 5
     assert not any(n.RightChild for n in t_._get_all_nodes())
 
     for k in range(5, 0, -1):
         d = t_.DeleteNodeByKey(k)
-        print(t_._get_all_nodes())
+        check_iterators(t_)
         assert d
         assert t_.Count() == k-1
 
@@ -218,9 +222,9 @@ def test_left_branch_only():
 
 
 def test_create_and_cleare_random_tree(n: int, verbose=True):
+    print()
     tree = get_random_tree(n)
-    print(tree._get_all_nodes()[: n if verbose else 10])
-
+    check_iterators(tree)
     for k in range(n):
         tree.DeleteNodeByKey(k)
 
