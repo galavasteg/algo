@@ -234,7 +234,12 @@ class BST:
 
     def _get_all_nodes(self, order=None) -> tuple:
         # call nodes_iterator or create empty tuple
-        return tuple(getattr(self.Root, 'nodes_iterator',
+        nodes_iterator_method = (
+                'in_order_nodes_iterator' if order == 0
+                else 'post_order_nodes_iterator' if order == 1
+                else 'pre_order_nodes_iterator' if order == 2
+                else 'nodes_iterator')
+        return tuple(getattr(self.Root, nodes_iterator_method,
                              tuple)())
 
     def WideAllNodes(self) -> tuple:
