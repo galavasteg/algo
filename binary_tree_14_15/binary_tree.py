@@ -106,6 +106,23 @@ class BSTNode:
                 yield n
         yield self
 
+    # TODO: not recursion version
+    # def pre_order_nodes_iterator(self):
+    #     """A non-recursive Pre-order nodes iterator:
+    #     parent - left child - right child"""
+    #     pass
+
+    def pre_order_nodes_iterator(self):
+        """Pre-order nodes iterator:
+        parent - left child - right child"""
+        yield self
+        if self.LeftChild:
+            for n in self.LeftChild.pre_order_nodes_iterator():
+                yield n
+        if self.RightChild:
+            for n in self.RightChild.pre_order_nodes_iterator():
+                yield n
+
 
 class BSTFind:
     """Partial result of searching"""
