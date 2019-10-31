@@ -44,6 +44,12 @@ class BSTNode:
         self.LeftChild = None  # link on left child node
         self.RightChild = None  # link on right child node
 
+    @property
+    def Children(self):
+        return tuple(child for child
+                     in (self.LeftChild, self.RightChild)
+                     if child)
+
     def nodes_iterator(self):
         # 1) Create an empty stack S.
         stack = []
@@ -185,15 +191,17 @@ class BST:
                              tuple)())
 
     def WideAllNodes(self) -> tuple:
-        """Этот алгоритм проверяет сначала все узлы 1-го
-        уровня (фактически, один корень), затем все узлы
-        второго уровня (фактически, всех наследников корня)
-        -- слева направо, затем узлы третьего уровня
-        (наследники всех наследников) и т. д. В зависимости
-        от реализации дерева алгоритм может быть и итеративным,
-        и рекурсивным -- всё зависит от того, насколько
-        эффективно удаётся отобрать узлы N-го уровня."""
+        """TODO: EN doc"""
         nodes = levelNodes = (self.Root,) if self.Root else ()
+
+        while levelNodes:
+            # TODO: use reduce(
+            #   lambda res, n: res + n.Children, levelNodes, ())
+            nextLevelNodes = ()
+            for n in levelNodes:
+                nextLevelNodes += n.Children
+            nodes += nextLevelNodes
+            levelNodes = nextLevelNodes
 
         return nodes
 

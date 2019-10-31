@@ -11,6 +11,24 @@ BST.__repr__ = lambda x: 'BST r:%s mn:%s mx:%s' % (
     x.Root, x.FinMinMax(x.Root, False), x.FinMinMax(x.Root, True))
 
 
+def check_iterators(t: BST, verbose=False):
+    postOrderNodes = t._get_all_nodes()
+    count = len(postOrderNodes)
+    show_lmt = 10
+    postfix = '...' if not verbose and show_lmt < count else ''
+    print(postOrderNodes[: count if verbose else show_lmt],
+          postfix)
+
+    nodes_in_wide = t.WideAllNodes()
+    print(nodes_in_wide[: count if verbose else show_lmt],
+          postfix)
+    assert len(nodes_in_wide) == count
+
+    if count:
+        assert (nodes_in_wide[0] == t.Root
+                and nodes_in_wide[-1].Children == ())
+
+
 def get_random_tree(nodes_count: int):
     t = BST(None)
     keys = list(range(nodes_count))
