@@ -51,6 +51,8 @@ class BSTNode:
                      if child)
 
     def nodes_iterator(self):
+        """NOT recursive Post-order nodes iterator:
+        left child - right child - parent"""
         # 1) Create an empty stack S.
         stack = []
         # 2) Initialize currentNode as root
@@ -75,6 +77,17 @@ class BSTNode:
                            if p and currentNode is not p.RightChild else
                            None)
             # c) Go to step 3.
+
+    def post_order_nodes_iterator(self):
+        """Post-order nodes iterator:
+        left child - right child - parent"""
+        if self.LeftChild:
+            for n in self.LeftChild.post_order_nodes_iterator():
+                yield n
+        if self.RightChild:
+            for n in self.RightChild.post_order_nodes_iterator():
+                yield n
+        yield self
 
 
 class BSTFind:
@@ -206,15 +219,7 @@ class BST:
         return nodes
 
     def DeepAllNodes(self, order: int) -> tuple:
-        """Этот рекурсивный алгоритм подразумевает, что
-        находясь в некотором узле, мы проверяем на наличие
-        искомого объекта, в некотором порядке, левое поддерево
-        (рекурсивно), текущий узел, правое поддерево
-        (рекурсивно). Только что описанный порядок
-        обхода называется симметричный (in-order). Если
-        текущий узел (корень) проверяем в последнюю очередь,
-        порядок будет post-order, и если корень проверяем
-        самым первым, порядок будет pre-order."""
+        """TODO: EN doc"""
         return self._get_all_nodes(order)
 
     def Count(self):

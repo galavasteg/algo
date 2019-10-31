@@ -24,6 +24,11 @@ def check_iterators(t: BST, verbose=False):
           postfix)
     assert len(nodes_in_wide) == count
 
+    nodes_post_order = t.DeepAllNodes(1)
+    print(nodes_post_order[: count if verbose else show_lmt],
+          postfix)
+    assert nodes_post_order == postOrderNodes
+
     if count:
         assert (nodes_in_wide[0] == t.Root
                 and nodes_in_wide[-1].Children == ())
