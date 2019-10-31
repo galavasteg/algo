@@ -231,6 +231,16 @@ def test_create_and_cleare_random_tree(n: int, verbose=True):
     assert tree.Count() == 0
 
 
+def test_deep_tree(deep_lvl: int):
+    t = BST(None)
+    for i in range(deep_lvl, 0, -1):
+        print(deep_lvl-i)
+        assert t.AddKeyValue(i, str(i))
+    assert t.Root.NodeKey == deep_lvl and t.Count() == deep_lvl
+
+    check_iterators(t)
+
+
 # --------------------------- MAIN ----------------------------------
 
 if __name__ == '__main__':
@@ -242,4 +252,5 @@ if __name__ == '__main__':
     for n in (5, 32, 100):
         test_create_and_cleare_random_tree(n, False)
     test_create_and_cleare_random_tree(10000, False)
+    test_deep_tree(1500)  # TODO: not recursive nodes iterator
 
