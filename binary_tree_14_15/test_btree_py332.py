@@ -24,6 +24,11 @@ def check_iterators(t: BST, verbose=False):
           postfix)
     assert len(nodes_in_wide) == count
 
+    nodes_in_order = t.DeepAllNodes(0)
+    print(nodes_in_order[: count if verbose else show_lmt],
+          postfix)
+    assert len(nodes_in_order) == count
+
     nodes_post_order = t.DeepAllNodes(1)
     print(nodes_post_order[: count if verbose else show_lmt],
           postfix)
@@ -32,6 +37,11 @@ def check_iterators(t: BST, verbose=False):
     if count:
         assert (nodes_in_wide[0] == t.Root
                 and nodes_in_wide[-1].Children == ())
+
+        assert (nodes_in_order[0] == t.FinMinMax(t.Root, False)
+                and nodes_in_order[-1] == t.FinMinMax(t.Root, True))
+        assert list(nodes_in_order) == sorted(
+                postOrderNodes, key=lambda n: n.NodeKey)
 
 
 def get_random_tree(nodes_count: int):

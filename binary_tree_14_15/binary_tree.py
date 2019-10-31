@@ -50,8 +50,25 @@ class BSTNode:
                      in (self.LeftChild, self.RightChild)
                      if child)
 
+    # TODO: not recursive version
+    # def in_order_nodes_iterator(self):
+    #     """A non-recursive In-order nodes iterator:
+    #     left child - parent - right child"""
+    #     pass
+
+    def in_order_nodes_iterator(self):
+        """In-order nodes iterator:
+        left child - parent - right child"""
+        if self.LeftChild:
+            for n in self.LeftChild.in_order_nodes_iterator():
+                yield n
+        yield self
+        if self.RightChild:
+            for n in self.RightChild.in_order_nodes_iterator():
+                yield n
+
     def nodes_iterator(self):
-        """NOT recursive Post-order nodes iterator:
+        """A non-recursive Post-order nodes iterator:
         left child - right child - parent"""
         # 1) Create an empty stack S.
         stack = []
