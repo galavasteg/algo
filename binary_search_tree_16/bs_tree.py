@@ -32,10 +32,19 @@ class aBST:
         return 2 * parent_i + 2
 
     def FindKeyIndex(self, key) -> int:
+        """Search for index with **key**.
+
+        :return **a positive int** if the **key** is found OR
+                **a negative int** if the **key** can be added
+                to the tree in **-(returned index)** OR
+                **None**, if **key** cannot be added"""
         child_ind = 0
         return child_ind
 
     def AddKey(self, key) -> int:
+        """Returns the index of an existing **key** OR
+        the index of the added **key** OR
+        **-1** (the **key** cannot be added)"""
         i = -1
         return i
 
