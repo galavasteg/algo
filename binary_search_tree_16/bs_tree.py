@@ -46,5 +46,10 @@ class aBST:
         the index of the added **key** OR
         **-1** (the **key** cannot be added)"""
         i = -1
+        found_i = self.FindKeyIndex(key)
+        if found_i is not None:
+            i = abs(found_i)
+            if self.Tree[i] is None:
+                self.Tree[i] = key
         return i
 
