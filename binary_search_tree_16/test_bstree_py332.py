@@ -7,6 +7,16 @@ aBST.__repr__ = lambda x: 'BST r:%s c:%s' % (
     x.Tree[0], len(x.Tree))
 
 
+def get_random_tree(depth: int, nodes_count: int):
+    t = aBST(depth)
+    keys = list(range(nodes_count))
+    shuffle(keys)
+    keys = tuple(keys)
+    for k in keys:
+        t.AddKey(k)
+    return t
+
+
 # --------------------------- TESTS ---------------------------------
 
 assert len(aBST(0).Tree) == 1
@@ -56,4 +66,17 @@ def test_fill_empty_tree():
     assert t.FindKeyIndex(100) is None
     assert t.FindKeyIndex(8) == 0
     assert t.FindKeyIndex(1) == 7
+
+
+def test_create_random_tree(n: int):
+    print()
+    tree = get_random_tree(5, n)
+
+
+# --------------------------- MAIN ----------------------------------
+
+if __name__ == '__main__':
+    test_fill_empty_tree()
+    for n in (5, 32, 100, 1000, 10000):
+        test_create_random_tree(n)
 
