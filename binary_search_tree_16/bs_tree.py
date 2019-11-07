@@ -16,6 +16,7 @@ TODO: EN doc
 
 class aBST:
     def __init__(self, depth: int):
+        assert depth >= 0
         tree_size = 2 ** (depth + 1) - 1  # slots count
         self.Tree = [None] * tree_size  # keys array
 
