@@ -31,6 +31,21 @@ class aBST:
     def _get_right_child_i(parent_i: int) -> int:
         return 2 * parent_i + 2
 
+    def _get_next_search_i(self, i: int, key) -> (int, bool):
+        """Returns index of child of i-th element and
+        the key equality flag.
+        NOTE: **i**-th tree element key != **key** """
+        assert self.Tree[i] != key
+        next_i = (self._get_left_child_i
+                  if self.Tree[i] > key
+                  else self._get_right_child_i
+                  )(i)
+        IndAndFoundFlag = (
+            (next_i, self.Tree[next_i] == key)
+            if next_i < len(self.Tree)
+            else (None, False))
+        return IndAndFoundFlag
+
     def FindKeyIndex(self, key) -> int:
         """Search for index with **key**.
 
@@ -39,7 +54,19 @@ class aBST:
                 to the tree in **-(returned index)** OR
                 **None**, if **key** cannot be added"""
         child_ind = 0
-        return child_ind
+        existing_key = self.Tree[child_ind]
+        key_found = existing_key == key
+        while (child_ind is not None
+               and not key_found
+               and existing_key is not None):
+            child_ind, key_found = self._get_next_search_i(
+                    child_ind, key)
+            if child_ind is not None:
+                existing_key = self.Tree[child_ind]
+
+        return (child_ind
+                if key_found or child_ind is None
+                else -child_ind)
 
     def AddKey(self, key) -> int:
         """Returns the index of an existing **key** OR
