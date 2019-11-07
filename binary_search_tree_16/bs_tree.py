@@ -19,6 +19,18 @@ class aBST:
         tree_size = 2 ** (depth + 1) - 1  # slots count
         self.Tree = [None] * tree_size  # keys array
 
+    @staticmethod
+    def _get_parent_i(node_i: int) -> int:
+        return (node_i - 1) // 2
+
+    @staticmethod
+    def _get_left_child_i(parent_i: int) -> int:
+        return 2 * parent_i + 1
+
+    @staticmethod
+    def _get_right_child_i(parent_i: int) -> int:
+        return 2 * parent_i + 2
+
     def FindKeyIndex(self, key) -> int:
         child_ind = 0
         return child_ind
