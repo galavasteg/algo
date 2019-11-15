@@ -106,4 +106,11 @@ if __name__ == '__main__':
         for _ in range(5):
             shuffle(keys)
             bt = test_balancing(keys)
+    print(bt)
+
+    # oh my! it's for a long time =)
+    keys = list(range(aBST._get_tree_size(20)))
+    shuffle(keys)
+    bt = test_balancing(keys)
+    print(bt)
 
