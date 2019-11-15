@@ -4,9 +4,13 @@ TODO: EN doc
 
 
 class aBST:
+    @staticmethod
+    def _get_tree_size(depth):
+        return 2 ** (depth + 1) - 1
+
     def __init__(self, depth: int):
         assert depth >= 0
-        tree_size = 2 ** (depth + 1) - 1  # slots count
+        tree_size = self._get_tree_size(depth)  # slots count
         self.Tree = [None] * tree_size  # keys array
 
     @staticmethod
