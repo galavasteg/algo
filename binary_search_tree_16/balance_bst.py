@@ -5,14 +5,6 @@ TODO: EN doc
 
 def GenerateBBSTArray(a: list) -> list:
     """TODO: EN doc
-    2. Для левой части по отношению к выбранному элементу
-       повторяем этот алгоритм -- индекс корневого элемента
-       левой части будет равен индексу левого наследника
-       корня из пункта 1.
-    3. Для правой части по отношению к выбранному элементу
-       повторяем этот алгоритм -- индекс корневого элемента
-       правой части будет равен индексу правого наследника
-       корня из пункта 1.
     """
     assert a
     sorted_a = tuple(sorted(a))
@@ -22,6 +14,13 @@ def GenerateBBSTArray(a: list) -> list:
         if tree_keys:
             center_i = len(tree_keys) // 2
             res[root_i] = tree_keys[center_i]
+
+            left_subtree = tree_keys[:center_i]
+            right_subtree = tree_keys[center_i + 1:]
+            left_i, right_i = 2 * root_i + 1, 2 * root_i + 2
+
+            balance_tree_vals(left_subtree, left_i)
+            balance_tree_vals(right_subtree, right_i)
 
     balance_tree_vals(sorted_a, 0)
 
