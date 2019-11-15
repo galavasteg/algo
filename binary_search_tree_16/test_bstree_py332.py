@@ -1,6 +1,7 @@
 from random import shuffle
 
 from binary_search_tree_16.bs_tree import aBST
+from binary_search_tree_16.balance_bst import GenerateBBSTArray
 
 
 aBST.__repr__ = lambda x: 'BST r:%s c:%s' % (
@@ -22,6 +23,10 @@ def get_random_tree(depth: int, nodes_count: int):
 assert len(aBST(0).Tree) == 1
 assert len(aBST(3).Tree) == 15
 assert len(aBST(5).Tree) == 63
+
+assert aBST._get_depth(len(aBST(0).Tree)) == 0
+assert aBST._get_depth(len(aBST(3).Tree)) == 3
+assert aBST._get_depth(len(aBST(5).Tree)) == 5
 
 t = aBST(3)
 
@@ -73,10 +78,32 @@ def test_create_random_tree(n: int):
     tree = get_random_tree(5, n)
 
 
+def test_balancing(a: list):
+    keys = GenerateBBSTArray(a)
+    assert len(keys) == len(a)
+    assert not any(map(lambda x: x is None, keys))
+    assert set(keys) == set(a)
+
+    bt = aBST.create(keys)
+    assert len(bt.Tree) == len(a)
+    assert set(bt.Tree) == set(a)
+    assert not any(map(lambda x: x is None, bt.Tree))
+
+    return bt
+
+
 # --------------------------- MAIN ----------------------------------
 
 if __name__ == '__main__':
     test_fill_empty_tree()
     for n in (5, 32, 100, 1000, 10000):
         test_create_random_tree(n)
+    del(t, t_arr,)
+
+    bt = test_balancing([0])
+    for n in map(aBST._get_tree_size, (1, 2, 3, 4, 5, 6, 7, 8)):
+        keys = list(range(n))
+        for _ in range(5):
+            shuffle(keys)
+            bt = test_balancing(keys)
 
