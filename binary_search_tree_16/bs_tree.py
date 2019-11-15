@@ -8,6 +8,20 @@ class aBST:
     def _get_tree_size(depth):
         return 2 ** (depth + 1) - 1
 
+    @staticmethod
+    def _get_depth(tree_size):
+        def log2(x: int, base=2):
+            count = -1
+            while x != 0:
+                x = x // base
+                count = count + 1
+            return count
+
+        to_logarithm = tree_size + 1
+        log = log2(to_logarithm)
+        depth = int(log) - 1
+        return depth
+
     def __init__(self, depth: int):
         assert depth >= 0
         tree_size = self._get_tree_size(depth)  # slots count
