@@ -27,6 +27,12 @@ class aBST:
         tree_size = self._get_tree_size(depth)  # slots count
         self.Tree = [None] * tree_size  # keys array
 
+    @classmethod
+    def create(cls, keys: list):
+        t = cls(0)
+        t.Tree = keys
+        return t
+
     @staticmethod
     def _get_parent_i(node_i: int) -> int:
         return (node_i - 1) // 2
