@@ -12,6 +12,19 @@ class BSTNode:
         self.RightChild = None
         self.Level = 0
 
+    def in_order_nodes_iterator(self):
+        """
+        In-order nodes iterator:
+        left child - parent - right child
+        """
+        if self.LeftChild:
+            for n in self.LeftChild.in_order_nodes_iterator():
+                yield n
+        yield self
+        if self.RightChild:
+            for n in self.RightChild.in_order_nodes_iterator():
+                yield n
+
 
 class BalancedBST:
 
