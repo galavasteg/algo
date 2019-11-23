@@ -25,6 +25,14 @@ class BSTNode:
             for n in self.RightChild.in_order_nodes_iterator():
                 yield n
 
+    @property
+    def children(self):
+        return self.LeftChild, self.RightChild
+
+    @property
+    def max_depth(self):
+        return max(n.Level for n in self.in_order_nodes_iterator())
+
 
 class BalancedBST:
 
