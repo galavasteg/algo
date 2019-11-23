@@ -80,16 +80,29 @@ class BalancedBST:
         sorted_keys = tuple(sorted(a))
         self.Root = self._keys2tree(sorted_keys, parent=None)
 
+    @staticmethod
+    def _children_depths_diff(node: BSTNode) -> int:
+        left_depth, right_depth = tuple(
+            (c.max_depth if c else node.Level)
+            for c in node.children)
+        # TODO: diff with each other for non-binary tree too
+        # t = left_depth, right_depth
+        # depth_diffs = [abs(j - i) for i, j in zip(t, t[1:])]
+        depths_diff = abs(left_depth - right_depth)
+        return depths_diff
+
     def IsBalanced(self, root_node: BSTNode):
-        """
-        - правое поддерево каждого узла сбалансировано;
-        - левое поддерево каждого узла сбалансировано;
-        - разница между глубинами левого и правого поддеревьев не
-          превышает единицы (или, проще говоря, левое и правое
-          поддеревья равны по длинами или отличаются не более чем
-          на одну ветку).
+        """TODO: EN doc
         """
         balanced = True
 
-        return balanced  # сбалансировано ли дерево с корнем root_node
+        if root_node:
+            left_balanced = self.IsBalanced(root_node.LeftChild)
+            right_balanced = self.IsBalanced(root_node.RightChild)
+            depths_diff = self._children_depths_diff(root_node)
+
+            balanced = (left_balanced and right_balanced
+                        and depths_diff <= 1)
+
+        return balanced
 

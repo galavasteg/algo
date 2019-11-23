@@ -21,17 +21,21 @@ count_and_order_checks(t, a)
 a = []
 t.GenerateTree(a)
 count_and_order_checks(t, a)
+assert t.IsBalanced(t.Root)
 
 a = [3, 2, 3, ]
 t.GenerateTree(a)
 count_and_order_checks(t, a)
+assert t.IsBalanced(t.Root)
 
 a = [1, 3, 2, 2, 1, ]
 t.GenerateTree(a)
 count_and_order_checks(t, a)
+assert t.IsBalanced(t.Root)
 
 a = [1, 3, 2, 2, 1, 3, 4, 4, ]
 t.GenerateTree(a)
+assert t.IsBalanced(t.Root)
 assert t.Count() == len(a)
 in_order_nodes = [n for n in t._get_all_nodes()]
 assert list(n.NodeKey for n in in_order_nodes) == sorted(a)
@@ -41,6 +45,7 @@ assert in_order_nodes[-1].Level == 3
 
 a = [2, 2, 2, ]
 t.GenerateTree(a)
+assert not t.IsBalanced(t.Root)
 assert t.Count() == len(a)
 in_order_nodes = [n for n in t._get_all_nodes()]
 assert list(n.NodeKey for n in in_order_nodes) == sorted(a)
@@ -51,12 +56,19 @@ assert in_order_nodes[-1].Level == 3
 a = [1, 3, 0, 2, 5, 3, 4, ]
 t.GenerateTree(a)
 count_and_order_checks(t, a)
+assert t.IsBalanced(t.Root)
 
 a = [1, 3, 0, 2, 5, 3, 4, -1, -2, -3, ]
 t.GenerateTree(a)
 count_and_order_checks(t, a)
+assert t.IsBalanced(t.Root)
 
 a = [0, 1, 2, 3, 3, 3, 3, 4, 5, 6, 7, ]
 t.GenerateTree(a)
 count_and_order_checks(t, a)
+assert not t.IsBalanced(t.Root)
+assert t.IsBalanced(t.Root.LeftChild)
+assert not t.IsBalanced(t.Root.RightChild)
+assert not t.IsBalanced(t.Root.RightChild.LeftChild)
+assert t.IsBalanced(t.Root.RightChild.RightChild)
 
