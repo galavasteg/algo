@@ -7,7 +7,7 @@ BSTNode.__repr__ = lambda x: 'Node %s L:%s R:%s' % (
 BalancedBST.__repr__ = lambda x: x.Root.__repr__() if x.Root else '-'
 
 
-def count_and_order_checks(t: BalancedBST, a: list):
+def count_order_keys_checks(t: BalancedBST, a: list) -> [BSTNode]:
     assert t.Count() == len(a)
     in_order_nodes = [n for n in t._get_all_nodes()]
     assert list(n.NodeKey for n in in_order_nodes) == sorted(a)
@@ -28,25 +28,24 @@ assert t.Count() == 0
 
 a = []
 t.GenerateTree(a)
-count_and_order_checks(t, a)
+_ = count_order_keys_checks(t, a)
 assert t.IsBalanced(t.Root)
 
 a = [3, 2, 3, ]
 t.GenerateTree(a)
-count_and_order_checks(t, a)
+_ = count_order_keys_checks(t, a)
 assert t.IsBalanced(t.Root)
 
 a = [1, 3, 2, 2, 1, ]
 t.GenerateTree(a)
-count_and_order_checks(t, a)
+_ = count_order_keys_checks(t, a)
 assert t.IsBalanced(t.Root)
 
 a = [1, 3, 2, 2, 1, 3, 4, 4, ]
 t.GenerateTree(a)
 assert t.IsBalanced(t.Root)
 assert t.Count() == len(a)
-in_order_nodes = [n for n in t._get_all_nodes()]
-assert list(n.NodeKey for n in in_order_nodes) == sorted(a)
+in_order_nodes = count_order_keys_checks(t, a)
 assert t.Root.Level == 1
 assert in_order_nodes[1].Level == 4  # 2-nd "1"
 assert in_order_nodes[-1].Level == 3
@@ -55,25 +54,24 @@ a = [2, 2, 2, ]
 t.GenerateTree(a)
 assert not t.IsBalanced(t.Root)
 assert t.Count() == len(a)
-in_order_nodes = [n for n in t._get_all_nodes()]
-assert list(n.NodeKey for n in in_order_nodes) == sorted(a)
+in_order_nodes = count_order_keys_checks(t, a)
 assert in_order_nodes[0] == t.Root
 assert t.Root.Level == 1
 assert in_order_nodes[-1].Level == 3
 
 a = [1, 3, 0, 2, 5, 3, 4, ]
 t.GenerateTree(a)
-count_and_order_checks(t, a)
+_ = count_order_keys_checks(t, a)
 assert t.IsBalanced(t.Root)
 
 a = [1, 3, 0, 2, 5, 3, 4, -1, -2, -3, ]
 t.GenerateTree(a)
-count_and_order_checks(t, a)
+_ = count_order_keys_checks(t, a)
 assert t.IsBalanced(t.Root)
 
 a = [0, 1, 2, 3, 3, 3, 3, 4, 5, 6, 7, ]
 t.GenerateTree(a)
-count_and_order_checks(t, a)
+_ = count_order_keys_checks(t, a)
 assert not t.IsBalanced(t.Root)
 assert t.IsBalanced(t.Root.LeftChild)
 assert not t.IsBalanced(t.Root.RightChild)
