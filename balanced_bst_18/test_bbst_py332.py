@@ -9,8 +9,16 @@ BalancedBST.__repr__ = lambda x: x.Root.__repr__() if x.Root else '-'
 
 def count_and_order_checks(t: BalancedBST, a: list):
     assert t.Count() == len(a)
-    assert [n.NodeKey for n in t._get_all_nodes()
-            ] == sorted(a)
+    in_order_nodes = [n for n in t._get_all_nodes()]
+    assert list(n.NodeKey for n in in_order_nodes) == sorted(a)
+
+    for n in in_order_nodes:
+        if n.LeftChild:
+            assert n.LeftChild.NodeKey < n.NodeKey
+        if n.RightChild:
+            assert n.RightChild.NodeKey >= n.NodeKey
+
+    return in_order_nodes
 
 
 # --------------------------- TESTS ---------------------------------
