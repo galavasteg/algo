@@ -10,7 +10,7 @@ class BSTNode:
         self.Parent = parent
         self.LeftChild = None
         self.RightChild = None
-        self.Level = 0
+        self.Level = parent.Level + 1 if parent else 1
 
     def in_order_nodes_iterator(self):
         """
