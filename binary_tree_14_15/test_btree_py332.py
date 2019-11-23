@@ -51,19 +51,6 @@ def check_iterators(t: BST, verbose=False):
         assert nodes_pre_order[0] == t.Root
 
 
-def get_random_tree(nodes_count: int):
-    t = BST(None)
-    keys = list(range(nodes_count))
-    shuffle(keys)
-    keys = tuple(keys)
-    for k in keys:
-        t.AddKeyValue(k, str(k))
-    assert t.Count() == nodes_count
-    assert t.FinMinMax(t.Root, False).NodeKey == 0
-    assert t.FinMinMax(t.Root, True).NodeKey == nodes_count-1
-    return t
-
-
 # --------------------------- TESTS ---------------------------------
 
 t = BST(None)
@@ -221,7 +208,7 @@ def test_left_branch_only():
     assert t_.Count() == 0
 
 
-def test_create_and_cleare_random_tree(n: int, verbose=True):
+def test_create_and_clear_random_tree(n: int, verbose=True):
     print()
     tree = get_random_tree(n)
     check_iterators(tree)
@@ -250,7 +237,7 @@ if __name__ == '__main__':
     test_fill_empty_tree_and_clear()
     test_left_branch_only()
     for n in (5, 32, 100):
-        test_create_and_cleare_random_tree(n, False)
-    test_create_and_cleare_random_tree(10000, False)
+        test_create_and_clear_random_tree(n, False)
+    test_create_and_clear_random_tree(10000, False)
     # test_deep_tree(1500)  # TODO: not recursive nodes iterator
 

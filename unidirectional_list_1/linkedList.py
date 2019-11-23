@@ -67,8 +67,8 @@ class LinkedList:
                 prev_node.next = del_n.next
                 if prev_node.next is None:
                     self.tail = prev_node
-            # TODO: delete link or not delete?
-            # del_n.next = None
+
+            del_n.next = None
 
     def clean(self):
         """1.3.: delete all nodes in list (init. new list)"""

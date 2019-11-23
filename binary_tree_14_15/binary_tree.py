@@ -17,7 +17,7 @@ class BSTNode:
                      in (self.LeftChild, self.RightChild)
                      if child)
 
-    # TODO: not recursive version
+    # TODO: non-recursive version
     # def in_order_nodes_iterator(self):
     #     """A non-recursive In-order nodes iterator:
     #     left child - parent - right child"""
@@ -73,7 +73,7 @@ class BSTNode:
                 yield n
         yield self
 
-    # TODO: not recursion version
+    # TODO: non-recursion version
     # def pre_order_nodes_iterator(self):
     #     """A non-recursive Pre-order nodes iterator:
     #     parent - left child - right child"""
@@ -102,8 +102,7 @@ class BSTFind:
 
     def search_direction(self, key):
         n = self.Node
-        if n and n.NodeKey == key:
-            self.NodeHasKey = True
+        self.NodeHasKey = n and n.NodeKey == key
         self.ToLeft = n and n.NodeKey > key
         return ('LeftChild' if self.ToLeft
                 else 'RightChild')
@@ -121,8 +120,8 @@ class BST:
         found = BSTFind()
         # start from root
         n = found.Node = self.Root
-        # If *key* < key or the current node go to the left
-        # (right otherwise) child
+        # TODO: If *key* < key or the current node go to the left
+        #  (right otherwise) child
         LR = found.search_direction(key)  # NodeHasKey sets here
         while n and not found.NodeHasKey and getattr(n, LR):
             n = found.Node = getattr(n, LR)
