@@ -9,4 +9,6 @@ BalancedBST.__repr__ = lambda x: x.Root.__repr__() if x.Root else '-'
 
 # --------------------------- TESTS ---------------------------------
 
+t = BalancedBST()
+assert t.Count() == 0
 

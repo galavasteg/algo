@@ -39,6 +39,15 @@ class BalancedBST:
     def __init__(self):
         self.Root = None
 
+    def _get_all_nodes(self) -> tuple:
+        nodes = ()
+        if self.Root:
+            nodes = tuple(self.Root.in_order_nodes_iterator())
+        return nodes
+
+    def Count(self) -> int:
+        return len(self._get_all_nodes())
+
     def GenerateTree(self, a: list):
         """TODO: EN doc
         """
