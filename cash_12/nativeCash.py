@@ -4,6 +4,8 @@ TODO: EN doc
 
 
 class NativeCache:
+    __placeholder = '<placeholder>'
+
     def __init__(self, sz):
         self.size = sz
         self.slots = [None] * self.size
@@ -20,8 +22,8 @@ class NativeCache:
             subSlot_ = next(filter(
                     lambda x: x[1] == key,
                     enumerate(self.slots[slot])),
-                    None)
-            return subSlot_[0] if subSlot_ else None
+                    (None,))
+            return subSlot_[0]
 
     def __get_least_hits_slot(self):
         return min((slot for slot in range(self.size)
@@ -59,12 +61,12 @@ class NativeCache:
                 subSlot = 0
                 self.slots[slot] = [key]
                 self.hits[slot] = [0]
-                self.values[slot] = ['<placeholder>']
+                self.values[slot] = [self.__placeholder]
             else:
                 subSlot = len(self.slots[slot])
                 self.slots[slot].append(key)
                 self.hits[slot].append(0)
-                self.values[slot].append('<placeholder>')
+                self.values[slot].append(self.__placeholder)
             self.__count += 1
 
         self.values[slot][subSlot] = value

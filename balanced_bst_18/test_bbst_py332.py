@@ -16,7 +16,7 @@ def count_and_order_checks(t: BalancedBST, a: list):
 # --------------------------- TESTS ---------------------------------
 
 t = BalancedBST()
-count_and_order_checks(t, a)
+assert t.Count() == 0
 
 a = []
 t.GenerateTree(a)
