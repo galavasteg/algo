@@ -108,7 +108,7 @@ class OrderedList:
             else:
                 del_n.prev.next = del_n.next
                 del_n.next.prev = del_n.prev
-            # TODO: delete links or not delete?
+
             del_n.prev = None
             del_n.next = None
 
