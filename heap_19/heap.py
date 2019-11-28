@@ -73,7 +73,11 @@ class Heap:
         дереву, останавливаясь в позиции, когда выше у родителя
         будет больший ключ, а ниже у обоих наследников -- меньшие.
         """
-        # добавляем новый элемент key в кучу и перестраиваем её
-        return False  # если куча вся заполнена
+        slot_free = lambda x: x is None
+        have_free_slot = any(map(slot_free, self.HeapArray))
+        if have_free_slot:
+            self.up_sift(key)
+        added = have_free_slot
+        return added
 
 
