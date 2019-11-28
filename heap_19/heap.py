@@ -28,9 +28,22 @@ class Heap:
         assert depth >= 0
         tree_size = self._get_btree_size(depth)  # slots count
         self.HeapArray = [None] * tree_size  # keys array
-        # создаём массив кучи HeapArray из заданного
-        # размер массива выбираем на основе глубины depth
-        pass
+        add_success_flags = tuple(map(self.Add, a))
+
+    def _get_last_existing(self):
+        i = len(self.HeapArray)
+        key = self.HeapArray[i]
+        while i >= 0 and key is not None:
+            i -= 1
+            key = self.HeapArray[i]
+
+        return key
+
+    def _down_sift(self):
+        parent = self._get_last_existing()
+        parent_i = 0
+        self.HeapArray[parent_i] = parent
+        while
 
     def GetMax(self):
         """Удаление максимально приоритетного узла:
@@ -47,8 +60,12 @@ class Heap:
         - останавливаемся, когда у родителя будет больший ключ,
           а у двух наследников -- меньшие.
         """
-        # вернуть значение корня и перестроить кучу
-        return -1  # если куча пуста
+        root = -1  # if heap is empty
+        if self.HeapArray and self.HeapArray[0] is not None:
+            root = self.HeapArray[0]
+            self._down_sift()
+
+        return root
 
     def Add(self, key) -> bool:
         """Новый элемент помещаем в самый низ массива,
