@@ -103,17 +103,79 @@ class Heap:
 
         return root
 
+    @staticmethod
+    def _get_depth(tree_size: int) -> int:
+        def logarithm(x_: int, base=2):
+            count = -1
+            while x_ != 0:
+                x_ = x_ // base
+                count = count + 1
+            return count
+
+        x = tree_size + 1
+        log = logarithm(x)
+        depth = int(log) - 1
+        return depth
+
+    def _get_level_slots(self, level: int) -> tuple:
+        level_size = self._get_btree_size(level)
+        slots = tuple(range(level_size))
+        if level > 0:
+            prev_level_size = self._get_btree_size(level - 1)
+            prev_slots = tuple(range(prev_level_size))
+            slots = tuple(sorted(
+                set(slots).difference(set(prev_slots))
+            ))
+
+        return slots
+
+    def _get_bottom_level_slots(self) -> tuple:
+        depth = self._get_depth(len(self.HeapArray))
+        level = depth
+        slots = self._get_level_slots(level)
+        while level > 0 and not any(map(self.is_slot_busy, slots)):
+            level -= 1
+            slots = self._get_level_slots(level)
+        return slots
+
+    def is_slot_free(self, i: int) -> bool:
+        return self.HeapArray[i] is None
+
+    def _get_bottom_left_free_slot(self) -> int:
+        bottom_level_slots = self._get_bottom_level_slots()
+        free_slots = tuple(filter(self.is_slot_free,
+                                  bottom_level_slots))
+        if free_slots:
+            bottom_left_free_i = free_slots[0]
+        else:
+            parent_i = bottom_level_slots[0]
+            bottom_left_free_i = self._get_left_child_i(parent_i)
+
+        return bottom_left_free_i
+
+    def __up_sift(self, key):
+        bottom_left_free_i = self._get_bottom_left_free_slot()
+        self.HeapArray[bottom_left_free_i] = key
+
+        c_i = bottom_left_free_i
+        parent_i = self._get_parent_i(c_i)
+        while not self._parent_more_children(parent_i, c_i):
+            self.HeapArray[parent_i], self.HeapArray[c_i] = (
+                self.HeapArray[c_i], self.HeapArray[parent_i])
+            c_i = parent_i
+            parent_i = self._get_parent_i(c_i)
+
     def Add(self, key) -> bool:
         """Новый элемент помещаем в самый низ массива,
         в первый свободный слот, и затем поднимаем его вверх по
         дереву, останавливаясь в позиции, когда выше у родителя
         будет больший ключ, а ниже у обоих наследников -- меньшие.
         """
-        slot_free = lambda x: x is None
-        have_free_slot = any(map(slot_free, self.HeapArray))
+        have_free_slot = any(map(self.is_slot_free,
+                                 reversed(range(len(self.HeapArray)))))
         if have_free_slot:
-            self.up_sift(key)
+            self.__up_sift(key)
+
         added = have_free_slot
         return added
-
 
