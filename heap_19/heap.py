@@ -51,9 +51,11 @@ class Heap:
 
         return parent_more_children
 
+    def is_slot_busy(self, i: int) -> bool:
+        return self.HeapArray[i] is not None
+
     def _get_last_busy_slot(self):
-        is_slot_busy = lambda x: self.HeapArray[x] is not None
-        i = next(filter(is_slot_busy,
+        i = next(filter(self.is_slot_busy,
                         reversed(range(len(self.HeapArray)))))
         return i
 
@@ -94,7 +96,7 @@ class Heap:
           а у двух наследников -- меньшие.
         """
         root = -1  # if heap is empty
-        if self.HeapArray and self.HeapArray[0] is not None:
+        if self.HeapArray and self.is_slot_busy(0):
             root = self.HeapArray[0]
             self.__down_sift()
 
