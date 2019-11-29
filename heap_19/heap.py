@@ -13,8 +13,8 @@ class Heap:
         return 2 ** (depth + 1) - 1
 
     @staticmethod
-    def _get_parent_i(node_i: int) -> int:
-        return (node_i - 1) // 2
+    def _get_parent_i(child_i: int) -> int:
+        return (child_i - 1) // 2
 
     @staticmethod
     def _get_left_child_i(parent_i: int) -> int:
@@ -33,20 +33,44 @@ class Heap:
         self._array_init(depth)
         add_success_flags = tuple(map(self.Add, a))
 
-    def _get_last_existing(self):
-        i = len(self.HeapArray)
-        key = self.HeapArray[i]
-        while i >= 0 and key is not None:
-            i -= 1
-            key = self.HeapArray[i]
+    def _parent_more_children(self, parent_i: int,
+                              *children_inds: int) -> bool:
+        p_key = self.HeapArray[parent_i]
 
-        return key
+        def parent_more_then_child(c_i):
+            c_key = self.HeapArray[c_i]
+            return c_key is None or p_key > c_key
 
-    def _down_sift(self):
-        parent = self._get_last_existing()
+        parent_more_children = all(map(parent_more_then_child,
+                                       children_inds))
+        return parent_more_children
+
+    def _get_last_busy_slot(self):
+        is_slot_busy = lambda x: self.HeapArray[x] is not None
+        i = next(filter(is_slot_busy,
+                        reversed(range(len(self.HeapArray)))))
+        return i
+
+    def __down_sift(self):
+        last_busy_i = self._get_last_busy_slot()
         parent_i = 0
-        self.HeapArray[parent_i] = parent
-        while
+        self.HeapArray[parent_i], self.HeapArray[last_busy_i] = (
+            self.HeapArray[last_busy_i], None)
+
+        c1_i = self._get_left_child_i(parent_i)
+        c2_i = self._get_right_child_i(parent_i)
+
+        while not self._parent_more_children(parent_i,
+                                             c1_i, c2_i):
+            max_child = max(self.HeapArray[i] for i in (c1_i, c2_i))
+            is_max_child = lambda i: self.HeapArray[i] == max_child
+            max_c_i = next(filter(is_max_child, (c1_i, c2_i)))
+
+            self.HeapArray[parent_i], self.HeapArray[max_c_i] = (
+                self.HeapArray[max_c_i], self.HeapArray[parent_i])
+            parent_i = max_c_i
+            c1_i = self._get_left_child_i(parent_i)
+            c2_i = self._get_right_child_i(parent_i)
 
     def GetMax(self):
         """Удаление максимально приоритетного узла:
@@ -66,7 +90,7 @@ class Heap:
         root = -1  # if heap is empty
         if self.HeapArray and self.HeapArray[0] is not None:
             root = self.HeapArray[0]
-            self._down_sift()
+            self.__down_sift()
 
         return root
 
