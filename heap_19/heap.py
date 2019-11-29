@@ -70,7 +70,8 @@ class Heap:
 
         while not self._parent_more_children(parent_i,
                                              c1_i, c2_i):
-            max_child = max(self.HeapArray[i] for i in (c1_i, c2_i))
+            max_child = max(self.HeapArray[i] for i
+                            in filter(self.is_slot_busy, (c1_i, c2_i)))
             is_max_child = lambda i: self.HeapArray[i] == max_child
             max_c_i = next(filter(is_max_child, (c1_i, c2_i)))
 
