@@ -24,10 +24,13 @@ class Heap:
     def _get_right_child_i(parent_i: int) -> int:
         return 2 * parent_i + 2
 
-    def MakeHeap(self, a: list, depth: int):
-        assert depth >= 0
+    def _array_init(self, depth: int):
         tree_size = self._get_btree_size(depth)  # slots count
         self.HeapArray = [None] * tree_size  # keys array
+
+    def MakeHeap(self, a: list, depth: int):
+        assert depth >= 0
+        self._array_init(depth)
         add_success_flags = tuple(map(self.Add, a))
 
     def _get_last_existing(self):
