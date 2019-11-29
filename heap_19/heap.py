@@ -35,14 +35,20 @@ class Heap:
 
     def _parent_more_children(self, parent_i: int,
                               *children_inds: int) -> bool:
-        p_key = self.HeapArray[parent_i]
+        # TODO: semantic refactoring
+        parent_more_children = True
 
-        def parent_more_then_child(c_i):
-            c_key = self.HeapArray[c_i]
-            return c_key is None or p_key > c_key
+        if parent_i >= 0 and children_inds:
+            p_key = self.HeapArray[parent_i]
+            heap_size = len(self.HeapArray)
 
-        parent_more_children = all(map(parent_more_then_child,
-                                       children_inds))
+            def parent_more_then_child(c_i: int) -> bool:
+                c_key = self.HeapArray[c_i] if c_i <= heap_size else None
+                return c_key is None or p_key > c_key
+
+            parent_more_children = all(map(parent_more_then_child,
+                                           children_inds))
+
         return parent_more_children
 
     def _get_last_busy_slot(self):
