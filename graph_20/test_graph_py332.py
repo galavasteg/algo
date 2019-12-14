@@ -1,3 +1,5 @@
+from random import shuffle, randint
+
 from graph_20.graph import SimpleGraph
 
 
@@ -88,10 +90,26 @@ def test_remove_vertex():
         assert all(map(lambda x: x == 0, g.m_adjacency[i]))
 
 
+def test_fill_empty_random_graph(size: int):
+    g = SimpleGraph(size)
+    for val in range(g.max_vertex):
+        g.AddVertex(val)
+    for i in range(g.max_vertex):
+        g.AddEdge(i, randint(0, size-1))
+    for i in range(g.max_vertex):
+        g.RemoveVertex(i)
+
+    for i in range(g.max_vertex):
+        assert all(map(lambda x: x == 0, g.m_adjacency[i]))
+
+
 # --------------------------- MAIN ----------------------------------
 
 if __name__ == '__main__':
     test_add_vertex()
     test_edge()
     test_remove_vertex()
+
+    for s in 5, 32, 100, 1000:
+        test_fill_empty_random_graph(s)
 
