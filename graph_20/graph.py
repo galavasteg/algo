@@ -25,6 +25,20 @@ class SimpleGraph:
         # список vertex, хранящий вершины.
         self.vertex = [None, ] * size
 
+    def VerticesCount(self):
+        return sum(map(None.__ne__, self.vertex))
+
+    def _get_free_vertex_ind(self):
+        i = next((i for i, v in enumerate(self.vertex)
+                  if v is None), None)
+        return i
+
+    def _is_vertex(self, i: int) -> bool:
+        """
+        :param i: index of self.vertex list
+        """
+        return i < self.max_vertex and None.__ne__(self.vertex[i])
+
     def AddVertex(self, v: int):
         """добавление новой вершины, которая ни с какими другими
         вершинами не связана; получает параметром целое число,
