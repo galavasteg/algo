@@ -4,8 +4,6 @@ TODO: EN doc
 
 
 class Vertex:
-    """Каждая вершина будет экземпляром класса Vertex, хранящим
-    некоторое абстрактное значение."""
 
     def __init__(self, val):
         self.Value = val
@@ -14,15 +12,8 @@ class Vertex:
 class SimpleGraph:
 
     def __init__(self, size: int):
-        """Каждая вершина однозначно идентифицируется своим индексом в
-        списке vertex, который (индекс) также определяет связи через
-        матрицу смежности."""
         self.max_vertex = size
-        # матрица смежности, где 0 означает отсутствие
-        # ребра между i-й вершиной (первое измерение) и j-й вершиной
-        # (второе измерение), а 1 означает наличие ребра;
         self.m_adjacency = [[0] * size for _ in range(size)]
-        # список vertex, хранящий вершины.
         self.vertex = [None, ] * size
 
     def VerticesCount(self):
@@ -45,42 +36,26 @@ class SimpleGraph:
                 yield i
 
     def AddVertex(self, v: int):
-        """добавление новой вершины, которая ни с какими другими
-        вершинами не связана; получает параметром целое число,
-        которое внутри метода надо преобразовать в объект типа
-        Vertex. (тест: вершина имеется, связи с ней отсутствуют);"""
         i = self._get_free_vertex_ind()
         if None.__ne__(i):
             new_vertex = Vertex(val=v)
             self.vertex[i] = new_vertex
 
-    # здесь и далее, параметры v -- индекс вершины в списке vertex
     def RemoveVertex(self, v: int):
-        """удаление вершины со всеми её рёбрами, получает индекс
-        удаляемой вершины. (тест: до удаления
-        некоторые вершины имеют связи с удаляемой вершиной, после
-        удаления этих связей нету)."""
         if self._is_vertex(v):
             for related_v in self._related_vertices_ind_iter(v):
                 self.RemoveEdge(v, related_v)
             self.vertex[v] = None
 
     def IsEdge(self, v1: int, v2: int) -> bool:
-        """проверка наличия ребра между вершинами;"""
         return (all(map(self._is_vertex, (v1, v2,)))
                 and self.m_adjacency[v1][v2] == self.m_adjacency[v2][v1] == 1)
 
     def AddEdge(self, v1: int, v2: int):
-        """добавление ребра между двумя заданными вершинами (тест:
-        до добавления связи между вершинами не было, после
-        добавления появилась);"""
         if all(map(self._is_vertex, (v1, v2,))):
             self.m_adjacency[v1][v2] = self.m_adjacency[v2][v1] = 1
 
     def RemoveEdge(self, v1: int, v2: int):
-        """удаление ребра между двумя заданными вершинами (тест:
-        до удаления связь между вершинами была, после удаления
-        отсутствует);"""
         if all(map(self._is_vertex, (v1, v2,))):
             self.m_adjacency[v1][v2] = self.m_adjacency[v2][v1] = 0
 
