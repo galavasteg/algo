@@ -59,17 +59,20 @@ class SimpleGraph:
 
     def IsEdge(self, v1: int, v2: int) -> bool:
         """проверка наличия ребра между вершинами;"""
-        return False
+        return (all(map(self._is_vertex, (v1, v2,)))
+                and self.m_adjacency[v1][v2] == self.m_adjacency[v2][v1] == 1)
 
     def AddEdge(self, v1: int, v2: int):
         """добавление ребра между двумя заданными вершинами (тест:
         до добавления связи между вершинами не было, после
         добавления появилась);"""
-        pass
+        if all(map(self._is_vertex, (v1, v2,))):
+            self.m_adjacency[v1][v2] = self.m_adjacency[v2][v1] = 1
 
     def RemoveEdge(self, v1: int, v2: int):
         """удаление ребра между двумя заданными вершинами (тест:
         до удаления связь между вершинами была, после удаления
         отсутствует);"""
-        pass
+        if all(map(self._is_vertex, (v1, v2,))):
+            self.m_adjacency[v1][v2] = self.m_adjacency[v2][v1] = 0
 
