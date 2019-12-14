@@ -44,7 +44,10 @@ class SimpleGraph:
         вершинами не связана; получает параметром целое число,
         которое внутри метода надо преобразовать в объект типа
         Vertex. (тест: вершина имеется, связи с ней отсутствуют);"""
-        pass
+        i = self._get_free_vertex_ind()
+        if None.__ne__(i):
+            new_vertex = Vertex(val=v)
+            self.vertex[i] = new_vertex
 
     # здесь и далее, параметры v -- индекс вершины в списке vertex
     def RemoveVertex(self, v: int):
