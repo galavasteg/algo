@@ -65,9 +65,33 @@ def test_edge():
         assert all(map(lambda x: x == 0, g.m_adjacency[i]))
 
 
+def test_remove_vertex():
+    g = SimpleGraph(5)
+    for val in range(3):
+        g.AddVertex(val)
+    for i in range(3):
+        g.AddEdge(0, i)
+    g.AddEdge(1, 2)
+
+    assert g.VerticesCount() == 3
+    assert g.m_adjacency[0] == [1, 1, 1, 0, 0]
+    assert g.m_adjacency[1] == [1, 0, 1, 0, 0]
+    assert g.m_adjacency[2] == [1, 1, 0, 0, 0]
+
+    g.RemoveVertex(0)
+
+    assert g.VerticesCount() == 2
+    assert g.m_adjacency[0] == [0, 0, 0, 0, 0]
+    assert g.m_adjacency[1] == [0, 0, 1, 0, 0]
+    assert g.m_adjacency[2] == [0, 1, 0, 0, 0]
+    for i in (3, 4,):
+        assert all(map(lambda x: x == 0, g.m_adjacency[i]))
+
+
 # --------------------------- MAIN ----------------------------------
 
 if __name__ == '__main__':
     test_add_vertex()
     test_edge()
+    test_remove_vertex()
 

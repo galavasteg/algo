@@ -39,6 +39,11 @@ class SimpleGraph:
         """
         return i < self.max_vertex and None.__ne__(self.vertex[i])
 
+    def _related_vertices_ind_iter(self, v: int):
+        for i, _ in enumerate(self.m_adjacency[v]):
+            if self.IsEdge(v, i):
+                yield i
+
     def AddVertex(self, v: int):
         """добавление новой вершины, которая ни с какими другими
         вершинами не связана; получает параметром целое число,
@@ -55,7 +60,10 @@ class SimpleGraph:
         удаляемой вершины. (тест: до удаления
         некоторые вершины имеют связи с удаляемой вершиной, после
         удаления этих связей нету)."""
-        pass
+        if self._is_vertex(v):
+            for related_v in self._related_vertices_ind_iter(v):
+                self.RemoveEdge(v, related_v)
+            self.vertex[v] = None
 
     def IsEdge(self, v1: int, v2: int) -> bool:
         """проверка наличия ребра между вершинами;"""
