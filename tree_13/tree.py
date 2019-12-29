@@ -156,11 +156,7 @@ class SimpleTree:
                 self._reset_node_lvl(node)
 
     def EvenTrees(self) -> list:
-        """Сформировать максимально возможный список вершин,
-        для которых надо разорвать связь. Список линейный,
-        i-й элемент - родительская вершина, i+1-й элемент -
-        это её наследник. Между ними связь и разрывается.
-        Элементы списка - объекты класса SimpleTreeNode."""
+        """TODO: EN doc"""
         even_trees = []
         if self.Root.is_even:
             for node in self.Root.post_order_nodes_iterator():
