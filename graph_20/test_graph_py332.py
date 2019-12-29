@@ -1,10 +1,12 @@
 from random import shuffle, randint
 
-from graph_20.graph import SimpleGraph
+from graph_20.graph import SimpleGraph, Vertex
 
 
+Vertex.__repr__ = lambda v: 'V %s hit %d' % (
+        v.Value, v.Hit)
 SimpleGraph.__repr__ = lambda x: 'G %s/%s' % (
-    x.VerticesCount(), x.max_vertex)
+        x.VerticesCount(), x.max_vertex)
 
 
 # --------------------------- TESTS ---------------------------------
@@ -103,12 +105,75 @@ def test_fill_empty_random_graph(size: int):
         assert all(map(lambda x: x == 0, g.m_adjacency[i]))
 
 
+def test_dfs():
+    g = SimpleGraph(0)
+    for val in range(g.max_vertex):
+        g.AddVertex(val)
+    path = g.DepthFirstSearch(1, 0)
+    assert path == []
+
+    g = SimpleGraph(10)
+    for val in range(5):
+        g.AddVertex(val)
+
+    g.AddEdge(0, 1)
+    g.AddEdge(1, 2)
+    g.AddEdge(2, 3)
+    g.AddEdge(3, 4)
+    path = g.DepthFirstSearch(1, 0)
+    assert path == [
+            g.vertex[1], g.vertex[0],
+        ]
+
+    path = g.DepthFirstSearch(1, 3)
+    assert path == [
+            g.vertex[1], g.vertex[2], g.vertex[3],
+        ]
+
+    g.AddVertex(5)
+    g.AddEdge(2, 5)
+    path = g.DepthFirstSearch(4, 5)
+    assert path == [
+            g.vertex[4], g.vertex[3], g.vertex[2], g.vertex[5],
+        ]
+
+    g.AddVertex(6)
+    g.AddEdge(5, 6)
+    g.AddVertex(7)
+    g.AddEdge(6, 7)
+    g.AddEdge(4, 7)
+    path = g.DepthFirstSearch(4, 7)
+    assert path == [
+            g.vertex[4], g.vertex[7],
+        ]
+
+    path = g.DepthFirstSearch(1, 7)
+    assert path == [
+            g.vertex[1], g.vertex[2], g.vertex[3],
+            g.vertex[4], g.vertex[7],
+        ]
+
+    g.AddEdge(6, 6)
+    path = g.DepthFirstSearch(6, 6)
+    assert path == [
+            g.vertex[6], g.vertex[6],
+        ]
+
+    g.AddEdge(3, 3)
+    path = g.DepthFirstSearch(2, 4)
+    assert path == [
+            g.vertex[2], g.vertex[3], g.vertex[4],
+        ]
+
+
 # --------------------------- MAIN ----------------------------------
 
 if __name__ == '__main__':
     test_add_vertex()
     test_edge()
     test_remove_vertex()
+
+    test_dfs()
 
     for s in 5, 32, 100, 1000:
         test_fill_empty_random_graph(s)
