@@ -64,6 +64,12 @@ class SimpleTreeNode:
             nodes += childNode.__get_all_children_recursive()
         return nodes
 
+    @property
+    def is_even(self):
+        nodes = self.__get_all_children_recursive()
+        nodes_count = len(nodes) + 1
+        return nodes_count % 2 == 0
+
 
 class SimpleTree:
     def __init__(self, root):
@@ -156,6 +162,10 @@ class SimpleTree:
         это её наследник. Между ними связь и разрывается.
         Элементы списка - объекты класса SimpleTreeNode."""
         even_trees = []
+        if self.Root.is_even:
+            for node in self.Root.post_order_nodes_iterator():
+                if node.is_even and node is not self.Root:
+                    even_trees = even_trees + [node.Parent, node]
 
         return even_trees
 
