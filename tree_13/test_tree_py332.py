@@ -150,6 +150,77 @@ def test_leaf(n: int, leafs: int):
     assert t.Count() == n + 1
 
 
+def test_even_trees():
+    t = get_one_branch_tree(1)
+    et = t.EvenTrees()
+    assert et == []
+
+    t = get_one_branch_tree(2)
+    et = t.EvenTrees()
+    assert et == []
+
+    t = get_one_branch_tree(4)
+    et = t.EvenTrees()
+    assert et == [t.Root.Children[0], t.Root.Children[0].Children[0]]
+
+    root = SimpleTreeNode(1, None)
+    t = SimpleTree(root)
+    n2 = SimpleTreeNode(2, root)
+    n3 = SimpleTreeNode(3, root)
+    n6 = SimpleTreeNode(6, root)
+    [t.AddChild(root, c) for c in (n2, n3, n6,)]
+    n5 = SimpleTreeNode(5, n2)
+    n7 = SimpleTreeNode(7, n2)
+    [t.AddChild(n2, c) for c in (n5, n7,)]
+    n4 = SimpleTreeNode(4, n3)
+    t.AddChild(n3, n4)
+    n8 = SimpleTreeNode(8, n6)
+    t.AddChild(n6, n8)
+    n9 = SimpleTreeNode(9, n6)
+    n10 = SimpleTreeNode(10, n6)
+    [t.AddChild(n8, c) for c in (n9, n10,)]
+    et = t.EvenTrees()
+    assert et == [
+            root, n3,
+            root, n6,
+        ]
+
+    n11 = SimpleTreeNode(11, n5)
+    n12 = SimpleTreeNode(12, n7)
+    t.AddChild(n5, n11)
+    t.AddChild(n7, n12)
+    et = t.EvenTrees()
+    assert et == [
+            n2, n5,
+            n2, n7,
+            root, n3,
+            root, n6,
+        ]
+
+    n13 = SimpleTreeNode(11, n8)
+    n14 = SimpleTreeNode(12, n8)
+    [t.AddChild(n8, c) for c in (n13, n14,)]
+    et = t.EvenTrees()
+    assert et == [
+            n2, n5,
+            n2, n7,
+            root, n3,
+            root, n6,
+        ]
+
+    n15 = SimpleTreeNode(15, n11)
+    n16 = SimpleTreeNode(16, n12)
+    t.AddChild(n11, n15)
+    t.AddChild(n12, n16)
+    et = t.EvenTrees()
+    assert et == [
+            n5, n11,
+            n7, n12,
+            root, n3,
+            root, n6,
+        ]
+
+
 # --------------------------- MAIN ----------------------------------
 
 if __name__ == '__main__':
@@ -160,6 +231,8 @@ if __name__ == '__main__':
         test_move(n)
         test_del(n)
     t = test_random_move(1000)
+
+    test_even_trees()
 
     for n, leafs in ((15, 3), (12, 4), (10000, 100)):
         test_leaf(n, leafs)
