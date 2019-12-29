@@ -12,6 +12,19 @@ class Vertex:
 
 class SimpleGraph:
 
+    class PathStack(list):
+        def pop(self, i=-1):
+            if self:
+                return super().pop(i)
+
+        def push(self, vertex: Vertex):
+            vertex.Hit = True
+            self.append(vertex)
+
+        def peek(self):
+            if self:
+                return self[-1]
+
     def _all_vertices_iter(self):
         for v in filter(None.__ne__, self.vertex):
             yield v
@@ -31,6 +44,10 @@ class SimpleGraph:
         for i, _ in enumerate(self.m_adjacency[vi]):
             if self.IsEdge(vi, i):
                 yield i
+
+    def _unvisit_all_vertices(self):
+        for v in self._all_vertices_iter():
+            v.Hit = False
 
     def __init__(self, size: int):
         self.max_vertex = size
@@ -85,7 +102,17 @@ class SimpleGraph:
         X верхний элемент стека, ставим X.Hit == True,
         и после чего переходим к п. 4.
         """
-        path_stack = []
-        
-        return path_stack
+        if not (0 <= VFrom < self.max_vertex
+                and 0 <= VTo < self.max_vertex):
+            return []
+
+        A, B = self.vertex[VFrom], self.vertex[VTo]
+        if A is None or B is None:
+            return []
+
+        # step 0
+        path_stack = self.PathStack()
+        self._unvisit_all_vertices()
+
+        return list(path_stack)
 
