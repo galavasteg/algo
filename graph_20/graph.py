@@ -45,9 +45,30 @@ class SimpleGraph:
             if self.IsEdge(vi, i):
                 yield i
 
+    def _get_vertex_ind(self, v: Vertex) -> int:
+        return next(filter(lambda i_v: i_v[1] is v,
+                           enumerate(self.vertex)))[0]
+
+    def _related_vertices_iter(self, v: Vertex):
+        vi = self._get_vertex_ind(v)
+        for i in self._related_vertices_ind_iter(vi):
+            yield self.vertex[i]
+
     def _unvisit_all_vertices(self):
         for v in self._all_vertices_iter():
             v.Hit = False
+
+    def _get_finish_related_v(self, v: Vertex, fin_v: Vertex):
+        is_finish_v = lambda rv: rv is fin_v
+        return next(filter(is_finish_v,
+                           self._related_vertices_iter(v)),
+                    None)
+
+    def _get_not_visited_related_v(self, v: Vertex):
+        is_not_visited_v = lambda rv: not rv.Hit
+        return next(filter(is_not_visited_v,
+                           self._related_vertices_iter(v)),
+                    None)
 
     def __init__(self, size: int):
         self.max_vertex = size
@@ -116,5 +137,21 @@ class SimpleGraph:
         # step 1
         X = A
         path_stack.push(X)
+        while X:
+            # step 2
+            finish_vertex_i = self._get_finish_related_v(X, B)
+            if finish_vertex_i is not None:
+                path_stack.push(B)
+                X = None
+            else:
+                not_visited_related_v = self._get_not_visited_related_v(X)
+                if not_visited_related_v is not None:
+                    X = not_visited_related_v
+                    path_stack.push(X)
+                else:
+                    # step 3
+                    _ = path_stack.pop(-1)
+                    X = path_stack.peek()
+
         return list(path_stack)
 
