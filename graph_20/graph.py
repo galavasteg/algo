@@ -60,8 +60,7 @@ class SimpleGraph:
         if all(map(self._is_vertex, (v1, v2,))):
             self.m_adjacency[v1][v2] = self.m_adjacency[v2][v1] = 0
 
-    @staticmethod
-    def DepthFirstSearch(VFrom: int, VTo: int) -> list:
+    def DepthFirstSearch(self, VFrom: int, VTo: int) -> list:
         """
         0) Очищаем все дополнительные структуры данных:
         делаем стек пустым, а всем вершинам графа ставим
