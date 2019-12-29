@@ -33,7 +33,7 @@ class SimpleTreeNode:
         # next Node on the same level (for nodes iteration)
         self._next_brother = None
 
-    def nodes_iterator(self):
+    def post_order_nodes_iterator(self):
         # 1) Create an empty stack S.
         stack = []
         # 2) Initialize currentNode as root
@@ -56,25 +56,29 @@ class SimpleTreeNode:
             # currentNode = getattr(currentNode, '_next_brother', None)
             # c) Go to step 3.
 
+    def __get_all_children_recursive(self):
+        """NOTE: Remember about maximum recursion depth: 987"""
+        nodes = []
+        nodes += self.Children
+        for childNode in self.Children:
+            nodes += childNode.__get_all_children_recursive()
+        return nodes
+
+    @property
+    def is_even(self):
+        nodes = self.__get_all_children_recursive()
+        nodes_count = len(nodes) + 1
+        return nodes_count % 2 == 0
+
 
 class SimpleTree:
     def __init__(self, root):
         """:param root: tree root or None"""
         self.Root = root
 
-    @classmethod
-    def __get_nodes_recursive(cls, start_node: SimpleTreeNode):
-        """NOTE: Remember about maximum recursion depth: 987"""
-        nodes = []
-        if start_node:
-            nodes += start_node.Children
-            for childNode in start_node.Children:
-                nodes += cls.__get_nodes_recursive(childNode)
-        return nodes
-
     def AddChild(self, ParentNode, NewChild: SimpleTreeNode):
         """Add child Node to existing parent Node"""
-        __before_nodes = tuple(NewChild.nodes_iterator())
+        __before_nodes = tuple(NewChild.post_order_nodes_iterator())
         if ParentNode:
             if ParentNode.Children:
                 ParentNode.Children[-1]._next_brother = NewChild
@@ -85,7 +89,7 @@ class SimpleTree:
             assert NewChild.level == ParentNode.level + 1
         else:
             self.Root = NewChild
-        assert tuple(NewChild.nodes_iterator()) == __before_nodes
+        assert tuple(NewChild.post_order_nodes_iterator()) == __before_nodes
 
     def DeleteNode(self, NodeToDelete: SimpleTreeNode):
         """Delete not root Node"""
@@ -105,14 +109,14 @@ class SimpleTree:
     def GetAllNodes(self) -> list:
         nodes = []
         if self.Root:
-            nodes = list(self.Root.nodes_iterator())
+            nodes = list(self.Root.post_order_nodes_iterator())
         return nodes
 
     def FindNodesByValue(self, val) -> list:
         """Find all nodes with a specific value"""
         foundNodes = []
         if self.Root:
-            foundNodes = [node for node in self.Root.nodes_iterator()
+            foundNodes = [node for node in self.Root.post_order_nodes_iterator()
                           if node.NodeValue == val]
         return foundNodes
 
@@ -132,7 +136,7 @@ class SimpleTree:
         """Number of Nodes without children"""
         leafsCount = 0
         if self.Root:
-            for node in self.Root.nodes_iterator():
+            for node in self.Root.post_order_nodes_iterator():
                 if not node.Children:
                     leafsCount += 1
         return leafsCount
@@ -148,6 +152,16 @@ class SimpleTree:
         """Go around the whole sub tree and
         set the level for each Node"""
         if start_node:
-            for node in start_node.nodes_iterator():
+            for node in start_node.post_order_nodes_iterator():
                 self._reset_node_lvl(node)
+
+    def EvenTrees(self) -> list:
+        """TODO: EN doc"""
+        even_trees = []
+        if self.Root and self.Root.is_even:
+            for node in self.Root.post_order_nodes_iterator():
+                if node.is_even and node is not self.Root:
+                    even_trees = even_trees + [node.Parent, node]
+
+        return even_trees
 
