@@ -56,21 +56,19 @@ class SimpleTreeNode:
             # currentNode = getattr(currentNode, '_next_brother', None)
             # c) Go to step 3.
 
+    def __get_all_children_recursive(self):
+        """NOTE: Remember about maximum recursion depth: 987"""
+        nodes = []
+        nodes += self.Children
+        for childNode in self.Children:
+            nodes += childNode.__get_all_children_recursive()
+        return nodes
+
 
 class SimpleTree:
     def __init__(self, root):
         """:param root: tree root or None"""
         self.Root = root
-
-    @classmethod
-    def __get_nodes_recursive(cls, start_node: SimpleTreeNode):
-        """NOTE: Remember about maximum recursion depth: 987"""
-        nodes = []
-        if start_node:
-            nodes += start_node.Children
-            for childNode in start_node.Children:
-                nodes += cls.__get_nodes_recursive(childNode)
-        return nodes
 
     def AddChild(self, ParentNode, NewChild: SimpleTreeNode):
         """Add child Node to existing parent Node"""
