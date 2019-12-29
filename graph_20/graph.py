@@ -12,13 +12,9 @@ class Vertex:
 
 class SimpleGraph:
 
-    def __init__(self, size: int):
-        self.max_vertex = size
-        self.m_adjacency = [[0] * size for _ in range(size)]
-        self.vertex = [None, ] * size
-
-    def VerticesCount(self):
-        return sum(map(None.__ne__, self.vertex))
+    def _all_vertices_iter(self):
+        for v in filter(None.__ne__, self.vertex):
+            yield v
 
     def _get_free_vertex_ind(self):
         i = next((i for i, v in enumerate(self.vertex)
@@ -31,10 +27,18 @@ class SimpleGraph:
         """
         return i < self.max_vertex and None.__ne__(self.vertex[i])
 
-    def _related_vertices_ind_iter(self, v: int):
-        for i, _ in enumerate(self.m_adjacency[v]):
-            if self.IsEdge(v, i):
+    def _related_vertices_ind_iter(self, vi: int):
+        for i, _ in enumerate(self.m_adjacency[vi]):
+            if self.IsEdge(vi, i):
                 yield i
+
+    def __init__(self, size: int):
+        self.max_vertex = size
+        self.m_adjacency = [[0] * size for _ in range(size)]
+        self.vertex = [None, ] * size
+
+    def VerticesCount(self):
+        return len(tuple(self._all_vertices_iter()))
 
     def AddVertex(self, v: int):
         i = self._get_free_vertex_ind()
