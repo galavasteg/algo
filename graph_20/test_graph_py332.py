@@ -1,10 +1,12 @@
 from random import shuffle, randint
 
-from graph_20.graph import SimpleGraph
+from graph_20.graph import SimpleGraph, Vertex
 
 
+Vertex.__repr__ = lambda v: 'V %s hit %d' % (
+        v.Value, v.Hit)
 SimpleGraph.__repr__ = lambda x: 'G %s/%s' % (
-    x.VerticesCount(), x.max_vertex)
+        x.VerticesCount(), x.max_vertex)
 
 
 # --------------------------- TESTS ---------------------------------
