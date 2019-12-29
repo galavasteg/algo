@@ -151,6 +151,10 @@ def test_leaf(n: int, leafs: int):
 
 
 def test_even_trees():
+    t = SimpleTree(None)
+    et = t.EvenTrees()
+    assert et == []
+
     t = get_one_branch_tree(1)
     et = t.EvenTrees()
     assert et == []

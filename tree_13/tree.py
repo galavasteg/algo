@@ -158,7 +158,7 @@ class SimpleTree:
     def EvenTrees(self) -> list:
         """TODO: EN doc"""
         even_trees = []
-        if self.Root.is_even:
+        if self.Root and self.Root.is_even:
             for node in self.Root.post_order_nodes_iterator():
                 if node.is_even and node is not self.Root:
                     even_trees = even_trees + [node.Parent, node]
