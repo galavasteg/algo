@@ -151,3 +151,13 @@ class SimpleTree:
             for node in start_node.nodes_iterator():
                 self._reset_node_lvl(node)
 
+    def EvenTrees(self) -> list:
+        """Сформировать максимально возможный список вершин,
+        для которых надо разорвать связь. Список линейный,
+        i-й элемент - родительская вершина, i+1-й элемент -
+        это её наследник. Между ними связь и разрывается.
+        Элементы списка - объекты класса SimpleTreeNode."""
+        even_trees = []
+
+        return even_trees
+
