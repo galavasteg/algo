@@ -76,7 +76,7 @@ def test_move(n: int):
     [orig] = t.FindNodesByValue(half)
     prev_parent = orig.Parent
     init_count = t.Count()
-    origNodes = tuple(orig.nodes_iterator())
+    origNodes = tuple(orig.post_order_nodes_iterator())
 
     t.MoveNode(orig, t.Root)
     assert orig not in prev_parent.Children
@@ -85,7 +85,7 @@ def test_move(n: int):
     assert orig.level == 1 and orig.NodeValue == half
     assert all(node.level == 2 for node in orig.Children)
     assert init_count == t.Count()
-    assert origNodes == tuple(orig.nodes_iterator())
+    assert origNodes == tuple(orig.post_order_nodes_iterator())
 
 
 def test_random_move(count):
@@ -95,7 +95,7 @@ def test_random_move(count):
     non_root_ns = tuple(n for n in ns if n is not t.Root)
     for _ in range(100):
         orig = choice(non_root_ns)
-        origNodes = tuple(orig.nodes_iterator())
+        origNodes = tuple(orig.post_order_nodes_iterator())
         trueOrigNodes = origNodes[:origNodes.index(orig)+1]
         possible_parents = tuple(filter(lambda x: x not in trueOrigNodes, ns))
         parent = choice(possible_parents)
@@ -113,7 +113,7 @@ def test_random_move(count):
                    for n in orig.Children)
         assert t.Count() == count
         assert len(origNodes) != tuple
-        origNodes_ = tuple(orig.nodes_iterator())
+        origNodes_ = tuple(orig.post_order_nodes_iterator())
         trueOrigNodes_ = origNodes_[:origNodes_.index(orig)+1]
         assert trueOrigNodes == trueOrigNodes_
 
@@ -139,7 +139,7 @@ def test_leaf(n: int, leafs: int):
     non_root_ns = tuple(n for n in ns if n is not t.Root)
     for _ in range(10):
         orig = choice(non_root_ns)
-        origNodes = tuple(orig.nodes_iterator())
+        origNodes = tuple(orig.post_order_nodes_iterator())
         trueOrigNodes = origNodes[:origNodes.index(orig)+1]
         possible_parents = tuple(filter(lambda x: x not in trueOrigNodes, ns))
         parent = choice(possible_parents)
