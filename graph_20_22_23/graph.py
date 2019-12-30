@@ -25,6 +25,14 @@ class SimpleGraph:
             if self:
                 return self[-1]
 
+    class PathQueue(list):
+        def enqueue(self, item):
+            self.append(item)
+
+        def dequeue(self):
+            if self:
+                return self.pop(0)
+
     def _all_vertices_iter(self):
         for v in filter(None.__ne__, self.vertex):
             yield v
@@ -150,11 +158,14 @@ class SimpleGraph:
         3) Найденнуой смежной вершине ставим X.Hit == True,
         помещаем в очередь. Переходим к п.2.
         """
-        path_queue = []
         if not all(map(self._is_vertex, (VFrom, VTo,))):
             return []
 
         A, B = self.vertex[VFrom], self.vertex[VTo]
+
+        # step 0
+        path_queue = self.PathQueue()
+        self._unvisit_all_vertices()
 
         return list(path_queue)
 
