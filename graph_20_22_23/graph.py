@@ -104,13 +104,10 @@ class SimpleGraph:
 
     def DepthFirstSearch(self, VFrom: int, VTo: int) -> list:
         """TODO: EN doc"""
-        if not (0 <= VFrom < self.max_vertex
-                and 0 <= VTo < self.max_vertex):
+        if not all(map(self._is_vertex, (VFrom, VTo,))):
             return []
 
         A, B = self.vertex[VFrom], self.vertex[VTo]
-        if A is None or B is None:
-            return []
 
         # step 0
         path_stack = self.PathStack()
@@ -154,5 +151,10 @@ class SimpleGraph:
         помещаем в очередь. Переходим к п.2.
         """
         path_queue = []
+        if not all(map(self._is_vertex, (VFrom, VTo,))):
+            return []
+
+        A, B = self.vertex[VFrom], self.vertex[VTo]
+
         return list(path_queue)
 
