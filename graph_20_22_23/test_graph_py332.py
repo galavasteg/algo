@@ -1,6 +1,6 @@
 from random import shuffle, randint
 
-from graph_20_22.graph import SimpleGraph, Vertex
+from graph_20_22_23.graph import SimpleGraph, Vertex
 
 
 Vertex.__repr__ = lambda v: 'V %s hit %d' % (
