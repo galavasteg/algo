@@ -156,7 +156,7 @@ class SimpleGraph:
         Если таких вершин нету, проверяем очередь:
             - очередь пуста: заканчиваем работу, пути нет.
             - иначе извлекаем из очереди очередной элемент,
-              делаем его текущим X, и вначала данного п.
+              делаем его текущим X, и вначало данного п.
         3) Найденнуой смежной вершине ставим X.Hit == True,
         помещаем в очередь. Переходим к п.2.
         """
@@ -166,8 +166,34 @@ class SimpleGraph:
         A, B = self.vertex[VFrom], self.vertex[VTo]
 
         # step 0
-        path_queue = self.PathQueue()
+        related_vertex_queue = self.__PathQueue()
+        waypoints_stack = self.__PathStack()
+        finish_vertex = None
         self._unvisit_all_vertices()
 
-        return list(path_queue)
+        # step 1
+        X = A
+        X.Hit = True
+        while X:
+            # step 2
+            finish_vertex = self._get_finish_related_v(X, B)
+            if finish_vertex:
+                X = None
+            else:
+                not_visited_related_v = self._get_not_visited_related_v(X)
+                if not_visited_related_v:
+                    # step 3
+                    not_visited_related_v.Hit = True
+                    related_vertex_queue.enqueue(not_visited_related_v)
+                else:
+                    X = related_vertex_queue.dequeue()
+                    if X:
+                        Xi = self._get_vertex_ind(X)
+                        # TODO: reduce algorithm complexity
+                        path_to_X = self.__PathStack(
+                                self.BreadthFirstSearch(VFrom, Xi))
+                        waypoints_stack = path_to_X[1:]
+
+        return ([A] + list(waypoints_stack) + [B]
+                if finish_vertex else [])
 
