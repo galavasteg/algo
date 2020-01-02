@@ -12,22 +12,21 @@ class Vertex:
 
 class SimpleGraph:
 
-    class PathStack(list):
+    class __PathStack(list):
         def pop(self, i=-1):
             if self:
                 return super().pop(i)
 
         def push(self, vertex: Vertex):
-            vertex.Hit = True
             self.append(vertex)
 
         def peek(self):
             if self:
                 return self[-1]
 
-    class PathQueue(list):
-        def enqueue(self, item):
-            self.append(item)
+    class __PathQueue(list):
+        def enqueue(self, vertex: Vertex):
+            self.append(vertex)
 
         def dequeue(self):
             if self:
@@ -118,26 +117,29 @@ class SimpleGraph:
         A, B = self.vertex[VFrom], self.vertex[VTo]
 
         # step 0
-        path_stack = self.PathStack()
+        path_stack = self.__PathStack()
         self._unvisit_all_vertices()
 
         # step 1
         X = A
         path_stack.push(X)
+        X.Hit = True
         while X:
             # step 2
-            finish_vertex_i = self._get_finish_related_v(X, B)
-            if finish_vertex_i is not None:
+            finish_vertex = self._get_finish_related_v(X, B)
+            if finish_vertex:
                 path_stack.push(B)
+                X.Hit = True
                 X = None
             else:
                 not_visited_related_v = self._get_not_visited_related_v(X)
-                if not_visited_related_v is not None:
+                if not_visited_related_v:
                     X = not_visited_related_v
                     path_stack.push(X)
+                    X.Hit = True
                 else:
                     # step 3
-                    _ = path_stack.pop(-1)
+                    _ = path_stack.pop()
                     X = path_stack.peek()
 
         return list(path_stack)
