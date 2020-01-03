@@ -12,18 +12,25 @@ class Vertex:
 
 class SimpleGraph:
 
-    class PathStack(list):
+    class __PathStack(list):
         def pop(self, i=-1):
             if self:
                 return super().pop(i)
 
         def push(self, vertex: Vertex):
-            vertex.Hit = True
             self.append(vertex)
 
         def peek(self):
             if self:
                 return self[-1]
+
+    class __PathQueue(list):
+        def enqueue(self, vertex: Vertex):
+            self.append(vertex)
+
+        def dequeue(self):
+            if self:
+                return self.pop(0)
 
     def _all_vertices_iter(self):
         for v in filter(None.__ne__, self.vertex):
@@ -104,36 +111,89 @@ class SimpleGraph:
 
     def DepthFirstSearch(self, VFrom: int, VTo: int) -> list:
         """TODO: EN doc"""
-        if not (0 <= VFrom < self.max_vertex
-                and 0 <= VTo < self.max_vertex):
+        if not all(map(self._is_vertex, (VFrom, VTo,))):
             return []
 
         A, B = self.vertex[VFrom], self.vertex[VTo]
-        if A is None or B is None:
-            return []
 
         # step 0
-        path_stack = self.PathStack()
+        path_stack = self.__PathStack()
         self._unvisit_all_vertices()
 
         # step 1
         X = A
         path_stack.push(X)
+        X.Hit = True
         while X:
             # step 2
-            finish_vertex_i = self._get_finish_related_v(X, B)
-            if finish_vertex_i is not None:
+            finish_vertex = self._get_finish_related_v(X, B)
+            if finish_vertex:
                 path_stack.push(B)
+                X.Hit = True
                 X = None
             else:
                 not_visited_related_v = self._get_not_visited_related_v(X)
-                if not_visited_related_v is not None:
+                if not_visited_related_v:
                     X = not_visited_related_v
                     path_stack.push(X)
+                    X.Hit = True
                 else:
                     # step 3
-                    _ = path_stack.pop(-1)
+                    _ = path_stack.pop()
                     X = path_stack.peek()
 
         return list(path_stack)
+
+    def BreadthFirstSearch(self, VFrom: int, VTo: int) -> list:
+        """
+        0) Очищаем все дополнительные структуры данных:
+        делаем стек пустым, а всем вершинам графа ставим
+        Hit = False.
+        1) Выбираем текущую вершину X. Для начала работы
+        это будет исходная вершина VFrom. X.Hit = True.
+        2) Выбираем среди смежных вершин любую с Hit==False.
+        Если выбранная вершина равна VTo, заканчиваем работу.
+        Если таких вершин нету, проверяем очередь:
+            - очередь пуста: заканчиваем работу, пути нет.
+            - иначе извлекаем из очереди очередной элемент,
+              делаем его текущим X, и вначало данного п.
+        3) Найденнуой смежной вершине ставим X.Hit == True,
+        помещаем в очередь. Переходим к п.2.
+        """
+        if not all(map(self._is_vertex, (VFrom, VTo,))):
+            return []
+
+        A, B = self.vertex[VFrom], self.vertex[VTo]
+
+        # step 0
+        related_vertex_queue = self.__PathQueue()
+        waypoints_stack = self.__PathStack()
+        finish_vertex = None
+        self._unvisit_all_vertices()
+
+        # step 1
+        X = A
+        X.Hit = True
+        while X:
+            # step 2
+            finish_vertex = self._get_finish_related_v(X, B)
+            if finish_vertex:
+                X = None
+            else:
+                not_visited_related_v = self._get_not_visited_related_v(X)
+                if not_visited_related_v:
+                    # step 3
+                    not_visited_related_v.Hit = True
+                    related_vertex_queue.enqueue(not_visited_related_v)
+                else:
+                    X = related_vertex_queue.dequeue()
+                    if X:
+                        Xi = self._get_vertex_ind(X)
+                        # TODO: reduce algorithm complexity
+                        path_to_X = self.__PathStack(
+                                self.BreadthFirstSearch(VFrom, Xi))
+                        waypoints_stack = path_to_X[1:]
+
+        return ([A] + list(waypoints_stack) + [B]
+                if finish_vertex else [])
 
