@@ -145,21 +145,7 @@ class SimpleGraph:
         return list(path_stack)
 
     def BreadthFirstSearch(self, VFrom: int, VTo: int) -> list:
-        """
-        0) Очищаем все дополнительные структуры данных:
-        делаем стек пустым, а всем вершинам графа ставим
-        Hit = False.
-        1) Выбираем текущую вершину X. Для начала работы
-        это будет исходная вершина VFrom. X.Hit = True.
-        2) Выбираем среди смежных вершин любую с Hit==False.
-        Если выбранная вершина равна VTo, заканчиваем работу.
-        Если таких вершин нету, проверяем очередь:
-            - очередь пуста: заканчиваем работу, пути нет.
-            - иначе извлекаем из очереди очередной элемент,
-              делаем его текущим X, и вначало данного п.
-        3) Найденнуой смежной вершине ставим X.Hit == True,
-        помещаем в очередь. Переходим к п.2.
-        """
+        """TODO: EN doc"""
         if not all(map(self._is_vertex, (VFrom, VTo,))):
             return []
 
@@ -188,8 +174,8 @@ class SimpleGraph:
                 else:
                     X = related_vertex_queue.dequeue()
                     if X:
-                        Xi = self._get_vertex_ind(X)
                         # TODO: reduce algorithm complexity
+                        Xi = self._get_vertex_ind(X)
                         path_to_X = self.__PathStack(
                                 self.BreadthFirstSearch(VFrom, Xi))
                         waypoints_stack = path_to_X[1:]
