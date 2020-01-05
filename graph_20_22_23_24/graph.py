@@ -32,9 +32,14 @@ class SimpleGraph:
             if self:
                 return self.pop(0)
 
-    def _all_vertices_iter(self):
+    def _iter_vertices(self):
         for v in filter(None.__ne__, self.vertex):
             yield v
+
+    def _iter_vertex_indices(self):
+        for i, _ in filter(lambda i_v: None.__ne__(i_v[1]),
+                           enumerate(self.vertex)):
+            yield i
 
     def _get_free_vertex_ind(self):
         i = next((i for i, v in enumerate(self.vertex)
@@ -47,7 +52,7 @@ class SimpleGraph:
         """
         return i < self.max_vertex and None.__ne__(self.vertex[i])
 
-    def _related_vertices_ind_iter(self, vi: int):
+    def _iter_related_vertex_indices(self, vi: int):
         for i, _ in enumerate(self.m_adjacency[vi]):
             if self.IsEdge(vi, i):
                 yield i
@@ -56,26 +61,42 @@ class SimpleGraph:
         return next(filter(lambda i_v: i_v[1] is v,
                            enumerate(self.vertex)))[0]
 
-    def _related_vertices_iter(self, v: Vertex):
+    def _iter_related_vertices(self, v: Vertex):
         vi = self._get_vertex_ind(v)
-        for i in self._related_vertices_ind_iter(vi):
+        for i in self._iter_related_vertex_indices(vi):
             yield self.vertex[i]
 
-    def _unvisit_all_vertices(self):
-        for v in self._all_vertices_iter():
+    def _reset_visited_vertices(self):
+        for v in filter(lambda v_: v_.Hit,
+                        self._iter_vertices()):
             v.Hit = False
 
-    def _get_finish_related_v(self, v: Vertex, fin_v: Vertex):
+    def _is_pre_finish_vertex(self, v: Vertex, fin_v: Vertex):
+        # TODO: return bool
         is_finish_v = lambda rv: rv is fin_v
         return next(filter(is_finish_v,
-                           self._related_vertices_iter(v)),
+                           self._iter_related_vertices(v)),
                     None)
 
     def _get_not_visited_related_v(self, v: Vertex):
         is_not_visited_v = lambda rv: not rv.Hit
         return next(filter(is_not_visited_v,
-                           self._related_vertices_iter(v)),
+                           self._iter_related_vertices(v)),
                     None)
+
+    def _is_strong_vertex(self, vi: int) -> bool:
+        import itertools
+        related_vis = tuple(self._iter_related_vertex_indices(vi))
+        check_related_pairs = tuple(
+                itertools.permutations(related_vis, 2))
+        is_strong = any(map(lambda vis: self.IsEdge(*vis),
+                            check_related_pairs))
+        return is_strong
+
+    def _is_weak_vertex(self, vi: int) -> bool:
+        is_strong = self._is_strong_vertex(vi)
+        is_weak = not is_strong
+        return is_weak
 
     def __init__(self, size: int):
         self.max_vertex = size
@@ -83,7 +104,7 @@ class SimpleGraph:
         self.vertex = [None, ] * size
 
     def VerticesCount(self):
-        return len(tuple(self._all_vertices_iter()))
+        return len(tuple(self._iter_vertices()))
 
     def AddVertex(self, v: int):
         i = self._get_free_vertex_ind()
@@ -93,7 +114,7 @@ class SimpleGraph:
 
     def RemoveVertex(self, v: int):
         if self._is_vertex(v):
-            for related_v in self._related_vertices_ind_iter(v):
+            for related_v in self._iter_related_vertex_indices(v):
                 self.RemoveEdge(v, related_v)
             self.vertex[v] = None
 
@@ -118,7 +139,7 @@ class SimpleGraph:
 
         # step 0
         path_stack = self.__PathStack()
-        self._unvisit_all_vertices()
+        self._reset_visited_vertices()
 
         # step 1
         X = A
@@ -126,7 +147,7 @@ class SimpleGraph:
         X.Hit = True
         while X:
             # step 2
-            finish_vertex = self._get_finish_related_v(X, B)
+            finish_vertex = self._is_pre_finish_vertex(X, B)
             if finish_vertex:
                 path_stack.push(B)
                 X.Hit = True
@@ -155,14 +176,14 @@ class SimpleGraph:
         related_vertex_queue = self.__PathQueue()
         waypoints_stack = self.__PathStack()
         finish_vertex = None
-        self._unvisit_all_vertices()
+        self._reset_visited_vertices()
 
         # step 1
         X = A
         X.Hit = True
         while X:
             # step 2
-            finish_vertex = self._get_finish_related_v(X, B)
+            finish_vertex = self._is_pre_finish_vertex(X, B)
             if finish_vertex:
                 X = None
             else:
@@ -182,4 +203,11 @@ class SimpleGraph:
 
         return ([A] + list(waypoints_stack) + [B]
                 if finish_vertex else [])
+
+    def WeakVertices(self) -> list:
+        """TODO: EN doc"""
+        weak_vis = list(filter(
+                self._is_weak_vertex, self._iter_vertex_indices()))
+        weak_vs = [self.vertex[vi] for vi in weak_vis]
+        return weak_vs
 
