@@ -36,6 +36,11 @@ class SimpleGraph:
         for v in filter(None.__ne__, self.vertex):
             yield v
 
+    def _iter_vertex_indices(self):
+        for i, _ in filter(lambda i_v: None.__ne__(i_v[1]),
+                           enumerate(self.vertex)):
+            yield i
+
     def _get_free_vertex_ind(self):
         i = next((i for i, v in enumerate(self.vertex)
                   if v is None), None)
@@ -76,6 +81,20 @@ class SimpleGraph:
         return next(filter(is_not_visited_v,
                            self._related_vertices_iter(v)),
                     None)
+
+    def _is_strong_vertex(self, vi: int) -> bool:
+        import itertools
+        related_vis = tuple(self._iter_related_vertices_ind(vi))
+        check_related_pairs = tuple(
+                itertools.permutations(related_vis, 2))
+        is_strong = any(map(lambda vis: self.IsEdge(*vis),
+                            check_related_pairs))
+        return is_strong
+
+    def _is_weak_vertex(self, vi: int) -> bool:
+        is_strong = self._is_strong_vertex(vi)
+        is_weak = not is_strong
+        return is_weak
 
     def __init__(self, size: int):
         self.max_vertex = size
@@ -182,4 +201,10 @@ class SimpleGraph:
 
         return ([A] + list(waypoints_stack) + [B]
                 if finish_vertex else [])
+
+    def WeakVertices(self) -> list:
+        weak_vis = list(filter(
+                self._is_weak_vertex, self._iter_vertex_indices()))
+        weak_vs = [self.vertex[vi] for vi in weak_vis]
+        return weak_vs
 
