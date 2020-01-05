@@ -1,7 +1,7 @@
 import unittest
 from random import randint
 
-from graph_20_22_23.graph import SimpleGraph, Vertex
+from graph_20_22_23_24.graph import SimpleGraph, Vertex
 
 
 Vertex.__repr__ = lambda v: 'V %s hit %d' % (
