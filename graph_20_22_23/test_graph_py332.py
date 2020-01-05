@@ -12,7 +12,7 @@ SimpleGraph.__repr__ = lambda x: 'G %s/%s' % (
 
 # --------------------------- TESTS ---------------------------------
 
-class GraphTests(unittest.TestCase):
+class AddEdgeRemoveTests(unittest.TestCase):
 
     def test_add_vertex(self):
         g = SimpleGraph(0)
@@ -136,7 +136,9 @@ class FillAndEmptyTests(unittest.TestCase):
         self._test(1000)
 
 
-class GraphSearchTests(unittest.TestCase):
+class PathSearchTests(unittest.TestCase):
+    g = None
+
     @classmethod
     def setUpClass(cls) -> None:
         """
