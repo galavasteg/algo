@@ -32,7 +32,7 @@ class SimpleGraph:
             if self:
                 return self.pop(0)
 
-    def _all_vertices_iter(self):
+    def _iter_vertices(self):
         for v in filter(None.__ne__, self.vertex):
             yield v
 
@@ -66,8 +66,9 @@ class SimpleGraph:
         for i in self._related_vertices_ind_iter(vi):
             yield self.vertex[i]
 
-    def _unvisit_all_vertices(self):
-        for v in self._all_vertices_iter():
+    def _reset_visited_vertices(self):
+        for v in filter(lambda v_: v_.Hit,
+                        self._iter_vertices()):
             v.Hit = False
 
     def _get_finish_related_v(self, v: Vertex, fin_v: Vertex):
@@ -102,7 +103,7 @@ class SimpleGraph:
         self.vertex = [None, ] * size
 
     def VerticesCount(self):
-        return len(tuple(self._all_vertices_iter()))
+        return len(tuple(self._iter_vertices()))
 
     def AddVertex(self, v: int):
         i = self._get_free_vertex_ind()
@@ -137,7 +138,7 @@ class SimpleGraph:
 
         # step 0
         path_stack = self.__PathStack()
-        self._unvisit_all_vertices()
+        self._reset_visited_vertices()
 
         # step 1
         X = A
@@ -174,7 +175,7 @@ class SimpleGraph:
         related_vertex_queue = self.__PathQueue()
         waypoints_stack = self.__PathStack()
         finish_vertex = None
-        self._unvisit_all_vertices()
+        self._reset_visited_vertices()
 
         # step 1
         X = A
