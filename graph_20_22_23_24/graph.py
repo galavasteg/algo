@@ -205,12 +205,7 @@ class SimpleGraph:
                 if finish_vertex else [])
 
     def WeakVertices(self) -> list:
-        """
-        Некоторая вершина графа считается принадлежащей треугольнику,
-        если среди её прямых вершин-соседей имеются хотя бы две
-        вершины, связанные ребром друг с другом.
-        Вернуть список узлов, не принадлежащих ни одному треугольнику
-        """
+        """TODO: EN doc"""
         weak_vis = list(filter(
                 self._is_weak_vertex, self._iter_vertex_indices()))
         weak_vs = [self.vertex[vi] for vi in weak_vis]
