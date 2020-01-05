@@ -52,7 +52,7 @@ class SimpleGraph:
         """
         return i < self.max_vertex and None.__ne__(self.vertex[i])
 
-    def _related_vertices_ind_iter(self, vi: int):
+    def _iter_related_vertex_indices(self, vi: int):
         for i, _ in enumerate(self.m_adjacency[vi]):
             if self.IsEdge(vi, i):
                 yield i
@@ -61,9 +61,9 @@ class SimpleGraph:
         return next(filter(lambda i_v: i_v[1] is v,
                            enumerate(self.vertex)))[0]
 
-    def _related_vertices_iter(self, v: Vertex):
+    def _iter_related_vertices(self, v: Vertex):
         vi = self._get_vertex_ind(v)
-        for i in self._related_vertices_ind_iter(vi):
+        for i in self._iter_related_vertex_indices(vi):
             yield self.vertex[i]
 
     def _reset_visited_vertices(self):
@@ -71,21 +71,22 @@ class SimpleGraph:
                         self._iter_vertices()):
             v.Hit = False
 
-    def _get_finish_related_v(self, v: Vertex, fin_v: Vertex):
+    def _is_pre_finish_vertex(self, v: Vertex, fin_v: Vertex):
+        # TODO: return bool
         is_finish_v = lambda rv: rv is fin_v
         return next(filter(is_finish_v,
-                           self._related_vertices_iter(v)),
+                           self._iter_related_vertices(v)),
                     None)
 
     def _get_not_visited_related_v(self, v: Vertex):
         is_not_visited_v = lambda rv: not rv.Hit
         return next(filter(is_not_visited_v,
-                           self._related_vertices_iter(v)),
+                           self._iter_related_vertices(v)),
                     None)
 
     def _is_strong_vertex(self, vi: int) -> bool:
         import itertools
-        related_vis = tuple(self._iter_related_vertices_ind(vi))
+        related_vis = tuple(self._iter_related_vertex_indices(vi))
         check_related_pairs = tuple(
                 itertools.permutations(related_vis, 2))
         is_strong = any(map(lambda vis: self.IsEdge(*vis),
@@ -113,7 +114,7 @@ class SimpleGraph:
 
     def RemoveVertex(self, v: int):
         if self._is_vertex(v):
-            for related_v in self._related_vertices_ind_iter(v):
+            for related_v in self._iter_related_vertex_indices(v):
                 self.RemoveEdge(v, related_v)
             self.vertex[v] = None
 
@@ -146,7 +147,7 @@ class SimpleGraph:
         X.Hit = True
         while X:
             # step 2
-            finish_vertex = self._get_finish_related_v(X, B)
+            finish_vertex = self._is_pre_finish_vertex(X, B)
             if finish_vertex:
                 path_stack.push(B)
                 X.Hit = True
@@ -182,7 +183,7 @@ class SimpleGraph:
         X.Hit = True
         while X:
             # step 2
-            finish_vertex = self._get_finish_related_v(X, B)
+            finish_vertex = self._is_pre_finish_vertex(X, B)
             if finish_vertex:
                 X = None
             else:
